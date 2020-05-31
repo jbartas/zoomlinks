@@ -1,10 +1,11 @@
 <template>
   <div class="login">
  
-  <h3>Log in to BioMoods</h3>
+  <h3>Log in to Zoomlinks (guest,guest)</h3>
   <div >
 
    <div class="place-form grid-2cols sb_form" style="width: 20em;" >
+      <form name="login ">
         <div class="label" >
             User name:
         </div>
@@ -21,6 +22,7 @@
         <div>
             <button v-on:click="submitUser()" > Log In </button>
         </div>
+      </form>
     </div>
 
     <div class="place-error" >
@@ -36,7 +38,6 @@
 
 <script>
 import restapi from "../restapi.js";
-import { EventBus } from './topbar.vue';
 
 
 export default {
@@ -52,7 +53,10 @@ export default {
             this.loginStatus = "Please enter a password."
             return;
         }
-        let userInfo = { "userName": this.userName, "password": this.password };
+        let userInfo = { 
+            "userName": this.userName, 
+            "password": this.password 
+            };
 
         restapi.post( "/login", userInfo )
         .then(
@@ -60,13 +64,11 @@ export default {
                 let reply = response.data;
                 if( reply.status == "success") {
                     this.loginStatus = "";
-                    EventBus.$emit('loggedin-user', this.userName);
                     this.$parent.loggedInStatus = "Logged in as " + this.userName;
                     this.$parent.loggedInName = this.userName;
                 }
                 else {
                     this.loginStatus = "Login FAILED: " + reply.message;
-                    //EventBus.$emit('loggedin-user', "");
                     this.$parent.loggedInStatus = "Not Logged In";
                     this.$parent.loggedInName = "";
                 }
