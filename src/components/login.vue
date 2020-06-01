@@ -1,24 +1,19 @@
 <template>
   <div class="login">
- 
-  <h3>Log in to Zoomlinks (guest,guest)</h3>
-  <div >
 
-   <div class="place-form grid-2cols sb_form" style="width: 20em;" >
-      <form name="login ">
-        <div class="label" >
-            User name:
-        </div>
+   <div class="place-form" style="width: 20em;" >
+      <form name="login " class="grid-2cols sb_form" autofill="off" v-on:submit.prevent >
+        <label> User name: </label>
         <div>
-            <input name="userName" v-model="userName" placeholder="User name"  >
+            <input name="userName" v-model="userName" placeholder="User name" autocomplete="off" >
         </div>
 
-        <div  class="label" > Password:</div>
+        <label> Password:</label>
         <div title="At least 6 characters, and at least one number">
             <input type="password" name="password" v-model="password"  
-            placeholder="password"  ></div>
-
-        <div> </div>
+            placeholder="password"  >
+        </div>
+        <label> &nbsp; </label>
         <div>
             <button v-on:click="submitUser()" > Log In </button>
         </div>
@@ -26,11 +21,9 @@
     </div>
 
     <div class="place-error" >
-     <div class="errorMsg">{{networkError}}</div>
-     <div class="errorMsg">{{loginStatus}}</div>
+      <div class="errorMsg">{{networkError}}</div>
+      <div class="errorMsg">{{loginStatus}}</div>
     </div>
-
-  </div>
  
   </div>
 </template>
@@ -66,11 +59,14 @@ export default {
                     this.loginStatus = "";
                     this.$parent.loggedInStatus = "Logged in as " + this.userName;
                     this.$parent.loggedInName = this.userName;
+                    this.$parent.renderApp = "addLink";
+                    this.$parent.userEmail = reply.data.userEmail;
                 }
                 else {
                     this.loginStatus = "Login FAILED: " + reply.message;
                     this.$parent.loggedInStatus = "Not Logged In";
                     this.$parent.loggedInName = "";
+                    this.$parent.userEmail = "";
                 }
             }).catch( error =>  {
                 // eslint-disable-next-line
@@ -101,10 +97,7 @@ export default {
 
 .login {
     position:   relative;
-    top:        20px;
-    width:      30%;
     min-width:  470px;
-    left:       5%;
     color:      var(--bt-form-color);
     margin:     10px;
     padding:    10px;
@@ -113,37 +106,14 @@ export default {
 
 .place-form {
     position:   relative;
-    top:        0px;
-    left:       8em;
+    top:        2em;
+    left:       24%;
 }
 
 .place-error {
     position:   relative;
+    left:       1px;
     top:        2em;
-    left:       0em;
-}
-
-.grid-2cols {
-     grid-template-columns:  auto  auto;
-}
-
-.sb_form {
-    padding-top:        1em;
-    background-color:   var(--bt-table-backgroud) ;
-}
-
-input {
-    position:       relative;
-    line-height:    normal;
-    background-color: white;
-    padding-left:   5px;
-    height:         1.4em;
-}
-
-.label {
-    float:          right;
-    text-align:     right;
-/*    color:          var(--bt-text-color);*/
 }
 
 </style>

@@ -1,26 +1,15 @@
 <template>
 <div>
 
-
-<form class="place-form sb_form" autofill="off" v-on:submit.prevent  >
-<h3>Create a new account on BioMoods</h3>
-
-    <div class="grid-2cols new_user" style="width: 20em;" >
-
-        <label>Birth Year:</label>
-        <div class="optional" title="Optional, but reseach data is better if we know your age">
-            <input name="birth year" v-model="birthyear"  placeholder="Optional"
-                v-on:blur="checkData( 'birthyear' )" >
-        </div>
-
-        <label>Gender:</label>
-        <div class="optional" title="Optional, but reseach data is better if we know your gender">
-            <input name="gender" v-model="gender" placeholder="Optional" ></div>
-
+  <div class="form_title" >
+      Create a New Account
+  </div>
+  <form class="place-form sb_form" autofill="off" v-on:submit.prevent  >
+    <div class="grid-2cols" >
         <label>email:</label>
-        <div title="This will be needed if you lose you password">
+          <div>
             <input name="email" v-model="email"  v-on:blur="checkData( 'email' )"   >
-            </div>
+          </div>
 
         <label>user name:</label>
         <div  title="Name that will be displayed on screens">
@@ -42,18 +31,18 @@
             <button  v-on:click="createUser()" > Create account </button>
         </div>
     </div>
-    <div class="place-error" >
-        <div class="resultMsg" >
-            {{pw_message}}
-        </div>
-        <div class="errorMsg" >
-            {{networkError}}
-        </div>
-        <div class="resultMsg" >
-            {{resultStatus}}
-        </div>
+  </form>
+  <div class="place-error" >
+    <div class="resultMsg" >
+        {{pw_message}}
     </div>
-</form>
+    <div class="errorMsg" >
+        {{networkError}}
+    </div>
+    <div class="resultMsg" >
+        {{resultStatus}}
+    </div>
+  </div>
 
 </div>
 </template>
@@ -139,15 +128,6 @@ export default {
             else if( queryField == "newUserName"  && this.newUserName != "" ) {
                 url += "/userName/" + this.newUserName;
             }
-            else if( queryField == "birthyear" && this.birthyear != "" ) {
-                // eslint-disable-next-line
-                console.log( "birthyear: ", this.birthyear );
-                if( this.birthyear < 1900 || this.birthyear > 2020 ) {
-                    /* user specified a birthyear out of range. */
-                    this.networkError = "Please enter a year from 1900 to 2020";
-                }
-                return;
-            }
             else {
                 return;
             }
@@ -192,8 +172,6 @@ export default {
   },
   data() {
       return {
-        birthyear: "",
-        gender:"",
         email: "",
         newUserName: "",
         password: "",
@@ -226,48 +204,29 @@ export default {
 
 <style scoped>
 
-
-label {
-    color:      var(--bt-form-color);
-    float:      right;
-    padding-right: 0.8em;
-}
-
 .place-form {
     position:   relative;
-    top:        0px;
-    left:       12em;
+    top:        1.8em;
+    left:       10%;
+    width:      80%;
+    max-width:  500px;
+}
+
+/* Over-write default 2cols */
+.grid-2cols {
+     display:           grid;
+     grid-template-columns:  30%  auto;
+     grid-gap:          4px;
 }
 
 .place-error {
     position:   relative;
     top:        2em;
-    left:       0em;
 }
 
-.resultMsg {
-    position:           relative;
-    top:                1em;
-    left:               6em;
-}
-
-.optional {
-    background-color:   #aa88FF;
-}
-
-.new_user {
-    position:           relative;
-    top:                20px;
-    left:               2em;
-    color:              var(--bt-text-color);
-    margin:             10px;
-    padding:            20px;
-    text-align:         right;
-    background-color:   var(--bt-table-backgroud) ;
-}
-
-.grid-2cols {
-     grid-template-columns:  auto  auto;
+.form_title {
+    position:   relative;
+    top:        1.5em;
 }
 
 .submit_button {
