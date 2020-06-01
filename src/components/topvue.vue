@@ -48,6 +48,7 @@
     <login      v-if="renderApp == 'login'" />
     <addUser    v-if="renderApp == 'addUser'" />
     <addLink    v-if="renderApp == 'addLink'" />
+    <linkList   v-if="renderApp == 'linkList'" />
 
   </div> <!-- end topbar -->
 </div> <!-- end top_view -->
@@ -57,13 +58,15 @@
 import login from '../components/login.vue'
 import addUser from '../components/addUser.vue'
 import addLink from '../components/addLink.vue'
+import linkList from '../components/linkList.vue'
 
 export default {
   name: 'ZoomTop',
   components: {
     login,
     addUser,
-    addLink
+    addLink,
+    linkList
   },
   props: {
     msg: String

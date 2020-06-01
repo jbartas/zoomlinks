@@ -4,7 +4,7 @@
    <div class="place-form" style="width: 20em;" >
       <form name="login " class="grid-2cols sb_form" autofill="off" v-on:submit.prevent >
         <label> User name: </label>
-        <div>
+        <div class="input-box" >
             <input name="userName" v-model="userName" placeholder="User name" autocomplete="off" >
         </div>
 
@@ -102,6 +102,11 @@ export default {
     margin:     10px;
     padding:    10px;
     text-align: center;
+}
+
+.input-box {
+    text-align: left;
+    padding-left: 4px;
 }
 
 .place-form {

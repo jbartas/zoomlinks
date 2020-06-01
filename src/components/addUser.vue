@@ -7,26 +7,25 @@
   <form class="place-form sb_form" autofill="off" v-on:submit.prevent  >
     <div class="grid-2cols" >
         <label>email:</label>
-          <div>
+          <div class="input-box" >
             <input name="email" v-model="email"  v-on:blur="checkData( 'email' )"   >
           </div>
 
         <label>user name:</label>
-        <div  title="Name that will be displayed on screens">
+        <div class="input-box" title="Name that will be displayed on screens">
             <input name="newUserName" autocomplete="off" v-model="newUserName" 
                 autofill="off" v-on:blur="checkData( 'newUserName' )" >
         </div>
 
         <label>desired password:</label>
-        <div title="At least 6 characters, and at least one number">
+        <div class="input-box" title="At least 6 characters, and at least one number">
             <input type="password" name="password" autofill="off" 
                 v-model="password" ></div>
 
         <label>re-enter password:</label>
-        <div title="At least 6 characters, and at least one number">
+        <div class="input-box" title="At least 6 characters, and at least one number">
             <input type="password" name="password2" v-model="password2" ></div>
 
-        <div> </div>
         <div class="submit_button" >
             <button  v-on:click="createUser()" > Create account </button>
         </div>
@@ -52,7 +51,7 @@
 import axios from "axios";
 const bcrypt = require('bcryptjs');
 
-/* Password hashing (as of Sept 3 2019):
+/* Password hashing:
 The password is hashed with bcrypt on the client side (here) before 
 submnitting  the REST req to create the user. Thus the server creates 
 a record with PW already hashed. 
@@ -217,6 +216,11 @@ export default {
      display:           grid;
      grid-template-columns:  30%  auto;
      grid-gap:          4px;
+}
+
+.input-box {
+    text-align: left;
+    padding-left: 4px;
 }
 
 .place-error {

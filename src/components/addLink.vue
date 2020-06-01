@@ -1,7 +1,7 @@
 <template>
   <div class="add_link">
 
-   <div class="place-form" style="width: 20em;" >
+   <div class="place-form" >
       <form name="add-link" class="grid-2cols sb_form form-width" autofill="off" v-on:submit.prevent >
         <label> Link name: </label>
         <div>
@@ -36,10 +36,10 @@
 
 
 <script>
-//import restapi from "../restapi.js";
+import restapi from "../restapi.js";
 
 export default {
-  name: 'login',
+  name: 'addLink',
   methods: {
       submitLink: function() {
         // eslint-disable-next-line
@@ -53,6 +53,26 @@ export default {
             "userEmail": this.$parent.userEmail
         }
         console.log( "link submit; ", newLink );
+        restapi.post( "/newLink", newLink )
+        .then(
+            response => {
+                let reply = response.data;
+                if( reply.status == "success") {
+                    this.$parent.renderApp = "listLinks";
+                    this.$parent.userEmail = reply.data.userEmail;
+                }
+                else {
+                    this.loginStatus = "Login FAILED: " + reply.message;
+                    this.$parent.loggedInStatus = "Not Logged In";
+                    this.$parent.loggedInName = "";
+                    this.$parent.userEmail = "";
+                }
+            }).catch( error =>  {
+                // eslint-disable-next-line
+                console.log( error );
+                this.networkError = "Network: " + error;
+            });
+
       }
   },
   data() {
@@ -80,7 +100,7 @@ export default {
 }
 
 .form-width {
-    width:   140%;
+    width:   96%;
 }
 
 .grid-2cols {
@@ -90,7 +110,7 @@ export default {
 }
 
 input {
-    width: 98%;
+    width: 90%;
 }
 
 .place-form {

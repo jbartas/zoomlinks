@@ -99,7 +99,7 @@ button:hover {
 label {
     color:      var(--bt-form-color);
     float:      right;
-    padding-right: 0.8em;
+    padding-right: 0.2em;
     float:          right;
     text-align:     right;
 }
