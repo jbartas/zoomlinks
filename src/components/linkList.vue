@@ -2,10 +2,16 @@
   <div class="linkList">
 
    <div class="place-grid" >
-       <h2>Links:</h2>
-       <grid 
-            :columns = '[ "Name", "URL", "Tags" ]'
-            />
+      <div class="table-header-wrapper" >
+          Links:
+      </div>
+      <grid :data="gridData" class="grid_wrapper"
+            :columns="gridColumns" 
+            :callback="gridCallback" 
+            buttoncol="edit" 
+            >
+       </grid>
+
     </div>
 
     <div class="place-error" >
@@ -28,6 +34,34 @@ export default {
       grid
   },
   methods: {
+    gridCallback: function ( id ) {
+        // eslint-disable-next-line
+        console.log( "grid callback, id: ", id );
+
+    },
+    getLinkData: function ( user ) {
+
+        let url = "/getLinks/" + user ;
+
+        // eslint-disable-next-line
+        console.log( "getLinkData: ", url );
+        restapi.get( url )
+        .then ( response => {
+            let reply = response.data;
+            // eslint-disable-next-line
+            console.log( "got Records: ", reply );
+
+            /* Clear the grid of current data before we (re)write it */
+            this.gridData = [];
+
+
+        }).catch( error =>  {
+            // eslint-disable-next-line
+            console.log( error );
+            this.networkError = error;
+        });
+        
+    },
     deleteLink: function ( link_Id ) {
         this.networkError = "";
         let linkInfo = { 
@@ -52,20 +86,25 @@ export default {
             });
         }
   },
-  props: {
-    msg: String,
-    topbarMsg: String
+  created: function() {
+    let user = this.$parent.loggedInName;
+    if( user == "" ) {    // No one is logged in.
+        return;
+    }
+    this.getLinkData( user );
   },
   data() {
       return {
         userName: "",
         resultMsg: "",
-        networkError: ""
+        networkError: "",
+
+        /* grid stuff */
+        gridColumns: [ 'Name', 'URL', 'Tags', "Edit" ],
+        gridData: []
       }
   }
 }
-
-
 
 </script>
 
@@ -82,8 +121,10 @@ export default {
 
 .place-grid {
     position:   relative;
-    top:        2em;
-    left:       24%;
+    top:        1em;
+    left:       -10%;
+    text-align: center;
+    color: var(--bt-form-color);
 }
 
 .place-error {
@@ -92,8 +133,19 @@ export default {
     top:        2em;
 }
 
+.grid_wrapper {
+    position:   relative;
+    left:       0%;
+    width:      96%;
+    background-color:   rgba(200, 190, 180, 0.5);
+    padding:    18px;
+    text-align: left;
+}
+
 .table-header-wrapper {
-    background:   grey;
+    text-align:     center;
+    font-size:      1.5em;
+    font-weight:    600;
 }
 
 </style>
