@@ -6,7 +6,7 @@ import axios from 'axios';
  */
 
 export default axios.create({
-  baseURL: 'http://3.219.109.170:3001/api/',
+  baseURL: 'http://3.212.103.152:3001/zlapi/',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',

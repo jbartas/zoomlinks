@@ -53,7 +53,21 @@ export default {
 
             /* Clear the grid of current data before we (re)write it */
             this.gridData = [];
+            if( reply.recordList.length == 0 ) {
+                this.resultMsg = "No links found for user " + user + ". Save some with 'Add Link'."
+                return;
+            }
 
+            reply.recordList.forEach( link => {
+                // Make subset of records with names matching grid columns
+                let gridrec = {
+                    name: link.linkName,
+                    url:  link.linkURL,
+                    tags: link.linkTags,
+                    edit: "Edit"
+                }
+                this.gridData.push(gridrec);
+            })
 
         }).catch( error =>  {
             // eslint-disable-next-line
@@ -100,7 +114,7 @@ export default {
         networkError: "",
 
         /* grid stuff */
-        gridColumns: [ 'Name', 'URL', 'Tags', "Edit" ],
+        gridColumns: [ 'name', 'url', 'tags', "edit" ],
         gridData: []
       }
   }
@@ -122,7 +136,7 @@ export default {
 .place-grid {
     position:   relative;
     top:        1em;
-    left:       -10%;
+    left:       0%;
     text-align: center;
     color: var(--bt-form-color);
 }

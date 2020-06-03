@@ -28,7 +28,7 @@
 
     <div class="place-error" >
       <div class="errorMsg">{{networkError}}</div>
-      <div class="errorMsg">{{loginStatus}}</div>
+      <div class="resultMsg">{{resultMsg}}</div>
     </div>
  
   </div>
@@ -43,14 +43,16 @@ export default {
   methods: {
       submitLink: function() {
         // eslint-disable-next-line
+        let now = new Date;
 
         let newLink = {
-            "name":     this.linkName,
+            "userName": this.$parent.loggedInName,
+            "linkName":     this.linkName,
             "linkURL":  this.linkURL,
             "linkTags": this.linkTags,
-            "addDate":  new Date().toJSON,
-            "useDate":  new Date().toJSON,
-            "userEmail": this.$parent.userEmail
+            "addDate":  now.toString,
+            "useDate":  now.toString,
+            "type":     "zoom"        // make smarted later - search URL for ".com" ?
         }
         console.log( "link submit; ", newLink );
         restapi.post( "/newLink", newLink )
@@ -58,14 +60,13 @@ export default {
             response => {
                 let reply = response.data;
                 if( reply.status == "success") {
-                    this.$parent.renderApp = "listLinks";
-                    this.$parent.userEmail = reply.data.userEmail;
+                    this.resultMsg = "Created new link entry";
+                    // this.$parent.renderApp = "listLinks";
                 }
                 else {
-                    this.loginStatus = "Login FAILED: " + reply.message;
-                    this.$parent.loggedInStatus = "Not Logged In";
-                    this.$parent.loggedInName = "";
-                    this.$parent.userEmail = "";
+                    this.resultMsg = "Unable to create link record";
+                    // eslint-disable-next-line
+                    console.log( "addLink create error: ", reply );
                 }
             }).catch( error =>  {
                 // eslint-disable-next-line
@@ -78,7 +79,9 @@ export default {
   data() {
     return {
         networkError: "",
-        loginStatus: "",
+        resultMsg: "",
+
+        // Fields from form for new link
         linkURL: "",
         linkName: "",
         linkTags: ""
@@ -116,7 +119,7 @@ input {
 .place-form {
     position:   relative;
     top:        2em;
-    left:       14%;
+    left:       0%;
 }
 
 .place-error {

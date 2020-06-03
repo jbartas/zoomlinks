@@ -15,7 +15,7 @@
           A way to share Zoom, chat and other links
         </td><td>
 		<div class="topbuttons">
-          <button  v-on:click="showApp( 'login')" > Log {{loggedInStatus == 'Not Logged in.'?'In':'Out'}} </button>
+          <button  v-on:click="showApp( 'login')" > Log {{loggedInStatus == 'Not Logged in'?'In':'Out'}} </button>
           <button  v-on:click="showApp( 'addUser')" >Create Account</button>
 		</div>
 		<div id="loggedin" >
@@ -26,7 +26,7 @@
 
     <div class="nav_wrapper">
       <nav>   <!-- navigation tabs -->
-        <div  v-if="loggedInStatus == 'Not Logged in.'"  class="navtab" >
+        <div  v-if="loggedInStatus == 'Not Logged in'"  class="navtab" >
             <div v-on:click="showApp( 'login')">
         <i  class="fa fa-key"></i> Login </div>
         </div>
@@ -35,11 +35,11 @@
               <i class="fa fa-child"></i> Create Account </div>
         </div>
         <div class="navtab">
-          <div v-if="loggedInStatus != 'Not Logged in.'" v-on:click="showApp( 'addLink')"> 
+          <div v-if="loggedInStatus != 'Not Logged in'" v-on:click="showApp( 'addLink')"> 
               <i class="fa fa-link"></i> Add Link </div>
         </div>
         <div class="navtab">
-          <div v-if="loggedInStatus != 'Not Logged in.'" v-on:click="showApp( 'linkList')"> 
+          <div v-if="loggedInStatus != 'Not Logged in'" v-on:click="showApp( 'linkList')"> 
               <i class="fa fa-list"></i> My Links </div>
         </div>
       </nav>
@@ -76,9 +76,9 @@ export default {
       /* These are referenced by child modules, don't change their names unless you 
        * are willing to make the changes in all the children.
        */
-      baseURL: "http://3.219.109.170:3000/api",
+      baseURL: "http://3.212.103.152:3001/zlapi",
       renderApp: "login",
-      loggedInStatus: "Not Logged in.",
+      loggedInStatus: "Not Logged in",
       loggedInName: "",
       userEmail: ""
     }
