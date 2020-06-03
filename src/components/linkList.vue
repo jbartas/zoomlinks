@@ -27,16 +27,43 @@
 import restapi from "../restapi.js";
 import grid    from "./grid.vue";
 
-
 export default {
   name: 'listLink',
   components: {
       grid
   },
   methods: {
-    gridCallback: function ( id ) {
+    gridCallback: function ( link, cell ) {
         // eslint-disable-next-line
-        console.log( "grid callback, id: ", id );
+        console.log( "grid callback, link: ", link, cell );
+        if( cell == "edit" ) {
+            this.$parent.renderApp = "addLink"
+        }
+        else if( cell == "url" ) {
+            let url = "/bumpClick/";
+
+            // Bump click count in server records
+            let linkId = { "_id": link._id }
+            // eslint-disable-next-line
+            console.log( "bumpClick, linkId: ", linkId );
+
+            restapi.post( url, linkId )
+            .then ( response => {
+                let reply = response.data;
+                // eslint-disable-next-line
+                console.log( "bumpClick: ", reply );
+            }).catch( error =>  {
+                // eslint-disable-next-line
+                console.log( "bumpClick error: ", error );
+                this.networkError = error;
+            });
+
+            this.resultMsg = ""
+            window.open( link.url, "_blank");
+        }
+        else {
+            this.resultMsg = "Click 'Url' to go to link, 'Edit' to edit it."
+        }
 
     },
     getLinkData: function ( user ) {
@@ -64,7 +91,8 @@ export default {
                     name: link.linkName,
                     url:  link.linkURL,
                     tags: link.linkTags,
-                    edit: "Edit"
+                    edit: "Edit",
+                    _id: link._id   // will not be displayed
                 }
                 this.gridData.push(gridrec);
             })
@@ -76,10 +104,10 @@ export default {
         });
         
     },
-    deleteLink: function ( link_Id ) {
+    deleteLink: function ( link_id ) {
         this.networkError = "";
         let linkInfo = { 
-            "link_Id": link_Id, 
+            "link_id": link_id, 
             "userName": this.$parent.loggedInName 
             };
 

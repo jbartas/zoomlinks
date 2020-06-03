@@ -52,7 +52,8 @@ export default {
             "linkTags": this.linkTags,
             "addDate":  now.toString,
             "useDate":  now.toString,
-            "type":     "zoom"        // make smarted later - search URL for ".com" ?
+            "type":     "zoom",        // make smarter later - search URL for ".com" ?
+            "clicks":   0
         }
         console.log( "link submit; ", newLink );
         restapi.post( "/newLink", newLink )
