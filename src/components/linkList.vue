@@ -5,10 +5,12 @@
       <div class="table-header-wrapper" >
           Links:
       </div>
-      <grid :data="gridData" class="grid_wrapper"
-            :columns="gridColumns" 
-            :callback="gridCallback" 
-            buttoncol="edit" 
+      <grid class="grid_wrapper"
+            :data     = "gridData" 
+            :columns  = "gridColumns" 
+            :callback = "gridCallback"
+            v-bind:cellcss  = "{ edit: 'button_cell', url: 'url_cell' }"
+            buttoncol = "edit" 
             >
        </grid>
 
@@ -41,6 +43,7 @@ export default {
         }
         else if( cell == "url" ) {
             let url = "/bumpClick/";
+            this.networkError = "";     // clear any visible error message
 
             // Bump click count in server records
             let linkId = { "_id": link._id }
@@ -55,7 +58,7 @@ export default {
             }).catch( error =>  {
                 // eslint-disable-next-line
                 console.log( "bumpClick error: ", error );
-                this.networkError = error;
+                this.networkError = "Click record error:", error;
             });
 
             this.resultMsg = ""
@@ -150,7 +153,7 @@ export default {
 
 </script>
 
-<style scoped>
+<style>
 
 .linkList {
     position:   relative;
@@ -176,6 +179,8 @@ export default {
 }
 
 .grid_wrapper {
+    --grid-cell-border: #998877;
+    --grid-url-color:   #4a2888;
     position:   relative;
     left:       0%;
     width:      96%;
@@ -184,9 +189,37 @@ export default {
     text-align: left;
 }
 
+/* Special formats passed to grid for cells */
+.url_cell {
+    color:          var(--grid-url-color);
+    text-decoration: underline;
+    text-align:     left;
+}
+
+.url_cell:hover {
+    background-color:   #FFFFaa;
+}
+
+.button_cell {
+  height:       0.8em;
+  width:        7em;
+  color:        var(--bt-form-text);
+  background-color:  white;
+
+  border: 2px solid var( --bt-zoom-blue );
+  border-radius: 12px;
+  padding:      1px;
+  text-align:   center;
+  font-size:    0.8em;
+}
+
+.button_cell:hover {
+  background-color:   var(--bt-hover-color);
+}
+
 .table-header-wrapper {
     text-align:     center;
-    font-size:      1.5em;
+    font-size:      1.0em;
     font-weight:    500;
     color:          var(--bt-zoom-blue );
 }

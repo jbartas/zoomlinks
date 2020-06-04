@@ -22,7 +22,7 @@
           <tr v-for="entry in filteredData" :key="entry"  >
             <td v-for="key in columns"  :key="key" 
              @click="td_clicked(entry, key)" 
-             v-bind:class="{ 'button_cell': isButton(key) }" > 
+             v-bind:class="getclass(key)" > 
               {{entry[key]}}</td>
           </tr>
         </tbody>
@@ -41,7 +41,8 @@ export default {
     data: Array,
     columns: Array,
     callback: Function,
-    buttoncol: String
+    buttoncol: String,
+    cellcss: Object
   },
   data(){
     return {
@@ -89,12 +90,17 @@ export default {
           this.callback( entry, key );
         }
     },
-    isButton: function (key) {
-        if( key == this.buttoncol) {
-            return true;
+    getclass: function (key) {
+        // eslint-disable-next-line
+        console.log( "getclass; key: ", key, ", css: ", this.cellcss[key] );
+
+        if( this.cellcss[key] ) {
+            console.log( " css.key: ", this.cellcss.key );
+            return this.cellcss[key];
         }
         else {
-            return false;
+            console.log( " NO css for key " );
+            return "text_cell";
         }
     }
   },
@@ -138,23 +144,6 @@ export default {
   width:    80%;
 }
 
-.button_cell {
-  height:       0.8em;
-  width:        7em;
-  color:        var(--bt-form-text);
-  background-color:  white;
-
-  border: 2px solid var( --bt-zoom-blue );
-  border-radius: 12px;
-  padding:      1px;
-  text-align:   center;
-  font-size:    0.8em;
-}
-
-.button_cell:hover {
-  background-color:   var(--bt-hover-color);
-}
-
 .grid_table_head {
     max-height:    20px;
 }
@@ -171,7 +160,12 @@ td {
   overflow:       hidden;
   white-space:    nowrap;
   padding:        3px;
-  border: 1px solid #998877;
+  border: 1px solid  var(--grid-cell-border);
+}
+
+/* formatting for <td> cell with no passed cellcss entry */
+.text_cell {
+  text-align:     left;
 }
 
 .arrow {

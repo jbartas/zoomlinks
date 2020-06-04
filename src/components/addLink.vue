@@ -2,7 +2,7 @@
   <div class="add_link">
 
    <div class="place-form" >
-      <form name="add-link" class="grid-2cols sb_form form-width" autofill="off" v-on:submit.prevent >
+      <form name="add-link" class="grid-2cols sb_form form-width" v-on:submit.prevent >
         <label> Link name: </label>
         <div>
             <input name="linkName" v-model="linkName" placeholder="Give link a name" 
@@ -19,6 +19,14 @@
                 title="Put 'tag' (sets of words separated by commas) here to find the link later." 
                 autocomplete="off" />
         </div>
+
+        <label> Password:</label>
+        <div>
+            <input name="linkPassword" v-model="linkPassword" placeholder="Password" 
+                title="Optional - If link requeires a password" 
+                autocomplete="off" />
+        </div>
+
         <label> &nbsp; </label>
         <div>
             <button v-on:click="submitLink()" > Save Link </button>
@@ -42,16 +50,13 @@ export default {
   name: 'addLink',
   methods: {
       submitLink: function() {
-        // eslint-disable-next-line
-        let now = new Date;
 
         let newLink = {
             "userName": this.$parent.loggedInName,
             "linkName":     this.linkName,
             "linkURL":  this.linkURL,
             "linkTags": this.linkTags,
-            "addDate":  now.toString,
-            "useDate":  now.toString,
+            "linkPassword": this.linkPassword,
             "type":     "zoom",        // make smarter later - search URL for ".com" ?
             "clicks":   0
         }
@@ -85,7 +90,8 @@ export default {
         // Fields from form for new link
         linkURL: "",
         linkName: "",
-        linkTags: ""
+        linkTags: "",
+        linkPassword: ""
     }
   }
 }

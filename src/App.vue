@@ -27,7 +27,7 @@ export default {
 
 
 :root {
-  --bt-text-color:  #3c4e60;;
+  --bt-text-color:  #3c4e60;
   --bt-form-color:  #3322EE;
   --bt-form-text:   #1144FF;
   --bt-table-backgroud:   rgba(200, 190, 180, 0.3);
