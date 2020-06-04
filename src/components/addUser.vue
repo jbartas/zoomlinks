@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="adduser">
 
   <div class="form_title" >
       Create a New Account
@@ -203,12 +203,19 @@ export default {
 
 <style scoped>
 
+/* Outer container */
+.adduser {
+    position:   relative;
+    width:      80%;
+    left:       10%;
+}
+
 .place-form {
     position:   relative;
     top:        1.8em;
-    left:       10%;
     width:      80%;
     max-width:  500px;
+    margin:     auto;
 }
 
 /* Over-write default 2cols */
@@ -216,6 +223,10 @@ export default {
      display:           grid;
      grid-template-columns:  30%  auto;
      grid-gap:          4px;
+}
+
+input {
+    min-width: 90%;
 }
 
 .input-box {

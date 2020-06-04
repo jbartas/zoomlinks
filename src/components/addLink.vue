@@ -96,31 +96,29 @@ export default {
 
 .add_link {
     position:   relative;
-    min-width:  470px;
     color:      var(--bt-form-color);
-    margin:     10px;
-    padding:    10px;
-    text-align: center;
-}
-
-.form-width {
-    width:   96%;
-}
-
-.grid-2cols {
-     display:           grid;
-     grid-template-columns:  22%  auto;
-     grid-gap:          4px;
-}
-
-input {
-    width: 90%;
+    margin:     auto;
 }
 
 .place-form {
     position:   relative;
     top:        2em;
-    left:       0%;
+}
+
+.form-width {
+    margin:     auto;
+    width:      70%;
+    min-width:  640px;
+}
+
+.grid-2cols {
+     display:           grid;
+     grid-template-columns:  8em  auto;
+     grid-gap:          4px;
+}
+
+input {
+    width: 90%;
 }
 
 .place-error {

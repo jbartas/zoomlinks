@@ -44,13 +44,13 @@
         </div>
       </nav>
     </div> <!-- end nav_wrapper -->
+  </div> <!-- end topbar -->
 
     <login      v-if="renderApp == 'login'" />
     <addUser    v-if="renderApp == 'addUser'" />
     <addLink    v-if="renderApp == 'addLink'" />
     <linkList   v-if="renderApp == 'linkList'" />
 
-  </div> <!-- end topbar -->
 </div> <!-- end top_view -->
 </template>
 

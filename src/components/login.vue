@@ -1,7 +1,7 @@
 <template>
   <div class="login">
 
-   <div class="place-form" style="width: 20em;" >
+   <div class="place-form" >
       <form name="login " class="grid-2cols sb_form" autofill="off" v-on:submit.prevent >
         <label> User name: </label>
         <div class="input-box" >
@@ -9,7 +9,7 @@
         </div>
 
         <label> Password:</label>
-        <div title="At least 6 characters, and at least one number">
+        <div class="input-box" title="At least 6 characters, and at least one number" >
             <input type="password" name="password" v-model="password"  
             placeholder="password"  >
         </div>
@@ -32,9 +32,20 @@
 <script>
 import restapi from "../restapi.js";
 
-
 export default {
   name: 'login',
+  props: {
+    msg: String,
+    topbarMsg: String
+  },
+  data() {
+      return {
+        userName: "",
+        password: "",
+        loginStatus: "",
+        networkError: ""
+      }
+  },
   methods: {
     submitUser: function (  ) {
         this.networkError = "";
@@ -59,7 +70,7 @@ export default {
                     this.loginStatus = "";
                     this.$parent.loggedInStatus = "Logged in as " + this.userName;
                     this.$parent.loggedInName = this.userName;
-                    this.$parent.renderApp = "addLink";
+                    this.$parent.renderApp = "linkList";
                     this.$parent.userEmail = reply.data.userEmail;
                 }
                 else {
@@ -75,17 +86,10 @@ export default {
             });
         }
   },
-  props: {
-    msg: String,
-    topbarMsg: String
-  },
-  data() {
-      return {
-        userName: "",
-        password: "",
-        loginStatus: "",
-        networkError: ""
-      }
+  created: function() {
+    this.$parent.loggedInStatus = "Not Logged In";
+    this.$parent.loggedInName = "";
+    this.$parent.userEmail = "";
   }
 }
 
@@ -99,26 +103,29 @@ export default {
     position:   relative;
     min-width:  470px;
     color:      var(--bt-form-color);
-    margin:     10px;
-    padding:    10px;
-    text-align: center;
-}
-
-.input-box {
-    text-align: left;
-    padding-left: 4px;
 }
 
 .place-form {
     position:   relative;
+    width:      25em;
     top:        2em;
-    left:       24%;
+    margin:     auto;
 }
 
 .place-error {
     position:   relative;
     left:       1px;
     top:        2em;
+}
+
+input {
+    position:   relative;
+    width:      90%;
+}
+
+.input-box {
+    text-align:     left;
+    padding-left:   6px;
 }
 
 </style>
