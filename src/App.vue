@@ -29,6 +29,7 @@ export default {
 :root {
   --bt-text-color:  #3c4e60;;
   --bt-form-color:  #3322EE;
+  --bt-form-text:   #1144FF;
   --bt-table-backgroud:   rgba(200, 190, 180, 0.3);
   --bt-zoom-blue:    #2c8eFF;
   --bt-zoom-form:    #2c8eFF;
@@ -73,6 +74,7 @@ button {
     height:         2em;
     width:          10em;
     overflow:       visible;
+    color:          var(--bt-form-text);
     background-color:  white;
     border-color:   var( --bt-zoom-blue );
     border-radius:  12px;

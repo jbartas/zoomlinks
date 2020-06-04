@@ -2,11 +2,12 @@
 <template>
 <div class="wrapper">
   <form id="search">
-    Search <input name="query" v-model="searchQuery">
+    Search <input name="query" v-model="searchQuery" class="search-input" >
   </form>
   <div id="grid-template">
     <div class="table-header-wrapper">
       <table class="grid-table">
+        <col style="width:40%"><col style="width:23%"><col style="width:30%"><col style="width:7%">
         <thead class="grid_table_head" >
           <th v-for="key in columns"  :key="key"
             @click="sortBy(key)"
@@ -88,14 +89,14 @@ export default {
           this.callback( entry, key );
         }
     },
-     isButton: function (key) {
-         if( key == this.buttoncol) {
-             return true;
-         }
-         else {
-             return false;
-         }
-     }
+    isButton: function (key) {
+        if( key == this.buttoncol) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
   },
   created(){
     let sortOrders = {};
@@ -108,13 +109,14 @@ export default {
 
 </script>
 
-<style>
-
+<style scoped >
 
 .grid-table {
+  table-layout:   fixed;
   position: relative;
-  left:     1%;
-  width:    96%;
+  left:     0%;
+  width:    100%;
+  color:    var( --bt-text-color );
   border-spacing: 6px;
 }
 
@@ -132,14 +134,18 @@ export default {
   padding:        3px;
 }
 
+.search-input {
+  width:    80%;
+}
+
 .button_cell {
   height:       0.8em;
   width:        7em;
-  color:      #225500;
-  background-color:   var(--bt_button_main);
-  border:   1px solid #558844;
-  border-radius: 7px;
-/*  box-shadow: 1px 2px 1px #44aa44; */
+  color:        var(--bt-form-text);
+  background-color:  white;
+
+  border: 2px solid var( --bt-zoom-blue );
+  border-radius: 12px;
   padding:      1px;
   text-align:   center;
   font-size:    0.8em;
@@ -161,13 +167,20 @@ th.active .arrow {
   opacity: 1;
 }
 
+td {
+  overflow:       hidden;
+  white-space:    nowrap;
+  padding:        3px;
+  border: 1px solid #998877;
+}
+
 .arrow {
-  display: inline-block;
+  display:        inline-block;
   vertical-align: middle;
-  width: 0;
-  height: 0;
-  margin-left: 5px;
-  opacity: 0.66;
+  width:          0;
+  height:         0;
+  margin-left:    5px;
+  opacity:        0.66;
 }
 
 .arrow.asc {

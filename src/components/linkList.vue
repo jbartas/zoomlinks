@@ -187,7 +187,8 @@ export default {
 .table-header-wrapper {
     text-align:     center;
     font-size:      1.5em;
-    font-weight:    600;
+    font-weight:    500;
+    color:          var(--bt-zoom-blue );
 }
 
 </style>
