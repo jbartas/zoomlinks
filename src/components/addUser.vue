@@ -4,27 +4,28 @@
   <div class="form_title" >
       Create a New Account
   </div>
-  <form class="place-form sb_form" autofill="off" v-on:submit.prevent  >
+  <form class="place-form sb_form" autocomplete="off" v-on:submit.prevent  >
     <div class="grid-2cols" >
         <label>email:</label>
-          <div class="input-box" >
-            <input name="email" v-model="email"  v-on:blur="checkData( 'email' )"   >
-          </div>
+        <div class="input-box" >
+            <input name="email" v-model="email" v-on:blur="checkData( 'email' )" />
+        </div>
 
         <label>user name:</label>
         <div class="input-box" title="Name that will be displayed on screens">
-            <input name="newUserName" autocomplete="off" v-model="newUserName" 
-                autofill="off" v-on:blur="checkData( 'newUserName' )" >
+            <input name="newUserName" v-model="newUserName" 
+                v-on:blur="checkData( 'newUserName' )" />
         </div>
 
         <label>desired password:</label>
         <div class="input-box" title="At least 6 characters, and at least one number">
-            <input type="password" name="password" autofill="off" 
-                v-model="password" ></div>
+            <input type="password" name="password" v-model="password" />
+        </div>
 
         <label>re-enter password:</label>
         <div class="input-box" title="At least 6 characters, and at least one number">
-            <input type="password" name="password2" v-model="password2" ></div>
+            <input type="password" name="password2" v-model="password2"  />
+        </div>
 
         <div class="submit_button" >
             <button  v-on:click="createUser()" > Create account </button>
@@ -120,11 +121,8 @@ export default {
                 'Access-Control-Allow-Headers': 'Access-Control-Allow-Methods, Access-Control-Allow-Origin, Origin, Accept, Content-Type'
                 }};
 
-            // See if we issue query for newUserName or email.
-            if( queryField == "email" && this.email != "") {
-                url += "/email/" + this.email;
-            }
-            else if( queryField == "newUserName"  && this.newUserName != "" ) {
+            // See if we issue query for newUserName.
+            if( queryField == "newUserName"  && this.newUserName != "" ) {
                 url += "/userName/" + this.newUserName;
             }
             else {
@@ -153,10 +151,6 @@ export default {
                 else if( user.user[0].userName == this.newUserName ) {
                     this.networkError = "User name " + this.newUserName + " already in use";
                     this.newUserName = "";     // clear from screen
-                }
-                else if( user.user[0].email == this.email ) {
-                    this.networkError = "email address " + this.email + " already in use";
-                    this.email = "";
                 }
             }).catch( error =>  {
                 // eslint-disable-next-line

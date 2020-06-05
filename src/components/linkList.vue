@@ -194,6 +194,7 @@ export default {
     color:          var(--grid-url-color);
     text-decoration: underline;
     text-align:     left;
+    border: 1px solid  var(--grid-cell-border);
 }
 
 .url_cell:hover {

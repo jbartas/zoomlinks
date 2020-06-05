@@ -22,7 +22,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 1%;
 }
 
 
@@ -63,6 +63,7 @@ input {
     background-color: white;
     padding-left:   5px;
     height:         1.4em;
+    border-color: #d8d8d8 #e8e8e8 #e8e8e8 #d8d8d8;
 }
 
 

@@ -41,7 +41,6 @@ export default {
     data: Array,
     columns: Array,
     callback: Function,
-    buttoncol: String,
     cellcss: Object
   },
   data(){
@@ -160,12 +159,12 @@ td {
   overflow:       hidden;
   white-space:    nowrap;
   padding:        3px;
-  border: 1px solid  var(--grid-cell-border);
 }
 
 /* formatting for <td> cell with no passed cellcss entry */
 .text_cell {
   text-align:     left;
+  border: 1px solid  var(--grid-cell-border);
 }
 
 .arrow {
