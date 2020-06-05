@@ -4,27 +4,28 @@
   <div class="form_title" >
       Create a New Account
   </div>
-  <form class="place-form sb_form" autocomplete="off" v-on:submit.prevent  >
+  <form class="place-form sb_form" v-on:submit.prevent  >
     <div class="grid-2cols" >
         <label>email:</label>
         <div class="input-box" >
-            <input name="email" v-model="email" v-on:blur="checkData( 'email' )" />
+            <input name="email" v-model="email" v-on:blur="checkData( 'email' )" 
+                autocomplete="new-password" />
         </div>
 
         <label>user name:</label>
-        <div class="input-box" title="Name that will be displayed on screens">
-            <input name="newUserName" v-model="newUserName" 
+        <div class="input-box" title="Name that will be displayed on screens" >
+            <input name="newUserName" v-model="newUserName" autocomplete="new-password"
                 v-on:blur="checkData( 'newUserName' )" />
         </div>
 
         <label>desired password:</label>
-        <div class="input-box" title="At least 6 characters, and at least one number">
-            <input type="password" name="password" v-model="password" />
+        <div class="input-box" title="At least 6 characters, and at least one number" >
+            <input type="password" name="password" v-model="password" autocomplete="new-password" />
         </div>
 
         <label>re-enter password:</label>
         <div class="input-box" title="At least 6 characters, and at least one number">
-            <input type="password" name="password2" v-model="password2"  />
+            <input type="password" name="password2" v-model="password2" autocomplete="new-password" />
         </div>
 
         <div class="submit_button" >
@@ -41,6 +42,9 @@
     </div>
     <div class="resultMsg" >
         {{resultStatus}}
+    </div>
+    <div class="resultMsg" v-on:click="relogin()" >
+        {{reLogin}}
     </div>
   </div>
 
@@ -97,6 +101,7 @@ export default {
                 // eslint-disable-next-line
                 console.log( "newUser; reply: ", reply );
                 this.resultStatus = "New User " + this.newUserName + " created.";
+                this.reLogin = "Would you like to log out & back in?";
                 this.email = "";
                 this.newUserName = "";
                 this.birthyear = ""; 
@@ -109,11 +114,14 @@ export default {
                 this.networkError = error;
             });
       },
+      relogin: function () {
+          this.$parent.renderApp = "login";
+      },
       checkData: function ( queryField ) {
           /* method to check a just-entered newUserName or password to 
            * see if it already exists in the database and warn the user if so.
            */
-            let url = this.$parent.baseURL + "/getUserInfo";
+            let url = this.$parent.baseURL + "/getUserInfo/";
             this.networkError = "";   // no error yet
             let headers = { headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -123,34 +131,39 @@ export default {
 
             // See if we issue query for newUserName.
             if( queryField == "newUserName"  && this.newUserName != "" ) {
-                url += "/userName/" + this.newUserName;
+                url += this.newUserName;
             }
             else {
                 return;
             }
+            // eslint-disable-next-line
+            console.log( "getUserInfo request url: ", url );
             
             axios.get( url, headers )
             .then ( reply => {
-                let user = reply.data;
-
                 // eslint-disable-next-line
-                console.log( "User: ", user );
-
-                if( user.status != "success" ) {
+                console.log( "getUserInfo Reply: ", reply );
+                if( reply.data.status != "success" ) {
                     // eslint-disable-next-line
-                    console.log( "user check: bad user status ", user.message );
+                    console.log( "user check: bad user status ", reply.data.message );
                     return;
                 }
 
-                /* Fall to here if we got a succuessly reply to user list, 
+                /* Fall to here if we got a successly reply to user list, 
                  * That might be zero users...
                  */
-                if( user.user.length == 0 ) {   // no matching users
+                let users = reply.data.userInfo; // array of matching users (should be 0 or 1)
+                if( users.length == 0 ) {   // no matching users
                     this.networkError = "";     // user is OK to proceed
                 }
-                else if( user.user[0].userName == this.newUserName ) {
-                    this.networkError = "User name " + this.newUserName + " already in use";
+                else if( users[0].userName == this.newUserName ) {
+                    this.networkError = "User name " + this.newUserName + 
+                        " already in use. Name must be unique.";
                     this.newUserName = "";     // clear from screen
+                }
+                else {
+                    // eslint-disable-next-line
+                    console.log( "user check: mismatched user name !? ", users[0].userName );
                 }
             }).catch( error =>  {
                 // eslint-disable-next-line
@@ -173,7 +186,8 @@ export default {
         password2: "",       /* for input checking */
         networkError: "",
         pw_message: "",
-        resultStatus: ""
+        resultStatus: "",
+        reLogin: ""
       }
   },
   watch: {
