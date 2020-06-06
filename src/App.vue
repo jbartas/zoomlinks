@@ -124,7 +124,6 @@ label {
 .resultMsg {
     font-size:    20px;
     font-weight:  500;
-    text-align:   left;
     padding:      0.6em;
 }
 

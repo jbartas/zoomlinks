@@ -28,8 +28,12 @@
         </div>
 
         <label> &nbsp; </label>
-        <div>
+        <div v-if="editLink == null" >
             <button v-on:click="submitLink()" > Save Link </button>
+        </div>
+        <div v-if="editLink" >
+            <button v-on:click="submitLink()" > Save Edits </button>
+            <button v-on:click="deleteLink()" > Delete Link </button>
         </div>
       </form>
     </div>
@@ -51,23 +55,44 @@ export default {
   methods: {
       submitLink: function() {
 
+        this.networkError = "";     // first clear any old error
+        this.resultMsg = "Working...";
+
         let newLink = {
             "userName": this.$parent.loggedInName,
             "linkName":     this.linkName,
             "linkURL":  this.linkURL,
             "linkTags": this.linkTags,
-            "linkPassword": this.linkPassword,
+            "password": this.linkPassword,
             "type":     "zoom",        // make smarter later - search URL for ".com" ?
             "clicks":   0
         }
+
+        // If we're editing a link send the Id to the server along with the data
+        if( this.editLink ) {
+            newLink._id = this.editLink._id;
+        }
+
         console.log( "link submit; ", newLink );
         restapi.post( "/newLink", newLink )
         .then(
             response => {
                 let reply = response.data;
                 if( reply.status == "success") {
-                    this.resultMsg = "Created new link entry";
-                    // this.$parent.renderApp = "listLinks";
+                    // Set up messages for success
+                    this.networkError = "";
+                    if( this.editLink ) {
+                        this.resultMsg = "Edits Saved";
+                    }
+                    else {
+                        this.resultMsg = "Created new link entry";
+                    }
+
+                    // Clear the saved fields from display
+                    this.linkURL = ""
+                    this.linkName = ""
+                    this.linkTags = ""
+                    this.linkPassword = ""
                 }
                 else {
                     this.resultMsg = "Unable to create link record";
@@ -77,10 +102,52 @@ export default {
             }).catch( error =>  {
                 // eslint-disable-next-line
                 console.log( error );
-                this.networkError = "Network: " + error;
+                this.resultMsg = "";
+                this.networkError = "Save error: " + error;
             });
+    },
+    deleteLink: function ( ) {
+        this.networkError = "";
+        let linkInfo = {
+            "link_id": this.$parent.editLink._id, 
+            "userName": this.$parent.loggedInName
+        };
 
-      }
+        restapi.post( "/deleteLink", linkInfo )
+        .then(
+            response => {
+                let reply = response.data;
+                if( reply.status == "success") {
+                    this.resultMsg = "Deleted";
+                    this.networkError = "";
+                }
+                else {
+                    this.loginStatus = "Login FAILED: " + reply.message;
+                }
+            }).catch( error =>  {
+                // eslint-disable-next-line
+                console.log( error );
+                this.resultMsg = "";
+                this.networkError = "Delete error: " + error;
+            });
+    }
+  },
+  created: function() {
+        // editLink also serves as a flag for edit display
+        this.editLink = this.$parent.editLink;
+
+        // eslint-disable-next-line
+        console.log( "addLink create(), edit: ", this.editLink );
+        this.$parent.editLink = null;       // we have a local copy, slear the parent
+
+        // If we're editing a link, get the fields from the server
+        if ( this.editLink ) {
+                let link = this.editLink;
+                this.linkURL = link.url;
+                this.linkName = link.name;
+                this.linkPassword = link.password;
+                this.linkTags = link.tags;
+        }
   },
   data() {
     return {
@@ -91,7 +158,8 @@ export default {
         linkURL: "",
         linkName: "",
         linkTags: "",
-        linkPassword: ""
+        linkPassword: "",
+        editLinkId: ""
     }
   }
 }

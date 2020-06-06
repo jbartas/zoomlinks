@@ -80,7 +80,8 @@ export default {
       renderApp: "login",
       loggedInStatus: "Not Logged in",
       loggedInName: "",
-      userEmail: ""
+      userEmail: "",
+      editLink: null      // For passing link fields to editor
     }
   },
   methods: {

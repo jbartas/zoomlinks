@@ -7,7 +7,11 @@
   <div id="grid-template">
     <div class="table-header-wrapper">
       <table class="grid-table">
-        <col style="width:40%"><col style="width:23%"><col style="width:30%"><col style="width:7%">
+          <col style="width:36%">
+          <col style="width:20%">
+          <col style="width:30%">
+          <col style="width:7%">
+          <col style="width:7%">
         <thead class="grid_table_head" >
           <th v-for="key in columns"  :key="key"
             @click="sortBy(key)"

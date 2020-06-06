@@ -39,7 +39,8 @@ export default {
         // eslint-disable-next-line
         console.log( "grid callback, link: ", link, cell );
         if( cell == "edit" ) {
-            this.$parent.renderApp = "addLink"
+            this.$parent.editLink = link;       // pass link fields to "add"" form
+            this.$parent.renderApp = "addLink";
         }
         else if( cell == "url" ) {
             let url = "/bumpClick/";
@@ -94,6 +95,7 @@ export default {
                     name: link.linkName,
                     url:  link.linkURL,
                     tags: link.linkTags,
+                    password: link.password,
                     edit: "Edit",
                     _id: link._id   // will not be displayed
                 }
@@ -104,32 +106,8 @@ export default {
             // eslint-disable-next-line
             console.log( error );
             this.networkError = error;
-        });
-        
-    },
-    deleteLink: function ( link_id ) {
-        this.networkError = "";
-        let linkInfo = { 
-            "link_id": link_id, 
-            "userName": this.$parent.loggedInName 
-            };
-
-        restapi.post( "/deleteLink", linkInfo )
-        .then(
-            response => {
-                let reply = response.data;
-                if( reply.status == "success") {
-                    this.loginStatus = "";
-                }
-                else {
-                    this.loginStatus = "Login FAILED: " + reply.message;
-                }
-            }).catch( error =>  {
-                // eslint-disable-next-line
-                console.log( error );
-                this.networkError = "Network: " + error;
-            });
-        }
+        });        
+    }
   },
   created: function() {
     let user = this.$parent.loggedInName;
@@ -145,7 +123,7 @@ export default {
         networkError: "",
 
         /* grid stuff */
-        gridColumns: [ 'name', 'url', 'tags', "edit" ],
+        gridColumns: [ 'name', 'url', 'tags', "password", "edit" ],
         gridData: []
       }
   }
