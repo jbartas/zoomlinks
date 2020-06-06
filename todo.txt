@@ -1,18 +1,18 @@
 Todo list for Linkshare - both ends
 
-
 Done - Add password to link records
 Done - Update link use date on click
 Done - implement per-cell grid table formatting
-- implement data checking (on server) for addUser page
-- delete links
-- edit links 
-- color grid table links as purple-underlined
-- default order grid by useDate (descending)
-- jump to login page after adding new user (or "Do you want to log in as this user?)
+Done - delete links
+Done - edit links 
+Done - color grid table links as purple-underlined
+Done  - jump to login page after adding new user (or "Do you want to log in as this user?)
 - Get the domain name working
 - convert to SSH (get Cert?)
+- default order grid by useDate (descending)
+- implement data checking (on server) for addUser page
 - Implement groups
 - Create "Friends" - Array of user Ids in each user.
 - Add "stay logged in on this computer"
+- Feature to send emails with link sets.
 
