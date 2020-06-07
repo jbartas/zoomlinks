@@ -109,7 +109,7 @@ export default {
     deleteLink: function ( ) {
         this.networkError = "";
         let linkInfo = {
-            "link_id": this.$parent.editLink._id, 
+            "link_id": this.editLink._id, 
             "userName": this.$parent.loggedInName
         };
 
