@@ -23,7 +23,7 @@
         </thead>
      
         <tbody class="grid_table_body">
-          <tr v-for="entry in filteredData" :key="entry"  >
+          <tr v-for="entry in filteredData" :key="entry._id"  >
             <td v-for="key in columns"  :key="key" 
              @click="td_clicked(entry, key)" 
              v-bind:class="getclass(key)" > 
@@ -94,15 +94,12 @@ export default {
         }
     },
     getclass: function (key) {
-        // eslint-disable-next-line
-        console.log( "getclass; key: ", key, ", css: ", this.cellcss[key] );
-
         if( this.cellcss[key] ) {
-            console.log( " css.key: ", this.cellcss.key );
+            //console.log( " css.key: ", this.cellcss[key] );
             return this.cellcss[key];
         }
         else {
-            console.log( " NO css for key " );
+            //console.log( " NO css for key " );
             return "text_cell";
         }
     }
