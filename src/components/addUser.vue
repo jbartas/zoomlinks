@@ -86,12 +86,10 @@ export default {
             let hashPW = bcrypt.hashSync( this.password, 10);
 
             let newuser = {
-                "birthday" : this.birthyear, 
-                "gender" : this.gender,
-                "email" : this.email, 
+                "email" :    this.email, 
                 "userName" : this.newUserName, 
                 "password" : hashPW, 
-                "admin" : false, 
+                "admin" :   false, 
             }
             // eslint-disable-next-line
             console.log( newuser );
@@ -104,8 +102,6 @@ export default {
                 this.reLogin = "Would you like to log out & back in?";
                 this.email = "";
                 this.newUserName = "";
-                this.birthyear = ""; 
-                this.gender = "";
                 this.password = ""; 
                 this.password2 = ""; 
             }).catch( error =>  {

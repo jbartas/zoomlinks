@@ -8,6 +8,8 @@ Done - edit links
 Done - color grid table links as purple-underlined
 Done - jump to login page after adding new user (or "Do you want to log in as this user?)
 Done - Get the domain name working
+- Add 'about' page - accordian? 
+- Show last use date as icon.
 - default order grid by useDate (descending)
 - convert to SSH (get Cert?) - Certbot? 
 - implement data checking (on server) for addUser page
