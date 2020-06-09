@@ -173,10 +173,12 @@ export default {
     text-decoration: underline;
     text-align:     left;
     border: 1px solid  var(--grid-cell-border);
+    cursor:         pointer;
 }
 
 .url_cell:hover {
-    background-color:   #FFFFaa;
+    background-color:   var( --bt-hover-color );
+    font-weight:        700;
 }
 
 .button_cell {
