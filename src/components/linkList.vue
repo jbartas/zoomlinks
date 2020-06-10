@@ -66,7 +66,7 @@ export default {
             window.open( link.url, "_blank");
         }
         else {
-            this.resultMsg = "Click 'Url' to go to link, 'Edit' to edit it."
+            this.resultMsg = "Click 'Url' to go to link, 'Edit' button to edit or delete it."
         }
 
     },
@@ -205,4 +205,8 @@ export default {
     color:          var(--bt-zoom-blue );
 }
 
+tr:hover {
+  background-color:   var(--bt-hover-color);
+
+}
 </style>
