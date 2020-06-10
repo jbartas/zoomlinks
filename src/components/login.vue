@@ -68,14 +68,14 @@ export default {
                 let reply = response.data;
                 if( reply.status == "success") {
                     this.loginStatus = "";
-                    this.$parent.loggedInStatus = "Logged in as " + this.userName;
                     this.$parent.loggedInName = this.userName;
+                    this.$parent.loggedInStatus = true;
                     this.$parent.renderApp = "linkList";
                     this.$parent.userEmail = reply.data.userEmail;
                 }
                 else {
                     this.loginStatus = "Login FAILED: " + reply.message;
-                    this.$parent.loggedInStatus = "Not Logged In";
+                    this.$parent.loggedInStatus = false;
                     this.$parent.loggedInName = "";
                     this.$parent.userEmail = "";
                 }
@@ -87,15 +87,14 @@ export default {
         }
   },
   created: function() {
-    this.$parent.loggedInStatus = "Not Logged In";
+    this.$parent.loggedInStatus = false;
     this.$parent.loggedInName = "";
     this.$parent.userEmail = "";
   }
 }
 
-
-
 </script>
+
 
 <style scoped>
 

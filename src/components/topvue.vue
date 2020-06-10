@@ -15,18 +15,18 @@
           A way to share Zoom, chat and other links
         </td><td>
 		<div class="topbuttons">
-          <button  v-on:click="showApp( 'login')" > Log {{loggedInStatus == 'Not Logged in'?'In':'Out'}} </button>
+          <button  v-on:click="showApp( 'login')" > Log {{loggedInStatus == true?'In':'Out'}} </button>
           <button  v-on:click="showApp( 'addUser')" >Create Account</button>
 		</div>
-		<div id="loggedin" >
-         {{loggedInStatus}}
+		<div  class="topbuttons" >
+         {{loggedInText}}
 		</div>
     </td></tr>
     </table>
 
     <div class="nav_wrapper">
       <nav>   <!-- navigation tabs -->
-        <div  v-if="loggedInStatus == 'Not Logged in'"  class="navtab" >
+        <div  v-if="loggedInStatus == false"  class="navtab" >
             <div v-on:click="showApp( 'login')">
         <i  class="fa fa-key"></i> Login </div>
         </div>
@@ -35,12 +35,16 @@
               <i class="fa fa-child"></i> Create Account </div>
         </div>
         <div class="navtab">
-          <div v-if="loggedInStatus != 'Not Logged in'" v-on:click="showApp( 'addLink')"> 
+          <div v-if="loggedInStatus == true" v-on:click="showApp( 'addLink')"> 
               <i class="fa fa-link"></i> Add Link </div>
         </div>
         <div class="navtab">
-          <div v-if="loggedInStatus != 'Not Logged in'" v-on:click="showApp( 'linkList')"> 
+          <div v-if="loggedInStatus == true" v-on:click="showApp( 'linkList')"> 
               <i class="fa fa-list"></i> My Links </div>
+        </div>
+        <div class="navtab">
+          <div v-on:click="showApp( 'about')"> 
+              <i class="fa fa-question-circle"></i> About... </div>
         </div>
       </nav>
     </div> <!-- end nav_wrapper -->
@@ -50,6 +54,7 @@
     <addUser    v-if="renderApp == 'addUser'" />
     <addLink    v-if="renderApp == 'addLink'" />
     <linkList   v-if="renderApp == 'linkList'" />
+    <about      v-if="renderApp == 'about'" />
 
 </div> <!-- end top_view -->
 </template>
@@ -59,6 +64,7 @@ import login from '../components/login.vue'
 import addUser from '../components/addUser.vue'
 import addLink from '../components/addLink.vue'
 import linkList from '../components/linkList.vue'
+import about from '../components/about.vue'
 
 export default {
   name: 'ZoomTop',
@@ -66,22 +72,27 @@ export default {
     login,
     addUser,
     addLink,
-    linkList
+    linkList,
+    about
   },
   props: {
     msg: String
   },
   data() {
     return {
+      /* PUBLIC */
       /* These are referenced by child modules, don't change their names unless you 
        * are willing to make the changes in all the children.
        */
       baseURL: "http://3.212.103.152:3001/zlapi",
       renderApp: "login",
-      loggedInStatus: "Not Logged in",
+      loggedInStatus: false,
       loggedInName: "",
       userEmail: "",
-      editLink: null      // For passing link fields to editor
+      editLink: null,      // For passing link fields to editor
+
+      /* PRIVATE */
+      loggedInText: "Not Logged In"    // generated from loggedInStatus and loggedInName
     }
   },
   methods: {
@@ -90,7 +101,17 @@ export default {
       console.log( "showApp: ", appName  );
       this.renderApp = appName;
     }
-  }
+  },
+  watch: {
+    'loggedInName': function() {
+      if( this.loggedInStatus == true) {
+        this.loggedInText = "Logged in as " + this.loggedInName ;
+      }
+      else {
+        this.loggedInText = "Not Logged in" ;
+      }
+    }
+  } 
 }
 </script>
 

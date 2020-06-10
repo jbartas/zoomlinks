@@ -174,7 +174,7 @@ td {
   width:          0;
   height:         0;
   margin-left:    5px;
-  opacity:        0.66;
+  opacity:        0.86;
 }
 
 .arrow.asc {
