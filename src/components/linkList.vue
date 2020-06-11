@@ -10,7 +10,7 @@
             :columns  = "gridColumns" 
             :callback = "gridCallback"
             v-bind:cellcss  = 
-                "{ edit: 'button_cell', use: 'clock_cell fa fa-calendar-o', url: 'url_cell' }"
+                "{ edit: 'button_cell', use: 'clock_cell fa fa-calendar-o', link: 'url_cell' }"
             buttoncol = "edit" 
             >
        </grid>
@@ -43,7 +43,7 @@ export default {
             this.$parent.editLink = link;       // pass link fields to "add"" form
             this.$parent.renderApp = "addLink";
         }
-        else if( cell == "url" ) {
+        else if( cell == "link" ) {
             let url = "/bumpClick/";
             this.networkError = "";     // clear any visible error message
 
@@ -64,16 +64,16 @@ export default {
             });
 
             this.resultMsg = ""
-            window.open( link.url, "_blank");
+            window.open( link.link, "_blank");
         }
         else if( cell == "use" ) {
             let dt = new Date(link.use);
             let date = dt.toDateString();
             let time = dt.toTimeString().substr(0, 8);
-            alert( "Last used " + time + " on " + date );
+            alert( "Link '" + link.name + "' last used at " + time + " on " + date );
         }
         else {
-            this.resultMsg = "Click 'Url' to go to link, 'Edit' button to edit or delete it."
+            this.resultMsg = "Click 'Link' to go to link, 'Edit' button to edit or delete it."
         }
 
     },
@@ -100,7 +100,7 @@ export default {
                 // Make subset of records with names matching grid columns
                 let gridrec = {
                     name: link.linkName,
-                    url:  link.linkURL,
+                    link:  link.linkURL,
                     tags: link.linkTags,
                     use: link.useDate,
                     pw: link.password,
@@ -131,7 +131,7 @@ export default {
         networkError: "",
 
         /* grid stuff */
-        gridColumns: [ 'name', 'url', 'tags', "use", "pw", "edit" ],
+        gridColumns: [ 'name', 'link', 'tags', "use", "pw", "edit" ],
         gridData: []
       }
   }
@@ -174,6 +174,15 @@ export default {
     padding:    18px;
     text-align: left;
 }
+
+.grid_tr {
+    text-align: left;    
+}
+
+.grid_tr:hover {
+    background-color:   var(--bt-hover-color);
+}
+
 
 /* Special formats passed to grid for cells */
 .url_cell {

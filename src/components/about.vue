@@ -35,6 +35,16 @@ information.
 </p>
 </div>
 
+<button class="accordion"  v-on:click="onClick('new')" > What's New </button>
+<div class="panel" id="new">
+<p>
+June 11th, 2020 - Links now default to being ordered with the most recently 
+used links at the top of the list. 
+</p>
+<p>
+June 10th, 2020 - New Icon and logo.
+</p>
+</div>
 
 <button class="accordion"  v-on:click="onClick('funding')" > Funding </button>
 <div class="panel" id="funding">
@@ -88,7 +98,7 @@ export default {
         } else {
           panel.style.display = "block";
         }
-        
+
         if (panel.style.maxHeight) {
           panel.style.maxHeight = null;
         } else {

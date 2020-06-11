@@ -19,12 +19,13 @@
             :class="{ active: sortKey == key }"
           >
             {{ key | capitalize }}
-            <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'"></span>
+            <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'"
+              title="Click to order this column"></span>
           </th>
         </thead>
      
         <tbody class="grid_table_body">
-          <tr v-for="entry in filteredData" :key="entry._id"  >
+          <tr v-for="entry in filteredData" :key="entry._id" class="grid_tr" >
             <td v-for="key in columns"  :key="key" 
              @click="td_clicked(entry, key)" 
              v-bind:class="getclass(key)" > 
@@ -51,7 +52,7 @@ export default {
   data(){
     return {
       searchQuery: '',
-      sortKey: '',
+      sortKey: 'use',
       sortOrders: {},
     }
   },
@@ -60,6 +61,7 @@ export default {
       let sortKey = this.sortKey;
       let filterKey = this.searchQuery && this.searchQuery.toLowerCase();
       let order = this.sortOrders[sortKey] || 1;
+      //let order = -1;
       let data = this.data;
 
       if (filterKey) {
@@ -108,7 +110,7 @@ export default {
   created(){
     let sortOrders = {};
     this.columns.forEach(function (key) {
-      sortOrders[key] = 1;
+      sortOrders[key] = -1;
     })
     this.sortOrders = sortOrders;
   }
@@ -141,6 +143,9 @@ export default {
   padding:        3px;
 }
 
+tr:hover {
+    background-color:   var(--bt-hover-color);
+}
 .search-input {
   width:    80%;
 }
@@ -181,13 +186,13 @@ td {
 .arrow.asc {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  border-bottom: 4px solid #fff;
+  border-bottom: 4px solid #00f;
 }
 
 .arrow.dsc {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  border-top: 4px solid #fff;
+  border-top: 4px solid #00f;
 }
 
 </style>
