@@ -9,7 +9,8 @@
             :data     = "gridData" 
             :columns  = "gridColumns" 
             :callback = "gridCallback"
-            v-bind:cellcss  = "{ edit: 'button_cell', url: 'url_cell' }"
+            v-bind:cellcss  = 
+                "{ edit: 'button_cell', use: 'clock_cell fa fa-calendar-o', url: 'url_cell' }"
             buttoncol = "edit" 
             >
        </grid>
@@ -65,6 +66,12 @@ export default {
             this.resultMsg = ""
             window.open( link.url, "_blank");
         }
+        else if( cell == "use" ) {
+            let dt = new Date(link.use);
+            let date = dt.toDateString();
+            let time = dt.toTimeString().substr(0, 8);
+            alert( "Last used " + time + " on " + date );
+        }
         else {
             this.resultMsg = "Click 'Url' to go to link, 'Edit' button to edit or delete it."
         }
@@ -95,7 +102,8 @@ export default {
                     name: link.linkName,
                     url:  link.linkURL,
                     tags: link.linkTags,
-                    password: link.password,
+                    use: link.useDate,
+                    pw: link.password,
                     edit: "Edit",
                     _id: link._id   // will not be displayed
                 }
@@ -123,7 +131,7 @@ export default {
         networkError: "",
 
         /* grid stuff */
-        gridColumns: [ 'name', 'url', 'tags', "password", "edit" ],
+        gridColumns: [ 'name', 'url', 'tags', "use", "pw", "edit" ],
         gridData: []
       }
   }
@@ -181,6 +189,20 @@ export default {
     font-weight:        700;
 }
 
+.clock_cell {
+    position:       relative;
+    color:          white;
+    background-color:   var( --bt-form-text );
+    font-size:      1.4em;
+    max-width:      1.0em;
+    border-radius:  4px;
+}
+
+.clock_cell:hover {
+    background-color:   var( --bt-zoom-blue );
+    color:              #FFEE11;
+}
+
 .button_cell {
   height:       0.8em;
   width:        7em;
@@ -205,8 +227,4 @@ export default {
     color:          var(--bt-zoom-blue );
 }
 
-tr:hover {
-  background-color:   var(--bt-hover-color);
-
-}
 </style>

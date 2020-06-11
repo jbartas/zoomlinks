@@ -10,7 +10,7 @@ Done - jump to login page after adding new user (or "Do you want to log in as th
 Done - Get the domain name working
 Done - Add 'about' page - accordian? 
 Done - new logo
-- fix favicon
+Done - fix favicon
 - Show last use date as icon.
 - default order grid by useDate (descending)
 - convert to SSH (get Cert?) - Certbot? 
