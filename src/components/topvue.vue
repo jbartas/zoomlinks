@@ -15,7 +15,7 @@
           A way to share Zoom, chat and other links
         </td><td>
 		<div class="topbuttons">
-          <button  v-on:click="showApp( 'login')" > Log {{loggedInStatus == true?'In':'Out'}} </button>
+          <button  v-on:click="showApp( 'login')" > Log {{loggedInStatus == true?'Out':'In'}} </button>
           <button  v-on:click="showApp( 'addUser')" >Create Account</button>
 		</div>
 		<div  class="topbuttons" >
