@@ -3,7 +3,8 @@
 module.exports = {
   // options...
   "devServer": {
-    "disableHostCheck": true
-
+    "disableHostCheck": true,
+//    "https": true,
+//    "port": 443
   }
 }
