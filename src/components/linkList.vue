@@ -1,6 +1,5 @@
 <template>
   <div class="linkList">
-
    <div class="place-grid" >
       <div class="table-header-wrapper" >
           Links:
@@ -10,7 +9,7 @@
             :columns  = "gridColumns" 
             :callback = "gridCallback"
             v-bind:cellcss  = 
-                "{ edit: 'button_cell', use: 'clock_cell fa fa-calendar-o', link: 'url_cell' }"
+                "{ edit: 'button_cell', use: 'clock_cell fa-calendar-o', more: 'clock_cell fa-list', link: 'url_cell' }"
             buttoncol = "edit" 
             >
        </grid>
@@ -36,12 +35,46 @@ export default {
       grid
   },
   methods: {
+    showMore( gridlink ) {
+
+        // get the link's full record
+        let link = this.linkRecs.find( rec => rec._id == gridlink._id );
+        if( !link ) {
+            // eslint-disable-next-line
+            console.log( "showMore, gridlink._id not found: ", gridlink.id );
+            return; 
+        }
+        // eslint-disable-next-line
+        console.log( "showMore, link: ", link );
+        
+        this.$swal.fire({
+            html: "<table  class='more-table' >" + 
+                "<tr><td>Name: </td><td>" + link.linkName + "</td></tr>" +
+                "<tr><td>Password: </td><td>" + link.password + "</td></tr>" + 
+                "<tr><td>Last Used: </td><td>" + link.useDate + "</td></tr>" +
+                "<tr><td>Clicks: </td><td>" + link.clicks + "</td></tr>" +
+                "<tr><td>Contact person: </td><td>" + link.contactPerson + "</td></tr>" +
+                "<tr><td>Contact email: </td><td>" + link.contactEmail + "</td></tr>" +
+                "<tr><td>Call Id: </td><td>" + link.callId + "</td></tr>" +
+                "<tr><td>Call Phone: </td><td>" + link.callPhone + "</td></tr>" +
+//                "<tr><td>: </td><td>" +  + "</td></tr>" +
+//                "<tr><td>: </td><td>" +  + "</td></tr>" +
+//                "<tr><td>: </td><td>" +  + "</td></tr>" +
+                "<tr><td>Tags: </td><td>" + link.linkTags + "</td></tr>" +
+                "</table>"
+
+            });
+    },
     gridCallback: function ( link, cell ) {
         // eslint-disable-next-line
         console.log( "grid callback, link: ", link, cell );
         if( cell == "edit" ) {
             this.$parent.editLink = link;       // pass link fields to "add"" form
             this.$parent.renderApp = "addLink";
+        }
+        else if( cell == "more" ) {
+            // Show extra fields
+            this.showMore( link );
         }
         else if( cell == "link" ) {
             let url = "/bumpClick/";
@@ -86,6 +119,7 @@ export default {
         restapi.get( url )
         .then ( response => {
             let reply = response.data;
+            
             // eslint-disable-next-line
             console.log( "got Records: ", reply );
 
@@ -95,6 +129,7 @@ export default {
                 this.resultMsg = "No links found for user " + user + ". Save some with 'Add Link'."
                 return;
             }
+            this.linkRecs = reply.recordList;
 
             reply.recordList.forEach( link => {
                 // Make subset of records with names matching grid columns
@@ -103,7 +138,7 @@ export default {
                     link:  link.linkURL,
                     tags: link.linkTags,
                     use: link.useDate,
-                    pw: link.password,
+                    more: link.password,
                     edit: "Edit",
                     _id: link._id   // will not be displayed
                 }
@@ -129,10 +164,11 @@ export default {
         userName: "",
         resultMsg: "",
         networkError: "",
+        linkRecs: [],       // list of full records of links
 
         /* grid stuff */
-        gridColumns: [ 'name', 'link', 'tags', "use", "pw", "edit" ],
-        gridData: []
+        gridColumns: [ 'name', 'link', 'tags', "use", "more", "edit" ],
+        gridData: []        // sub-records for grid display
       }
   }
 }
@@ -183,6 +219,10 @@ export default {
     background-color:   var(--bt-hover-color);
 }
 
+.more-table {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    text-align:     left;
+}
 
 /* Special formats passed to grid for cells */
 .url_cell {
@@ -200,6 +240,8 @@ export default {
 
 .clock_cell {
     position:       relative;
+    /* Next line is all we need from FontAwsome 'fa' style */
+    font: normal normal normal 14px/1 FontAwesome;
     color:          white;
     background-color:   var( --bt-form-text );
     font-size:      1.4em;
@@ -216,13 +258,15 @@ export default {
   height:       0.8em;
   width:        7em;
   color:        var(--bt-form-text);
-  background-color:  white;
-
+/*  background-color:   var(--bt-table-backgroud);*/
+  margin:       auto;
+  background-color:   white;
+  
   border: 2px solid var( --bt-zoom-blue );
   border-radius: 12px;
   padding:      1px;
   text-align:   center;
-  font-size:    0.8em;
+  font-size:    1.2em;
 }
 
 .button_cell:hover {

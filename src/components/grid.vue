@@ -10,8 +10,8 @@
           <col style="width:36%">
           <col style="width:20%">
           <col style="width:30%">
-          <col style="width:1.8em;">
-          <col style="width: auto">
+          <col style="width: 1.8em;">
+          <col style="width: 1.8em;">
           <col style="width: auto">
         <thead class="grid_table_head" >
           <th v-for="key in columns"  :key="key"

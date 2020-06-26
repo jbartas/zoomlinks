@@ -11,6 +11,7 @@
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "core-js": "^3.6.5",
+    "swal-vue": "^1.0.4",
     "vue": "^2.6.11"
   },
   "devDependencies": {
