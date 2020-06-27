@@ -36,7 +36,6 @@ export default {
   },
   methods: {
     showMore( gridlink ) {
-
         // get the link's full record
         let link = this.linkRecs.find( rec => rec._id == gridlink._id );
         if( !link ) {
@@ -46,24 +45,40 @@ export default {
         }
         // eslint-disable-next-line
         console.log( "showMore, link: ", link );
-        
-        this.$swal.fire({
-            html: "<table  class='more-table' >" + 
-                "<tr><td>Name: </td><td>" + link.linkName + "</td></tr>" +
-                "<tr><td>Password: </td><td>" + link.password + "</td></tr>" + 
-                "<tr><td>Last Used: </td><td>" + link.useDate + "</td></tr>" +
-                "<tr><td>Clicks: </td><td>" + link.clicks + "</td></tr>" +
-                "<tr><td>Contact person: </td><td>" + link.contactPerson + "</td></tr>" +
-                "<tr><td>Contact email: </td><td>" + link.contactEmail + "</td></tr>" +
-                "<tr><td>Call Id: </td><td>" + link.callId + "</td></tr>" +
-                "<tr><td>Call Phone: </td><td>" + link.callPhone + "</td></tr>" +
+
+        /* old records had no customer fields, but they had passwords 
+         * which were a peer to name and tags. Fix this here:
+         */
+        if( link.password != "" && !link.options ) {
+            link.options = [{ name: "password",  value: link.password }];
+        }
+        let alerthtml = "<table class='more-table' >" +
+            "<tr><td>Name: </td><td>" + link.linkName + "</td></tr>" +
+            "<tr><td>Last Used: </td><td>" + link.useDate.slice(0,10) + 
+                " at " + link.useDate.slice(11,16) + "</td></tr>" +
+            "<tr><td>Clicks: </td><td>" + link.clicks + "</td></tr>";
+
+            // eslint-disable-next-line
+            console.log( "link.options: ", link.options );
+            // add any link.optons to the html table
+            if( link.options ) {
+                link.options.forEach( option => {
+                        alerthtml += "<tr><td>" + option.name + "</td><td>" + 
+                            option.value + "</td></tr>";
+                });
+            }
+
+//                "<tr><td>Contact person: </td><td>" + link.contactPerson + "</td></tr>" +
+//                "<tr><td>Contact email: </td><td>" + link.contactEmail + "</td></tr>" +
+//                "<tr><td>Call Id: </td><td>" + link.callId + "</td></tr>" +
+//                "<tr><td>Call Phone: </td><td>" + link.callPhone + "</td></tr>" +
 //                "<tr><td>: </td><td>" +  + "</td></tr>" +
 //                "<tr><td>: </td><td>" +  + "</td></tr>" +
 //                "<tr><td>: </td><td>" +  + "</td></tr>" +
-                "<tr><td>Tags: </td><td>" + link.linkTags + "</td></tr>" +
+        alerthtml += "<tr><td>Tags: </td><td>" + link.linkTags + "</td></tr>" +
                 "</table>"
 
-            });
+        this.$swal.fire({ html: alerthtml });
     },
     gridCallback: function ( link, cell ) {
         // eslint-disable-next-line
@@ -220,9 +235,27 @@ export default {
 }
 
 .more-table {
+    position:       relative;
+    width:          100%;
+    padding:        6px;
     font-family: Avenir, Helvetica, Arial, sans-serif;
+    font-size:      0.9em;
     text-align:     left;
+    color:          var( --bt-text-color );
+    background-color:   var( --bt-table-backgroud );
+    border-radius:      6px;
 }
+
+.more-table td  {
+    background-color:   #fefefe;
+    padding:            0.3em;
+}
+
+.more-table td:nth-child(odd) {
+    color:          var( --bt-form-color );
+    background-color: #f2f2f2;
+}
+
 
 /* Special formats passed to grid for cells */
 .url_cell {
