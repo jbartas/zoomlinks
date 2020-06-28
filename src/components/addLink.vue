@@ -128,7 +128,7 @@ export default {
             "linkName": this.linkName,
             "linkURL":  this.linkURL,
             "linkTags": this.linkTags,
-            "type":     "N/A",        // make smarter later - search URL for ".com" ?
+            "type":     "basic",
             "clicks":   0,
             "options":  this.options
         }
@@ -234,14 +234,16 @@ export default {
         }
     },
     setOptions: function() {
-        // bundle Zoom options from data fields into options record format
-        this.options = [];  // clear any existing options
-        this.options.push( { name: "Zoom Password", value: this.zoomPassword } ) 
-        this.options.push( { name: "Zoom Phone", value: this.zoomPhone } ) 
-        this.options.push( { name: "Zoom ID", value: this.zoomID } ) 
-        this.options.push( { name: "Zoom Contact Name", value: this.zoomContactName } ) 
-        this.options.push( { name: "Zoom Contact Phone", value: this.zoomContactPhone } ) 
-        this.options.push( { name: "Zoom Contact Email", value: this.zoomContactEmail } ) 
+        if( this.setZoom ) {
+            // bundle Zoom options from data fields into options record format
+            this.options = [];  // clear any existing options
+            this.options.push( { name: "Zoom Password", value: this.zoomPassword } ) 
+            this.options.push( { name: "Zoom Phone", value: this.zoomPhone } ) 
+            this.options.push( { name: "Zoom ID", value: this.zoomID } ) 
+            this.options.push( { name: "Zoom Contact Name", value: this.zoomContactName } ) 
+            this.options.push( { name: "Zoom Contact Phone", value: this.zoomContactPhone } ) 
+            this.options.push( { name: "Zoom Contact Email", value: this.zoomContactEmail } ) 
+        }
     }
   },
   watch: {
@@ -269,6 +271,9 @@ export default {
                 if( link.options ) {
                     this.options = link.options;
                 }
+                if( this.type == "zoom" ) {
+                    this.setZoom = true;
+                }
         }
   },
   data() {
@@ -284,7 +289,7 @@ export default {
 
         // handling for custom fields
         setCustoms: false,      // true do set custom fields
-        setZoom: false,         // true fi a zoom link
+        setZoom: false,         // true if a zoom link
 
         options: [],            // name/value pairs of link options
 
