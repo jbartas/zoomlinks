@@ -21,6 +21,7 @@
                     autocomplete="off" />
             </div>
         </div>   <!-- end class = grid-2cols-->
+
         <div class="checkboxes" >
             <label> Is this a Zoom link?:</label>
             <div  title="Check to add add typical 'zoom' items.">
@@ -31,6 +32,7 @@
                 <input type=checkbox name="setCustoms" v-model="setCustoms">
             </div>
         </div>
+
         <div class = "grid-2cols" v-if="setCustoms" >
             <div></div><div> Your custom data. </div>
             <div>
@@ -43,38 +45,39 @@
                     autocomplete="off" />
             </div>
         </div>
+
         <div class = "zoom-2cols" v-if="setZoom" >
             <div><strong>Zoom data</strong></div>
             <div> Note: all fields are optional. </div>
 
             <label> Zoom Passsword </label>
             <div title="Enter zoom password. If none then leave it blank">
-                <input  placeholder="Password" v-bind="options.zoomPassword"
+                <input  placeholder="Password" v-model="zoomPassword"
                     autocomplete="off" />
             </div>
             <label> Zoom Meeting ID (9 digits, from Zoom) </label>
             <div title="Meeting ID is usually 9 digits" >
-                <input  placeholder="Meeting ID number" v-bind="options.zoomID"
+                <input  placeholder="Meeting ID number" v-model="zoomID"
                     autocomplete="off" />
             </div>
             <label> Zoom Meeting Phone (from Zoom) </label>
             <div title="Phone number for calling in to meeting" >
-                <input  placeholder="Meeting ID number" v-bind="options.zoomPhone"
+                <input  placeholder="Meeting Phone number" v-model="zoomPhone"
                     autocomplete="off" />
             </div>
             <label> Contact person's Name </label>
             <div>
-                <input  placeholder="Contact Name"  v-bind="options.zoomcontactName"
+                <input  placeholder="Contact Name"  v-model="zoomContactName"
                     autocomplete="off" />
             </div>
             <label> Contact person's Phone </label>
             <div>
-                <input  placeholder="Contact Phone" v-bind="options.zoomcontactPhone"
+                <input  placeholder="Contact Phone" v-model="zoomContactPhone"
                     autocomplete="off" />
             </div>
             <label> Contact person's Email </label>
             <div title="Enter contact's email address, e.g. 'john@gmail.com'">
-                <input  placeholder="Contact@email.com" v-bind="options.zoomcontactEmail"
+                <input  placeholder="Contact@email.com" v-model="zoomContactEmail"
                     autocomplete="off" />
             </div>
         </div>
@@ -117,6 +120,9 @@ export default {
             return;
         }
 
+        // bundle the options in array
+        this.setOptions();
+
         let newLink = {
             "userName": this.$parent.loggedInName,
             "linkName": this.linkName,
@@ -127,16 +133,17 @@ export default {
             "options":  this.options
         }
 
-        if( this.setZoom )
+        if( this.setZoom ) {
             newLink.type = "zoom";
+        }
 
         // If we're editing a link send the Id to the server along with the data
         if( this.editLink ) {
             newLink._id = this.editLink._id;
             newLink.clicks = this.editLink.clicks;  // don't lose counter
         }
+        console.log( "link submit; newlink: ", newLink );
 
-        console.log( "link submit; ", newLink );
         restapi.post( "/newLink", newLink )
         .then(
             response => {
@@ -152,10 +159,15 @@ export default {
                     }
 
                     // Clear the saved fields from display
-                    this.linkURL = ""
-                    this.linkName = ""
-                    this.linkTags = ""
-                    this.zoomPassword = ""
+                    this.linkURL = "";
+                    this.linkName = "";
+                    this.linkTags = "";
+                    this.zoomPassword = "";
+                    this.zoomID = "";
+                    this.zoomPhone = "";          // Phone for calling in
+                    this.zoomContactName = "";
+                    this.zoomContactPhone = "";
+                    this.zoomContactEmail = "";
                 }
                 else {
                     this.resultMsg = "Unable to create link record";
@@ -193,28 +205,50 @@ export default {
                 this.resultMsg = "";
                 this.networkError = "Delete error: " + error;
             });
+    },
+    getOptions: function() {
+        // get Zoom options into zoom data fields
+        console.log( "setZoom: options: ", this.options  );
+        if( this.options && this.options.length > 0 ) {
+            // go through options looking for zoom data
+            this.options.forEach( option => {
+                if( option.name == "Zoom Password" ) {
+                    this.zoomPassword =  option.value;
+                }
+                else if( option.name == "Zoom ID" ) {
+                    this.zoomID =  option.value;
+                }
+                else if( option.name == "Zoom Phone" ) {
+                    this.zoomPhone =  option.value;
+                }
+                else if( option.name == "Zoom Contact Phone" ) {
+                    this.zoomContactPhone =  option.value;
+                }
+                else if( option.name == "Zoom Contact Name" ) {
+                    this.zoomContactName =  option.value;
+                }
+                else if( option.name == "Zoom Contact Email" ) {
+                    this.zoomContactEmail =  option.value;
+                }
+            });
+        }
+    },
+    setOptions: function() {
+        // bundle Zoom options from data fields into options record format
+        this.options = [];  // clear any existing options
+        this.options.push( { name: "Zoom Password", value: this.zoomPassword } ) 
+        this.options.push( { name: "Zoom Phone", value: this.zoomPhone } ) 
+        this.options.push( { name: "Zoom ID", value: this.zoomID } ) 
+        this.options.push( { name: "Zoom Contact Name", value: this.zoomContactName } ) 
+        this.options.push( { name: "Zoom Contact Phone", value: this.zoomContactPhone } ) 
+        this.options.push( { name: "Zoom Contact Email", value: this.zoomContactEmail } ) 
     }
   },
   watch: {
     setZoom: function() {
         // make sure display zoom data matches record in memory
         if( this.setZoom ) {
-            console.log( "setZoom: options: ", this.options  );
-            if( this.options && this.options.length > 0 ) {
-                // go through options looking for zoom data
-                this.options.forEach( option => {
-                    if( option.name == "Zoom Password" ) {
-                        this.zoomPassword =  option.value;
-                    }
-                    else if( option.name == "Zoom Contact" ) {
-                        this.zoomContactName =  option.value;
-                    }
-                    else if( option.name == "Zoom Contact Phone" ) {
-                        this.zoomContactPhone =  option.value;
-                    }
-                });
-
-            }
+            this.getOptions();
         }
     }
   },
@@ -229,9 +263,9 @@ export default {
         // If we're editing a link, get the fields from the server
         if ( this.editLink ) {
                 let link = this.editLink;
-                this.linkURL = link.url;
-                this.linkName = link.name;
-                this.linkTags = link.tags;
+                this.linkURL = link.linkURL;
+                this.linkName = link.linkName;
+                this.linkTags = link.linkTags;
                 if( link.options ) {
                     this.options = link.options;
                 }
@@ -254,7 +288,7 @@ export default {
 
         options: [],            // name/value pairs of link options
 
-        // Other data - all zoom for now
+        // Other data - all zoom options for now
         zoomPassword: "",
         zoomID: "",
         zoomPhone: "",          // Phone for calling in

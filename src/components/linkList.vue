@@ -56,7 +56,8 @@ export default {
             "<tr><td>Name: </td><td>" + link.linkName + "</td></tr>" +
             "<tr><td>Last Used: </td><td>" + link.useDate.slice(0,10) + 
                 " at " + link.useDate.slice(11,16) + "</td></tr>" +
-            "<tr><td>Clicks: </td><td>" + link.clicks + "</td></tr>";
+            "<tr><td>Clicks: </td><td>" + link.clicks + "</td></tr>" +
+            "<tr><td>Tags: </td><td>" + link.linkTags + "</td></tr>";
 
             // eslint-disable-next-line
             console.log( "link.options: ", link.options );
@@ -75,16 +76,28 @@ export default {
 //                "<tr><td>: </td><td>" +  + "</td></tr>" +
 //                "<tr><td>: </td><td>" +  + "</td></tr>" +
 //                "<tr><td>: </td><td>" +  + "</td></tr>" +
-        alerthtml += "<tr><td>Tags: </td><td>" + link.linkTags + "</td></tr>" +
-                "</table>"
+        alerthtml += "</table>"
 
         this.$swal.fire({ html: alerthtml });
     },
     gridCallback: function ( link, cell ) {
-        // eslint-disable-next-line
         console.log( "grid callback, link: ", link, cell );
+
         if( cell == "edit" ) {
-            this.$parent.editLink = link;       // pass link fields to "add"" form
+            // get the original record, not the grid subset
+            let reclink = this.linkRecs.find( rec => rec._id == link._id );
+            if( !reclink ) {
+                // eslint-disable-next-line
+                console.log( "showMore, gridlink._id not found: ", gridlink.id );
+                return; 
+            }
+
+            // If needed, add deprecated password field to options
+            if( reclink.password && reclink.password != "" && !reclink.options ) {
+                reclink.options = [{ name: "Zoom Password", value: reclink.password }];
+            }
+            console.log( "gridCallback, added options: ", reclink );
+            this.$parent.editLink = reclink;       // pass link fields to "add"" form
             this.$parent.renderApp = "addLink";
         }
         else if( cell == "more" ) {
