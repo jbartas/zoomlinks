@@ -33,7 +33,7 @@ export default {
   --bt-table-backgroud:   rgba(200, 190, 180, 0.3);
   --bt-zoom-blue:    #2c8eFF;
   --bt-zoom-form:    #2c8eFF;
-  --bt-hover-color:  #f0fff8;
+  --bt-hover-color:  #e8f8f0;
 }
 
 body {

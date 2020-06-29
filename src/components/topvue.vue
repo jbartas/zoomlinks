@@ -43,6 +43,10 @@
               <i class="fa fa-list"></i> My Links </div>
         </div>
         <div class="navtab">
+          <div v-if="loggedInStatus == true" v-on:click="showApp( 'requests')"> 
+              <i class="fa fa-wrench"></i> requests </div>
+        </div>
+        <div class="navtab">
           <div v-on:click="showApp( 'about')"> 
               <i class="fa fa-question-circle"></i> About... </div>
         </div>
@@ -54,6 +58,7 @@
     <addUser    v-if="renderApp == 'addUser'" />
     <addLink    v-if="renderApp == 'addLink'" />
     <linkList   v-if="renderApp == 'linkList'" />
+    <requests   v-if="renderApp == 'requests'" />
     <about      v-if="renderApp == 'about'" />
 
 </div> <!-- end top_view -->
@@ -64,7 +69,9 @@ import login from '../components/login.vue'
 import addUser from '../components/addUser.vue'
 import addLink from '../components/addLink.vue'
 import linkList from '../components/linkList.vue'
+import requests from '../components/requests.vue'
 import about from '../components/about.vue'
+
 
 export default {
   name: 'ZoomTop',
@@ -73,6 +80,7 @@ export default {
     addUser,
     addLink,
     linkList,
+    requests,
     about
   },
   props: {

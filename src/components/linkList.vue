@@ -9,7 +9,7 @@
             :columns  = "gridColumns" 
             :callback = "gridCallback"
             v-bind:cellcss  = 
-                "{ edit: 'button_cell', use: 'clock_cell fa-calendar-o', more: 'clock_cell fa-list', link: 'url_cell' }"
+                "{ edit: 'button_cell', use: 'clock_cell fa-calendar-check-o', more: 'clock_cell fa-list', link: 'url_cell' }"
             buttoncol = "edit" 
             >
        </grid>

@@ -13,6 +13,8 @@ Done - new logo
 Done - fix favicon
 Done - Show last use date as icon.
 Done - default order grid by useDate (descending)
+- Add Bug/feature report (help?) page. 
+- move to port 80
 - convert to SSH (get Cert?) - Certbot? 
 - caching of links list on browser - prevent reloads.
 - Implement groups
@@ -23,3 +25,12 @@ Done - default order grid by useDate (descending)
 - allow users to set alarms for events - recurring (week, day), one-shot.
 - YouTube Video for basic use cases.
 - implement data checking (on server ??) for addUser page
+
+
+
+Component create steps:
+- Create new .vue file in components directory
+- Add component name to "export default" section in vue file
+- Add component to topbars import section
+- Add to components section in topvue.vue export default
+

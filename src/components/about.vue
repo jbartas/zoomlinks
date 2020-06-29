@@ -38,11 +38,15 @@ information.
 <button class="accordion"  v-on:click="onClick('new')" > What's New </button>
 <div class="panel" id="new">
 <p>
-June 11th, 2020 - Links now default to being ordered with the most recently 
-used links at the top of the list. 
+  <strong>June 29th, 2020 - </strong> New support created for info 
+  specific to Zoom links (and other video 
+  chat services). You can now save the password, Zoom ID, and more. 
+  Click on "Zoom link" in "add link" page to fill in the Zoom info. 
+  In My Links page click on the 'More' icon to see the Zoom info.
 </p>
 <p>
-June 10th, 2020 - New Icon and logo.
+<strong>June 11th, 2020 - </strong> Links now default to being ordered with the most recently 
+used links at the top of the list. 
 </p>
 </div>
 
@@ -51,9 +55,9 @@ June 10th, 2020 - New Icon and logo.
 <p>
 Our committment is to keep link saving and sharing free for all users.  If 
 the site grows to a point where the web server bills become expensive, we 
-may resort to ads or crowdfunding. But we will never ask our users to pay 
-a fee, and we will never, ever sell your personal information (like what 
-links you saved).
+may resort to ads or crowdfunding. But we will never ask our non-business users 
+to pay a fee, and we will never, ever sell your personal information (for example 
+what links you saved).
 </p>
 </div>
 
@@ -61,7 +65,7 @@ links you saved).
 <div class="panel" id="soon">
 <p>
 <strong>Groups</strong> - form a group, invite friends, and then everybody in the group can 
-have the latest updated info for all the links the group uses. Groups are 
+have the latest updated info for all the links the group uses. Groups can be  
 private so you don't get Zoom Bombed; and if you need to change a link or 
 password you can instantly update it and notify the whole group.
 </p><p>
