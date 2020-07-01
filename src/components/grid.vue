@@ -7,12 +7,12 @@
   <div id="grid-template">
     <div class="table-header-wrapper">
       <table class="grid-table">
-          <col style="width:36%">
-          <col style="width:20%">
-          <col style="width:30%">
-          <col style="width: 1.8em;">
-          <col style="width: 1.8em;">
+          <col style="width: 36%">
+          <col style="width: 20%">
           <col style="width: auto">
+          <col style="width: 1.8em;">
+          <col style="width: 1.8em;">
+          <col style="width: 6em;">
         <thead class="grid_table_head" >
           <th v-for="key in columns"  :key="key"
             @click="sortBy(key)"
@@ -140,7 +140,7 @@ export default {
 
 .grid_table_body tr {
   background-color: #f9f9f9;
-  padding:        3px;
+  padding:        1px;
 }
 
 tr:hover {
@@ -165,7 +165,7 @@ th.active .arrow {
 td {
   overflow:       hidden;
   white-space:    nowrap;
-  padding:        3px;
+  padding-left:   4px;
 }
 
 /* formatting for <td> cell with no passed cellcss entry */

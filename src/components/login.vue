@@ -70,8 +70,9 @@ export default {
                     this.loginStatus = "";
                     this.$parent.loggedInName = this.userName;
                     this.$parent.loggedInStatus = true;
+                    this.$parent.loggedInID = reply.userID;
+                    this.$parent.userEmail = reply.userEmail;
                     this.$parent.renderApp = "linkList";
-                    this.$parent.userEmail = reply.data.userEmail;
                 }
                 else {
                     this.loginStatus = "Login FAILED: " + reply.message;

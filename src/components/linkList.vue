@@ -218,6 +218,7 @@ export default {
     position:   relative;
     top:        1em;
     left:       0%;
+    margin:     auto;
     text-align: center;
     color: var(--bt-form-color);
 }
@@ -232,8 +233,6 @@ export default {
     --grid-cell-border: #998877;
     --grid-url-color:   #4a2888;
     position:   relative;
-    left:       0%;
-    width:      96%;
     background-color:   rgba(200, 190, 180, 0.5);
     padding:    18px;
     text-align: left;
@@ -302,9 +301,9 @@ export default {
 
 .button_cell {
   height:       0.8em;
-  width:        7em;
+  /* width: controlled by col in table (grid.vue) */
   color:        var(--bt-form-text);
-/*  background-color:   var(--bt-table-backgroud);*/
+  /*  background-color:   var(--bt-table-backgroud);*/
   margin:       auto;
   background-color:   white;
   
@@ -321,8 +320,7 @@ export default {
 
 .table-header-wrapper {
     text-align:     center;
-    font-size:      1.0em;
-    font-weight:    500;
+    font-size:      0.98em;
     color:          var(--bt-zoom-blue );
 }
 

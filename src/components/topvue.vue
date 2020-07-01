@@ -43,6 +43,10 @@
               <i class="fa fa-list"></i> My Links </div>
         </div>
         <div class="navtab">
+          <div v-if="loggedInStatus == true" v-on:click="showApp( 'addGroup')"> 
+              <i class="fa fa-group"></i> Groups </div>
+        </div>
+        <div class="navtab">
           <div v-if="loggedInStatus == true" v-on:click="showApp( 'requests')"> 
               <i class="fa fa-wrench"></i> requests </div>
         </div>
@@ -58,6 +62,7 @@
     <addUser    v-if="renderApp == 'addUser'" />
     <addLink    v-if="renderApp == 'addLink'" />
     <linkList   v-if="renderApp == 'linkList'" />
+    <addGroup   v-if="renderApp == 'addGroup'" />
     <requests   v-if="renderApp == 'requests'" />
     <about      v-if="renderApp == 'about'" />
 
@@ -69,6 +74,7 @@ import login from '../components/login.vue'
 import addUser from '../components/addUser.vue'
 import addLink from '../components/addLink.vue'
 import linkList from '../components/linkList.vue'
+import addGroup from '../components/addGroup.vue'
 import requests from '../components/requests.vue'
 import about from '../components/about.vue'
 
@@ -80,6 +86,7 @@ export default {
     addUser,
     addLink,
     linkList,
+    addGroup,
     requests,
     about
   },
@@ -96,6 +103,8 @@ export default {
       renderApp: "login",
       loggedInStatus: false,
       loggedInName: "",
+      loggedInID: "",
+      activeGroup: null,    // group currently in use., null if none
       userEmail: "",
       editLink: null,      // For passing link fields to editor
 
@@ -126,13 +135,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 
+/* this contains the entire site. */
 .topbar {
     position:       relative;
-    left:           20%;
-    width:          60%;
-    align-self:     center;
-    align-items:    center;
-    justify-content: center;
+    max-width:      1000px;   /* Max width for whole site.  */
+    margin:         auto;
 }
 
 .topvue {
@@ -149,17 +156,19 @@ export default {
 nav {
     position:       relative;
     top:            0.6em;
-    float:          left;
-    margin:         4px;
+    max-width:      49em;  /* Adjust if adding/removing tabs */
+    margin:         auto;
     bottom:         0.4em;
     border-radius:  15px;
     color:        white;
     background:     var( --bt-form-color);
     display:        flex;
     flex-direction: row;
+    align-items:    center;
 }
 
 .navtab {
+    position:   relative;
     margin:             4px;
     padding:            4px;
     padding-left:       12px;
@@ -175,8 +184,9 @@ nav {
 }
 
 .nav_wrapper {
-    width:      94%;
-    height:     3em;
+    position:   relative;
+    margin:     auto;
+    min-height: 3.2em;
 }
 
 
