@@ -204,18 +204,31 @@ export default {
                 return;
             }
 
+<<<<<<< HEAD
             /* Fall to here if we got a successly reply,
              * That might be zero elements...
              */
             let groups = reply.data.groupInfo;  // array of matching groups (should be 0 or 1)
             if( groups.length == 0 ) {          // no matching
                 this.networkError = "";         // user is OK to proceed 
+=======
+            /* Fall to here if we got a successly reply, 
+             * That might be zero elements...
+             */
+            let groups = reply.data.groupInfo;  // array of matching groups (should be 0 or 1)
+            if( groups.length == 0 ) {          // no matching 
+                this.networkError = "";         // user is OK to proceed
+>>>>>>> 05eb1c5107c74166d2ba6ceb00d6c7127c3b29b9
                 this.resultStatus = "Group name is available for use.";
             }
             else if( groups[0].groupName == this.groupName ) {
                 this.resultStatus = "Group name " + this.groupName + 
                     " already in use. Name must be unique.";
+<<<<<<< HEAD
                 this.groupName = "";            // clear from screen 
+=======
+                this.groupName = "";            // clear from screen
+>>>>>>> 05eb1c5107c74166d2ba6ceb00d6c7127c3b29b9
             }
             else {
                 // eslint-disable-next-line

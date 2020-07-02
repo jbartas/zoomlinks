@@ -43,7 +43,7 @@
               <i class="fa fa-list"></i> My Links </div>
         </div>
         <div class="navtab">
-          <div v-if="loggedInStatus == true" v-on:click="showApp( 'addGroup')"> 
+          <div v-if="loggedInStatus == true" v-on:click="showApp( 'groups')"> 
               <i class="fa fa-group"></i> Groups </div>
         </div>
         <div class="navtab">
@@ -62,7 +62,7 @@
     <addUser    v-if="renderApp == 'addUser'" />
     <addLink    v-if="renderApp == 'addLink'" />
     <linkList   v-if="renderApp == 'linkList'" />
-    <addGroup   v-if="renderApp == 'addGroup'" />
+    <groups   v-if="renderApp == 'groups'" />
     <requests   v-if="renderApp == 'requests'" />
     <about      v-if="renderApp == 'about'" />
 
@@ -74,7 +74,7 @@ import login from '../components/login.vue'
 import addUser from '../components/addUser.vue'
 import addLink from '../components/addLink.vue'
 import linkList from '../components/linkList.vue'
-import addGroup from '../components/addGroup.vue'
+import groups from '../components/groups.vue'
 import requests from '../components/requests.vue'
 import about from '../components/about.vue'
 
@@ -86,7 +86,7 @@ export default {
     addUser,
     addLink,
     linkList,
-    addGroup,
+    groups,
     requests,
     about
   },
