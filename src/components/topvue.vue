@@ -104,11 +104,11 @@ export default {
       loggedInStatus: false,
       loggedInName: "",
       loggedInID: "",
-      activeGroup: null,    // group currently in use., null if none
+      activeGroup: null,    // group currently in use, null if none
       userEmail: "",
-      editLink: null,      // For passing link fields to editor
+      editLink: null,       // For passing link fields to editor
 
-      /* PRIVATE */
+      /* PRIVATE - you can mess with this if you want. */
       loggedInText: "Not Logged In"    // generated from loggedInStatus and loggedInName
     }
   },

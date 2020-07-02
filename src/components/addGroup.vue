@@ -129,7 +129,7 @@ export default {
   methods: {
       /* Basically the "submit" handler */
       createGroup: function  () {
-        let url = this.$parent.baseURL + "/newGroup";
+
         this.networkError = "";   // no error yet
         this.resultStatus = "Creating group " + this.groupName;
         let headers = { headers: {
@@ -154,7 +154,8 @@ export default {
             members:   	[ userId ],     // _id list of member users
         };
 
-        console.log("Create group; object: ", newGroup );
+        let url = this.$parent.$parent.baseURL + "/newGroup";
+        console.log("Create group; object: ", newGroup, ", URL: ", url );
 
         axios.post( url, newGroup, headers )
         .then( reply => {
