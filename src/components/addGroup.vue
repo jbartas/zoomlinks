@@ -129,7 +129,7 @@ export default {
   methods: {
       /* Basically the "submit" handler */
       createGroup: function  () {
-        let url = this.$parent.baseURL + "/addGroup";
+        let url = this.$parent.baseURL + "/newGroup";
         this.networkError = "";   // no error yet
         this.resultStatus = "Creating group " + this.groupName;
         let headers = { headers: {
@@ -204,18 +204,18 @@ export default {
                 return;
             }
 
-            /* Fall to here if we got a successly reply to user list, 
-                * That might be zero users...
-                */
-            let groups = reply.data.groupInfo; // array of matching groups (should be 0 or 1)
-            if( groups.length == 0 ) {   // no matching 
-                this.networkError = "";     // user is OK to proceed
+            /* Fall to here if we got a successly reply, 
+             * That might be zero elements...
+             */
+            let groups = reply.data.groupInfo;  // array of matching groups (should be 0 or 1)
+            if( groups.length == 0 ) {          // no matching 
+                this.networkError = "";         // user is OK to proceed
                 this.resultStatus = "Group name is available for use.";
             }
             else if( groups[0].groupName == this.groupName ) {
                 this.resultStatus = "Group name " + this.groupName + 
                     " already in use. Name must be unique.";
-                this.groupName = "";     // clear from screen
+                this.groupName = "";            // clear from screen
             }
             else {
                 // eslint-disable-next-line
