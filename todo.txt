@@ -13,13 +13,13 @@ Done - new logo
 Done - fix favicon
 Done - Show last use date as icon.
 Done - default order grid by useDate (descending)
-- Add Bug/feature report (help?) page. 
+Done - Add Bug/feature report (help?) page. 
 - move to port 80
 - convert to SSH (get Cert?) - Certbot? 
 - caching of links list on browser - prevent reloads.
 - Implement groups
 - Create "Friends" - Array of user Ids in each user.
-- Bulk-assign links to freinds, groups.
+- Bulk-assign links to friends, groups.
 - Add "stay logged in on this computer"
 - Feature to send emails with link set - LinkShareBot.
 - allow users to set alarms for events - recurring (week, day), one-shot.

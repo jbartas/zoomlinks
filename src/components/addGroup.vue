@@ -253,7 +253,8 @@ export default {
     }
   },
   created: function () {
-      this.userName = this.$parent.loggedInName
+      this.$parent.$parent.renderApp = "";      // clear groups nav bar
+      this.userName = this.$parent.loggedInName;
   }
 }
 

@@ -62,9 +62,13 @@
     <addUser    v-if="renderApp == 'addUser'" />
     <addLink    v-if="renderApp == 'addLink'" />
     <linkList   v-if="renderApp == 'linkList'" />
-    <groups   v-if="renderApp == 'groups'" />
+    <groups     v-if="renderApp == 'groups'" />
     <requests   v-if="renderApp == 'requests'" />
     <about      v-if="renderApp == 'about'" />
+    <addGroup   v-if="renderApp == 'addGroup'" />
+    <listGroups v-if="renderApp == 'listGroups'" />
+    <groupLinks v-if="renderApp == 'groupLinks'" />
+
 
 </div> <!-- end top_view -->
 </template>
@@ -77,6 +81,9 @@ import linkList from '../components/linkList.vue'
 import groups from '../components/groups.vue'
 import requests from '../components/requests.vue'
 import about from '../components/about.vue'
+import listGroups from '../components/listGroups.vue'
+import groupLinks from '../components/groupLinks.vue'
+import addGroup from '../components/addGroup.vue'
 
 
 export default {
@@ -88,7 +95,10 @@ export default {
     linkList,
     groups,
     requests,
-    about
+    about,
+    addGroup,
+    listGroups,
+    groupLinks
   },
   props: {
     msg: String

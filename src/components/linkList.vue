@@ -2,7 +2,7 @@
   <div class="linkList">
    <div class="place-grid" >
       <div class="table-header-wrapper" >
-          Links:
+          My Links:
       </div>
       <grid class="grid_wrapper"
             :data     = "gridData" 
@@ -13,7 +13,6 @@
             buttoncol = "edit" 
             >
        </grid>
-
     </div>
 
     <div class="place-error" >
@@ -69,13 +68,6 @@ export default {
                 });
             }
 
-//                "<tr><td>Contact person: </td><td>" + link.contactPerson + "</td></tr>" +
-//                "<tr><td>Contact email: </td><td>" + link.contactEmail + "</td></tr>" +
-//                "<tr><td>Call Id: </td><td>" + link.callId + "</td></tr>" +
-//                "<tr><td>Call Phone: </td><td>" + link.callPhone + "</td></tr>" +
-//                "<tr><td>: </td><td>" +  + "</td></tr>" +
-//                "<tr><td>: </td><td>" +  + "</td></tr>" +
-//                "<tr><td>: </td><td>" +  + "</td></tr>" +
         alerthtml += "</table>"
 
         this.$swal.fire({ html: alerthtml });
@@ -195,7 +187,9 @@ export default {
         linkRecs: [],       // list of full records of links
 
         /* grid stuff */
-        gridColumns: [ 'name', 'link', 'tags', "use", "more", "edit" ],
+        gridColumns: [ 'name', 'link', 'tags', "use", "more", "edit" ], // titles
+        gridColStyles: [ "width: 36%", "width: 20%", "width: auto", "width: 1.8em", 
+                "width: 1.8em", "width: 6em", ],
         gridData: []        // sub-records for grid display
       }
   }
