@@ -9,7 +9,7 @@
             :columns  = "gridColumns" 
             :callback = "gridCallback"
             v-bind:cellcss  = 
-                "{ use: 'clock_cell fa-calendar-check-o', more: 'clock_cell fa-list' }"
+                "{ select: 'button_cell', use: 'clock_cell fa-calendar-check-o', edit:'button_cell' }"
             >
        </grid>
     </div>
@@ -39,8 +39,8 @@ export default {
         groupRecs: [],       // list of full records of groups
 
         /* grid stuff */
-        gridColumns: [ "select", "name", "description", "use", "more" ], // titles
-        gridColStyles: [ "width: 8em", "width: 36%", "width: auto", "width: 1.8em", "width: 1.8em" ],
+        gridColumns: [ "select", "name", "description", "tags", "use", "edit" ], // titles
+        gridColStyles: [ "width: 8em", "width: 36%", "width: auto", "width: 1.8em", "width: 8em" ],
         gridData: []        // sub-records for grid display
       }
   },
@@ -51,7 +51,7 @@ export default {
     },
     getGroupData: function ( ) {
         this.networkError = "";
-        this.resultStatus = "";
+        this.resultMsg = "";
 
         // get groups for the logged in user
         let url = "/getGroups/" +  this.$parent.loggedInID;
@@ -62,9 +62,29 @@ export default {
             let reply = response.data;
             
             // eslint-disable-next-line
-            console.log( "got Groups: ", reply );
+            console.log( "got Groups: ", reply.groupList );
 
-            this.resultStatus = "Read groups from server ";
+            if( reply.groupList.length == 0 ) {
+              this.resultMsg = "You don't seem to be in any groups yet.";
+            }
+            else {
+              this.resultMsg = "Found " + reply.groupList.length + " groups.";
+            }
+            this.groupRecs = reply.groupList;
+
+            // Make mini-records with nice text names for grid
+            this.groupRecs.forEach( group => { 
+                let gridRec = {
+                    name : group.groupName,
+                    _id  : group._id,
+                    description: group.descr,
+                    tags: group.tags,
+                    edit: "Edit",
+                    select: "Select"
+                };
+                this.gridData.push( gridRec );
+            });
+
             // more here later
 
         }).catch( error =>  {
@@ -101,6 +121,25 @@ export default {
 .table-header-wrapper {
     font-weight:  600;
     height:       2em;
+}
+
+.button_cell {
+  height:       0.8em;
+  /* width: controlled by col in table (grid.vue) */
+  color:        var(--bt-form-text);
+  /*  background-color:   var(--bt-table-backgroud);*/
+  margin:       auto;
+  background-color:   white;
+  
+  border: 2px solid var( --bt-zoom-blue );
+  border-radius: 12px;
+  padding:      1px;
+  text-align:   center;
+  font-size:    1.2em;
+}
+
+.button_cell:hover {
+  background-color:   var(--bt-hover-color);
 }
 
 </style>
