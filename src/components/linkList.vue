@@ -1,13 +1,14 @@
 <template>
   <div class="linkList">
    <div class="place-grid" >
-      <div class="table-header-wrapper" >
-          My Links:
+      <div class="table-header" >
+          <strong> My Links: </strong>
       </div>
       <grid class="grid_wrapper"
             :data     = "gridData" 
             :columns  = "gridColumns" 
             :callback = "gridCallback"
+            :colstyle = "gridColStyles"
             v-bind:cellcss  = 
                 "{ edit: 'button_cell', use: 'clock_cell fa-calendar-check-o', more: 'clock_cell fa-list', link: 'url_cell' }"
             buttoncol = "edit" 
@@ -188,8 +189,14 @@ export default {
 
         /* grid stuff */
         gridColumns: [ 'name', 'link', 'tags', "use", "more", "edit" ], // titles
-        gridColStyles: [ "width: 36%", "width: 20%", "width: auto", "width: 1.8em", 
-                "width: 1.8em", "width: 6em", ],
+        gridColStyles: {    // control the grid column widths 
+            "select": "width: 36%", 
+            "link":   "width: 20%", 
+            "tags": "width: auto",
+            "use" :   "width: 1.8em", 
+            "more":   "width: 1.8em",
+            "edit":   "width: 6em" 
+        }, 
         gridData: []        // sub-records for grid display
       }
   }
@@ -202,19 +209,16 @@ export default {
 .linkList {
     position:   relative;
     min-width:  640px;
-    color:      var(--bt-form-color);
-    margin:     10px;
-    padding:    10px;
-    text-align: center;
 }
 
 .place-grid {
     position:   relative;
-    top:        1em;
-    left:       0%;
+    width:      92%;
     margin:     auto;
-    text-align: center;
-    color: var(--bt-form-color);
+}
+
+.table-header {
+    padding:        0.5em;
 }
 
 .place-error {
@@ -310,12 +314,6 @@ export default {
 
 .button_cell:hover {
   background-color:   var(--bt-hover-color);
-}
-
-.table-header-wrapper {
-    text-align:     center;
-    font-size:      0.98em;
-    color:          var(--bt-zoom-blue );
 }
 
 </style>

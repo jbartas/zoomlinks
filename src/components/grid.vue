@@ -7,16 +7,11 @@
   <div id="grid-template">
     <div class="table-header-wrapper">
       <table class="grid-table">
-          <col style="width: 36%">
-          <col style="width: 20%">
-          <col style="width: auto">
-          <col style="width: 1.8em;">
-          <col style="width: 1.8em;">
-          <col style="width: 6em;">
         <thead class="grid_table_head" >
           <th v-for="key in columns"  :key="key"
             @click="sortBy(key)"
             :class="{ active: sortKey == key }"
+            :style="getColStyle(key)"
           >
             {{ key | capitalize }}
             <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'"
@@ -47,7 +42,8 @@ export default {
     data: Array,
     columns: Array,
     callback: Function,
-    cellcss: Object
+    cellcss: Object,
+    colstyle: Object
   },
   data(){
     return {
@@ -87,6 +83,15 @@ export default {
     }
   },
   methods: {
+    getColStyle: function( key ) {
+        console.log("getColStyle: key: ", key );
+        if( this.colstyle && this.colstyle[key] ) {
+          return this.colstyle[key];
+        }
+        else {
+          return "width: auto";
+        }
+    },
     sortBy: function (key) {
       this.sortKey = key;
       this.sortOrders[key] = this.sortOrders[key] * -1

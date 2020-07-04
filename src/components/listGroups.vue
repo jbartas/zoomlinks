@@ -2,16 +2,17 @@
 <div class="list-groups">
    <div class="place-grid" >
       <div class="table-header-wrapper" >
-          My Groups:
+        <strong> My Groups: </strong>
       </div>
       <grid class="grid_wrapper"
             :data     = "gridData" 
             :columns  = "gridColumns" 
             :callback = "gridCallback"
+            :colstyle = "gridColStyles"
             v-bind:cellcss  = 
                 "{ select: 'button_cell', use: 'clock_cell fa-calendar-check-o', edit:'button_cell' }"
             >
-       </grid>
+      </grid>
     </div>
 
     <div class="place-error" >
@@ -40,7 +41,14 @@ export default {
 
         /* grid stuff */
         gridColumns: [ "select", "name", "description", "tags", "use", "edit" ], // titles
-        gridColStyles: [ "width: 8em", "width: 36%", "width: auto", "width: 1.8em", "width: 8em" ],
+        gridColStyles: { 
+            "select": "width: 5em", 
+            "name":   "width: 10em", 
+            "description": "width: auto",
+            "tags":   "width: auto",
+            "use" :   "width: 1.8em", 
+            "edit":   "width: 5em" 
+        }, 
         gridData: []        // sub-records for grid display
       }
   },
@@ -115,22 +123,18 @@ export default {
     width:      80%;
     max-width:  1400px;
     margin:     auto;
-    padding:    2em;
+    font-size:  0.98em;
 }
 
 .table-header-wrapper {
-    font-weight:  600;
-    height:       2em;
+    padding:    0.5em;
 }
 
 .button_cell {
   height:       0.8em;
-  /* width: controlled by col in table (grid.vue) */
   color:        var(--bt-form-text);
-  /*  background-color:   var(--bt-table-backgroud);*/
   margin:       auto;
-  background-color:   white;
-  
+  background-color:   white;  
   border: 2px solid var( --bt-zoom-blue );
   border-radius: 12px;
   padding:      1px;
