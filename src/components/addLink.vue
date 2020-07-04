@@ -23,18 +23,32 @@
         </div>   <!-- end class = grid-2cols-->
 
         <div class="checkboxes" >
-            <label> Is this a Zoom link?:</label>
+            <label> Add Zoom Fields:</label>
             <div  title="Check to add add typical 'zoom' items.">
                 <input type=checkbox name="setZoom" v-model="setZoom">
             </div>
-            <label> Add a Custom Field?:</label>
+            <!-- Move this to it's own GIT branch
+            <label> Add Day/Date/Time Fields:</label>
+            <div  title="Check to add date, day of the week, and/or time for an event.">
+                <input type=checkbox name="setDayDate" v-model="setDayDate">
+            </div>
+            -->
+            <label> Add Custom Fields:</label>
             <div title="Check to add your own custom field.">
                 <input type=checkbox name="setCustoms" v-model="setCustoms">
             </div>
         </div>
 
+        <div class = "grid-2cols" v-if="setDayDate" >
+            <div></div><div><br><strong> Day, Date and time info for appoinment or event. </strong></div>
+            <label> Date of first or next event </label>
+            <div title="Pick a date from the date picker">
+                <input  placeholder="Date" />
+            </div>
+        </div>
+
         <div class = "grid-2cols" v-if="setCustoms" >
-            <div></div><div> Your custom data. </div>
+            <div></div><div> <strong> Your custom data. </strong></div>
             <div>
                 <input  placeholder="Name" v-bind="options.custom.name"
                     title="Give you custom field a name, like 'password' or 'contact email'." 
@@ -48,7 +62,7 @@
 
         <div class = "zoom-2cols" v-if="setZoom" >
             <div><strong>Zoom data</strong></div>
-            <div> Note: all fields are optional. </div>
+            <div> Note: all Zoom fields are optional. </div>
 
             <label> Zoom Passsword </label>
             <div title="Enter zoom password. If none then leave it blank">
@@ -290,6 +304,7 @@ export default {
         // handling for custom fields
         setCustoms: false,      // true do set custom fields
         setZoom: false,         // true if a zoom link
+        setDayDate: false,      // true to add Day/Date/Time info
 
         options: [],            // name/value pairs of link options
 
@@ -346,7 +361,7 @@ export default {
     height:         2.5em;
     text-align:     left;
     display:        grid;
-    grid-template-columns:  auto  4em  auto  4em  auto;
+    grid-template-columns:  auto  4em  auto  4em  auto  4em  auto;
     grid-gap:       4px;
 }
 

@@ -14,10 +14,12 @@ Done - fix favicon
 Done - Show last use date as icon.
 Done - default order grid by useDate (descending)
 Done - Add Bug/feature report (help?) page. 
+- Implement groups
+- Add date/day and time (e.g. of zoom call) option
 - move to port 80
+- Implement "Add to calendar"
 - convert to SSH (get Cert?) - Certbot? 
 - caching of links list on browser - prevent reloads.
-- Implement groups
 - Create "Friends" - Array of user Ids in each user.
 - Bulk-assign links to friends, groups.
 - Add "stay logged in on this computer"

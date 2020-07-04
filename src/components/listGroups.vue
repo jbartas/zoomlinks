@@ -53,9 +53,17 @@ export default {
       }
   },
   methods: {
-    gridCallback( link ) {
-        console.log( "gridCallback: ", link );
-
+    gridCallback( gridlink, key ) {
+        console.log( "gridCallback: ", key, gridlink );
+        // find record in this.groupRecs
+        let group = this.groupRecs.find( rec => rec._id == gridlink._id );
+        if( key == "select") {
+          this.$parent.activeGroup = group;
+          this.resultMsg = "Group '" + group.groupName + "' is now the active group";
+        }
+        else if( key == "edit") {
+          return;
+        }
     },
     getGroupData: function ( ) {
         this.networkError = "";
