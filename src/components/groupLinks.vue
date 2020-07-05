@@ -1,7 +1,7 @@
 <template>
 <div class="group-links">
 
-GroupsLinks
+GroupsLinks - active group is {{$parent.activeGroup.groupName}}
 
 </div>
 </template>

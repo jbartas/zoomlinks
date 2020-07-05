@@ -30,6 +30,9 @@ export default {
     showApp: function( appName ) {
       // eslint-disable-next-line
       console.log( "showApp; group: ", appName  );
+      if( appName == "addGroup" ) {
+        this.$parent.activeGroup = null;
+      }
       this.$parent.renderApp = appName;
     }
   },

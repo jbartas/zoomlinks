@@ -4,15 +4,19 @@
   <div class="form-title" >
       Create a New Group
   </div>
-  <div class="form-sub-title"
+  <div class="form-sub-title" v-if="editing == null"
       title="You will be the admin of this group. You may add other admins 
         after the group is created. ">
     Group admin: ({{userName}}). 
     Questions about groups? Hover over entry fields for help <i class="fa fa-question-circle"></i>
   </div>
+  <div class="form-sub-title" v-if="editing"
+      title="You can change fields for this group, including adding users, and admins. ">
+    Editing Group {{editing.groupName}}. 
+    Questions? Hover over entry fields for help <i class="fa fa-question-circle"></i>
+  </div>
 
-  <form class="place-form sb_form" v-on:submit.prevent  autocomplete="Chrome-sux"  >
-
+  <form class="place-form sb_form" v-on:submit.prevent  autocomplete="Chrome-sux" >
     <div title="Name is Case insensitive with no spaces. It will be checked for uniqueness.">
         <div class="form-text" >
             Please choose a name for your group. 
@@ -21,21 +25,25 @@
         <div class="grid-2cols" >
             <label>Group Name:</label>
             <div class="input-box" >
-                <input name="groupName" v-model="groupName" v-on:blur="checkData( 'groupName' )" />
+                <input name="groupName" v-model="groupName"  placeholder="group-name (required)"
+                    v-on:blur="checkData( 'groupName' )" />
             </div>
         </div>      <!-- end grid-2cols -->
     </div>      <!-- end Group name area -->
-        <div class="form-text" >
-            Add a desription &amp; tags:
+    <div class="form-text" title="Both these fields will be used when searching for the group.">
+        Add a desription &amp; tags:
+        <i class="fa fa-question-circle float-right"></i>
+    </div>
+    <div class="grid-2cols" >
+        <label>Description:</label>
+        <div class="input-box" >
+            <input name="descriptipon" v-model="descr" placeholder="Description of group" />
         </div>
-        <div class="center-items" >
-            <div class="input-box" >
-                <input name="descriptipon" v-model="descr" />
-            </div>
-            <div class="input-box" >
-                <input name="tags" v-model="tags"/>
-            </div>
+        <label>Tags:</label>
+        <div class="input-box" >
+            <input name="tags" v-model="tags" placeholder="Search tags" />
         </div>
+    </div>
     <br>
     <hr>
 
@@ -59,13 +67,18 @@ private - Only group members can view the group's links.
     </div>      <!-- end grid-2cols -->
     <br>
     <hr>
-    <div class="form-text" title="If you add a password, then it will be requiered for 
-        adding or changing links. Leave it blank if you want anyone who can see links 
-        to be able to add or change them.">
-        Group Password for editing links
-            <i class="fa fa-question-circle float-right"></i>
+    <div class="form-text" title="If you add a password, then it will be required for adding or changing
+   links. Leave it blank if you want anyone who can see links to be 
+   able to add or change them.">
+        <i class="fa fa-question-circle float-right"></i>
+        <div class="grid-checkbox" >
+            Use a group Password for editing links?
+            <input type=checkbox v-model="doPassword" />
+        </div>
     </div>
-    <div class="grid-2cols" >
+    
+
+    <div class="grid-2cols" v-if="doPassword" >
         <label>Password:</label>
         <div class="input-box" title="At least 6 characters" >
             <input type="password" name="password" v-model="password" autocomplete="new-password" />
@@ -77,10 +90,13 @@ private - Only group members can view the group's links.
         </div>
     </div>      <!-- end grid-2cols -->
 
-    <div class="submit_button" >
+    <div class="submit_button" v-if="editing == null" >
         <button  v-on:click="createGroup()" > Create Group </button>
     </div>
-
+    <div class="grid-editbuttons" v-if="editing" >
+        <button  v-on:click="createGroup()" > Save Changes </button>  &nbsp; 
+        <button  v-on:click="deleteGroup()" > Delete Group </button>
+    </div>
   </form>
 
   <div class="place-error" >
@@ -116,21 +132,32 @@ export default {
         groupType: "private",
         descr: "",
         tags: "",
-        
+        editing: null,      /* group record if editing. */
+
+        // If editing, edit admins and members
+        members: [],     // list of ID s
+        admins: [],     // list of ID s
+
+        doPassword: false,
         statusMsg: "",
         password2: "",       /* for input checking */
         networkError: "",
         pw_message: "",
         resultStatus: "",
-        reLogin: "",
         userName: "",
       }
   },
   methods: {
-      /* Basically the "submit" handler */
-      createGroup: function  () {
+        /* Basically the "submit" handler */
+        createGroup: function  () {
 
         this.networkError = "";   // no error yet
+
+        if( this.groupName == null || this.groupName == "" || this.groupName.indexOf(" ") != -1 ) {
+            this.resultStatus = "Group Name is required, and must not have any spaces";
+            return;
+        }
+
         this.resultStatus = "Creating group " + this.groupName;
         let headers = { headers: {
             'Access-Control-Allow-Origin': '*',
@@ -253,8 +280,18 @@ export default {
     }
   },
   created: function () {
-      this.$parent.$parent.renderApp = "";      // clear groups nav bar
-      this.userName = this.$parent.loggedInName;
+    this.$parent.$parent.renderApp = "";      // clear groups nav bar
+    this.userName = this.$parent.loggedInName;
+    this.editing = this.$parent.activeGroup;
+
+    if( this.editing ) {
+        this.groupName = this.editing.groupName;
+        this.groupType = this.editing.type;
+        this.descr = this.editing.descr;
+        this.tags = this.editing.tags;
+
+        // Get members and admins here later?
+    }
   }
 }
 
@@ -282,6 +319,22 @@ export default {
      display:           grid;
      grid-template-columns:  30%  auto;
      grid-gap:          4px;
+}
+
+.grid-checkbox {
+    display:           grid;
+    grid-template-columns:  18em  2em  auto;
+    grid-gap:          1px;
+    padding:           8px;
+}
+
+.grid-editbuttons {
+    display:           grid;
+    grid-template-columns:  auto  auto;
+    grid-gap:          1px;
+    text-align:        center;
+    margin-left:       16%;
+    margin-top:        4%;
 }
 
 input {
@@ -341,10 +394,6 @@ label {
 
 .float-right {
     float:  right;
-}
-
-.center-items {
-    text-align:       center;
 }
 
 </style>

@@ -57,12 +57,14 @@ export default {
         console.log( "gridCallback: ", key, gridlink );
         // find record in this.groupRecs
         let group = this.groupRecs.find( rec => rec._id == gridlink._id );
+        this.$parent.activeGroup = group;
+
         if( key == "select") {
-          this.$parent.activeGroup = group;
-          this.resultMsg = "Group '" + group.groupName + "' is now the active group";
+          //this.resultMsg = "Group '" + group.groupName + "' is now the active group";
+          this.$parent.renderApp = "groupLinks";
         }
         else if( key == "edit") {
-          return;
+          this.$parent.renderApp = "addGroup";
         }
     },
     getGroupData: function ( ) {
