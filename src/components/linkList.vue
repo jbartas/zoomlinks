@@ -1,9 +1,13 @@
 <template>
   <div class="linkList">
    <div class="place-grid" >
-      <div class="table-header" >
+      <div class="table-header" v-if="linksfor == 'user'" >
           <strong> My Links: </strong>
       </div>
+      <div class="table-header" v-if="linksfor == 'group'" >
+          <strong> Links for group {{activeGroup.groupName}}: </strong>
+      </div>
+
       <grid class="grid_wrapper"
             :data     = "gridData" 
             :columns  = "gridColumns" 
@@ -33,6 +37,9 @@ export default {
   name: 'listLink',
   components: {
       grid
+  },
+  props: {
+      linksfor: String,
   },
   methods: {
     showMore( gridlink ) {
@@ -133,7 +140,13 @@ export default {
     },
     getLinkData: function ( user ) {
 
-        let url = "/getLinks/" + user ;
+        let url = "" 
+        if(this.linksfor == "group" ) {
+            url = "/getGroupLinks/" + this.activeGroup._id ;
+        }
+        else {
+            url = "/getLinks/" + user ;
+        }
 
         // eslint-disable-next-line
         console.log( "getLinkData: ", url );
@@ -178,6 +191,7 @@ export default {
     if( user == "" ) {    // No one is logged in.
         return;
     }
+    this.activeGroup = this.$parent.activeGroup;
     this.getLinkData( user );
   },
   data() {
@@ -186,6 +200,7 @@ export default {
         resultMsg: "",
         networkError: "",
         linkRecs: [],       // list of full records of links
+        activeGroup: null,
 
         /* grid stuff */
         gridColumns: [ 'name', 'link', 'tags', "use", "more", "edit" ], // titles

@@ -19,6 +19,10 @@
       </nav>   <!-- end navigation tabs -->
     </div> <!-- end "nav_wrapper" -->
 
+    <div class="place-error" v-on:click="showApp( 'listGroups')" >
+      <div class="group-error" >{{groupsError}}</div>
+    </div>
+
 </div>
 </template>
 
@@ -33,9 +37,20 @@ export default {
       if( appName == "addGroup" ) {
         this.$parent.activeGroup = null;
       }
+      else if( appName == "groupLinks") {
+        if( this.$parent.activeGroup == null ) {
+          this.groupsError = "Please Select an active group first. ";
+          return;
+        }
+      }
       this.$parent.renderApp = appName;
     }
   },
+  data() {
+    return {
+      groupsError: "",
+    }
+  }
 }
 </script>
 
@@ -49,6 +64,13 @@ export default {
 
 nav {
     max-width:      29em;  /* Adjust if adding/removing tabs */
+}
+
+.group-error {
+    color:          var(--grid-url-color);
+    text-decoration: underline;
+    cursor:         pointer;
+    font-size:      1.3em;
 }
 
 </style>

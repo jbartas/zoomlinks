@@ -84,7 +84,7 @@ export default {
   },
   methods: {
     getColStyle: function( key ) {
-        console.log("getColStyle: key: ", key );
+        // console.log("getColStyle: key: ", key );
         if( this.colstyle && this.colstyle[key] ) {
           return this.colstyle[key];
         }

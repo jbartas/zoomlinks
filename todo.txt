@@ -15,6 +15,7 @@ Done - Show last use date as icon.
 Done - default order grid by useDate (descending)
 Done - Add Bug/feature report (help?) page. 
 - Implement groups
+- Allow initial URL to direct to a group, user, or link.
 - Add date/day and time (e.g. of zoom call) option
 - move to port 80
 - Implement "Add to calendar"

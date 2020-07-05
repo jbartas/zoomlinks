@@ -61,7 +61,13 @@
     <login      v-if="renderApp == 'login'" />
     <addUser    v-if="renderApp == 'addUser'" />
     <addLink    v-if="renderApp == 'addLink'" />
-    <linkList   v-if="renderApp == 'linkList'" />
+
+    <div v-if="renderApp == 'linkList'">
+      <linkList 
+        linksfor = "user"
+      />
+    </div>
+
     <groups     v-if="renderApp == 'groups'" />
     <requests   v-if="renderApp == 'requests'" />
     <about      v-if="renderApp == 'about'" />
