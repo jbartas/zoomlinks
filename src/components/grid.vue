@@ -135,12 +135,13 @@ export default {
 }
 
 .grid-table th {
-  cursor:       pointer;
+  cursor:           pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  -ms-user-select:  none;
+  user-select:      none;
   padding-right:    5px;
+  text-align:       center;
 }
 
 .grid_table_body tr {

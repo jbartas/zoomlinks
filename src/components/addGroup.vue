@@ -148,8 +148,8 @@ export default {
       }
   },
   methods: {
-        /* Basically the "submit" handler */
-        createGroup: function  () {
+    /* Basically the "submit" handler */
+    createGroup: function  () {
 
         this.networkError = "";   // no error yet
 
@@ -169,9 +169,9 @@ export default {
 
         /* hash the password */
         let hashPW = bcrypt.hashSync( this.password, 10);
-        let userId = this.$parent.$parent.loggedInID;
+        let userId = this.$parent.loggedInID;
         let newGroup = { 
-            admins:     [ userId],     	// Array of admins
+            admins:     [ userId ],     	// Array of admins
             groupName:  this.groupName,
             descr:      this.descr,
             tags:       this.tags,
@@ -181,7 +181,7 @@ export default {
             members:   	[ userId ],     // _id list of member users
         };
 
-        let url = this.$parent.$parent.baseURL + "/newGroup";
+        let url = this.$parent.baseURL + "/newGroup";
         console.log("Create group; object: ", newGroup, ", URL: ", url );
 
         axios.post( url, newGroup, headers )
@@ -189,8 +189,8 @@ export default {
             // eslint-disable-next-line
             console.log( "addGroup; reply: ", reply );
             this.resultStatus = "New Group " + this.groupName + " created.";
+            this.$parent.activeGroup = newGroup;
             this.$parent.renderApp = "editGroup";
-            this.$parent.activeGroup = this.groupName;
         }).catch( error =>  {
             // eslint-disable-next-line
             console.log( error );
@@ -198,13 +198,14 @@ export default {
             this.resultStatus = "";
         });
 
-      },
-      checkData: function ( queryField ) {
-          /* method to check a just-entered newUserName or password to 
-           * see if it already exists in the database and warn the user if so.
-           */
+    },
+    checkData: function ( queryField ) {
+        /* method to check a just-entered newUserName or password to 
+         * see if it already exists in the database and warn the user if so.
+         */
         let url = this.$parent.baseURL + "/getGroupInfo/";
         this.networkError = "";   // no error yet
+        this.resultStatus = "";   // no status, either.
         let headers = { headers: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'POST, GET, PUT, OPTIONS, DELETE',
@@ -233,21 +234,23 @@ export default {
             }
 
             /* Fall to here if we got a successly reply, 
-             * That might be zero elements...
+             * That will often be a zero length array
              */
-            let groups = reply.data.groupInfo;  // array of matching groups (should be 0 or 1)
+            let groups = reply.data.groupList;  // array of matching groups (should be 0 or 1)
             if( groups.length == 0 ) {          // no matching 
                 this.networkError = "";         // user is OK to proceed
                 this.resultStatus = "Group name is available for use.";
             }
             else if( groups[0].groupName == this.groupName ) {
-                this.resultStatus = "Group name " + this.groupName + 
-                    " already in use. Name must be unique.";
+                this.resultStatus = "Group name '" + this.groupName + 
+                    "' already in use. Name must be unique.";
+                console.log( "checkData: groupName in use ", groups[0] );
                 this.groupName = "";            // clear from screen
             }
             else {
                 // eslint-disable-next-line
-                console.log( "user check: mismatched user name !? ", groups[0].groupName );
+                console.log( "group name check: mismatched name !? ", groups[0].groupName );
+                this.networkError = "Server DB error checking group name";
             }
         }).catch( error =>  {
             // eslint-disable-next-line
@@ -271,11 +274,8 @@ export default {
     },
     'groupName': function() {
         if( this.groupName.indexOf(" ") != -1 ) {
-//            this.groupName = this.groupName.slice(0,-1);
+            this.groupName = this.groupName.slice(0,-1);
             this.resultStatus = "Please, no spaces in Group name.";
-        }
-        else {
-                this.resultStatus = "";
         }
     }
   },

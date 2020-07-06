@@ -14,7 +14,7 @@
             :callback = "gridCallback"
             :colstyle = "gridColStyles"
             v-bind:cellcss  = 
-                "{ edit: 'button_cell', use: 'clock_cell fa-calendar-check-o', more: 'clock_cell fa-list', link: 'url_cell' }"
+                "{ edit: 'button_cell', use: 'clock_cell fa-calendar-check-o', more: 'clock_cell fa-list', link: 'url_cell', group: 'clock_cell fa-group' }"
             buttoncol = "edit" 
             >
        </grid>
@@ -32,6 +32,7 @@
 <script>
 import restapi from "../restapi.js";
 import grid    from "./grid.vue";
+import axios   from "axios";
 
 export default {
   name: 'listLink',
@@ -66,19 +67,67 @@ export default {
             "<tr><td>Clicks: </td><td>" + link.clicks + "</td></tr>" +
             "<tr><td>Tags: </td><td>" + link.linkTags + "</td></tr>";
 
-            // eslint-disable-next-line
-            console.log( "link.options: ", link.options );
-            // add any link.optons to the html table
-            if( link.options ) {
-                link.options.forEach( option => {
-                        alerthtml += "<tr><td>" + option.name + "</td><td>" + 
-                            option.value + "</td></tr>";
-                });
-            }
+        // eslint-disable-next-line
+        console.log( "link.options: ", link.options );
+        // add any link.optons to the html table
+        if( link.options ) {
+            link.options.forEach( option => {
+                    alerthtml += "<tr><td>" + option.name + "</td><td>" + 
+                        option.value + "</td></tr>";
+            });
+        }
 
         alerthtml += "</table>"
 
         this.$swal.fire({ html: alerthtml });
+    },
+    addToGroupDialog: function( gridlink ) {
+        let link = this.linkRecs.find( rec => rec._id == gridlink._id );
+
+        if( !this.activeGroup ) {
+            let alerthtml = "You must first set an 'active group' with groups->group info->select.";
+            this.$swal.fire({ html: alerthtml });
+            return;
+        }
+        let alerthtml = "<p  class='more-table'> Add link " + link.linkName + 
+                " to group " + this.activeGroup.groupName + " ? </p>";
+        this.$swal.fire({ 
+            html: alerthtml,
+            showCloseButton: true,
+            showCancelButton: true,
+            focusConfirm: false,
+            confirmButtonText:
+                '<i class="fa fa-thumbs-up"></i> Yes',
+            confirmButtonAriaLabel: 'yes',
+            cancelButtonText:
+                '<i class="fa fa-thumbs-down"></i> No',
+            cancelButtonAriaLabel: 'no',
+        })
+        .then((result) => {
+            if (result.value) {
+                console.log( "$swal addToGroupDialog true." );
+                this.addLinkToGroup( link, this.activeGroup ); 
+            }
+            else {
+                console.log( "$swal addToGroupDialog false." );
+            }
+        });
+    },
+    addLinkToGroup: function ( link, group ) {
+        group.links.push( link._id );   // add link to group local copy
+        let url = this.$parent.baseURL + "/updateGroup";
+
+        axios.post( url, group /*,  headers*/ )
+        .then( reply => {
+            // check reply for status error later? 
+            let msg = "Updated group " + group.groupName + " with link " + link.linkName ;
+            console.log( msg, reply );
+            this.resultMsg = msg;
+        }).catch( error => {
+            console.log( error );
+            this.networkError = error;
+            this.resultMsg = "";
+        });
     },
     gridCallback: function ( link, cell ) {
         console.log( "grid callback, link: ", link, cell );
@@ -99,6 +148,10 @@ export default {
             console.log( "gridCallback, added options: ", reclink );
             this.$parent.editLink = reclink;       // pass link fields to "add"" form
             this.$parent.renderApp = "addLink";
+        }
+        else if( cell == "group" ) {
+            // Show extra fields
+            this.addToGroupDialog( link );
         }
         else if( cell == "more" ) {
             // Show extra fields
@@ -142,6 +195,11 @@ export default {
 
         let url = "" 
         if(this.linksfor == "group" ) {
+            console.log( "getLinkData: activeGroup:", this.activeGroup );
+            if( !this.activeGroup ) {
+                console.log( "getLinkData: no active group." );
+                return;
+            }
             url = "/getGroupLinks/" + this.activeGroup._id ;
         }
         else {
@@ -156,11 +214,22 @@ export default {
             
             // eslint-disable-next-line
             console.log( "got Records: ", reply );
+            if( reply.status != "success") {
+                this.resultMsg = "";
+                this.networkError = "Network error: Server problem.";
+                return;
+            }
 
             /* Clear the grid of current data before we (re)write it */
             this.gridData = [];
             if( reply.recordList.length == 0 ) {
-                this.resultMsg = "No links found for user " + user + ". Save some with 'Add Link'."
+                if( this.linksfor == "group" ) {   // who has no links, group or user? 
+                    this.resultMsg = "No links found for group " + this.activeGroup.groupName + 
+                        ". Save some from your 'My Links' page or with 'Add Link'.";
+                }
+                else {
+                    this.resultMsg = "No links found for user " + user  + ". Save some with 'Add Link'.";
+                }
                 return;
             }
             this.linkRecs = reply.recordList;
@@ -192,6 +261,13 @@ export default {
         return;
     }
     this.activeGroup = this.$parent.activeGroup;
+    /*
+    if( !this.activeGroup ) {
+        this.resultMsg = "No Active Group!";
+        alert("No active group is set.");
+        this.$parent.renderApp = "listGroups";
+    }
+    */
     this.getLinkData( user );
   },
   data() {
@@ -203,13 +279,14 @@ export default {
         activeGroup: null,
 
         /* grid stuff */
-        gridColumns: [ 'name', 'link', 'tags', "use", "more", "edit" ], // titles
+        gridColumns: [ 'name', 'link', 'tags', "use", "more", "group", "edit" ], // titles
         gridColStyles: {    // control the grid column widths 
             "select": "width: 36%", 
             "link":   "width: 20%", 
-            "tags": "width: auto",
+            "tags":   "width: auto",
             "use" :   "width: 1.8em", 
             "more":   "width: 1.8em",
+            "group":  "width: 1.8em",
             "edit":   "width: 6em" 
         }, 
         gridData: []        // sub-records for grid display
