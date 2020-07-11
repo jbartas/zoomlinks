@@ -88,7 +88,7 @@ private - Only group members can view the group's links.
         <div class="input-box" title="At least 6 characters">
             <input type="password" name="password2" v-model="password2" autocomplete="new-password" />
         </div>
-    </div>      <!-- end grid-2cols -->
+    </div>      <!-- end grid-2cols (doPassword) -->
 
     <div class="submit_button" v-if="editing == null" >
         <button  v-on:click="createGroup()" > Create Group </button>

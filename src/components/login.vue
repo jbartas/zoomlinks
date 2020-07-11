@@ -118,11 +118,6 @@ export default {
     top:        2em;
 }
 
-input {
-    position:   relative;
-    width:      90%;
-}
-
 .input-box {
     text-align:     left;
     padding-left:   6px;

@@ -72,8 +72,9 @@
     <requests   v-if="renderApp == 'requests'" />
     <about      v-if="renderApp == 'about'" />
     <addGroup   v-if="renderApp == 'addGroup'" />
-    <listGroups v-if="renderApp == 'listGroups'" />
+    <listGroups v-if="renderApp == 'listGroups' || renderApp == 'groups'" />
     <groupLinks v-if="renderApp == 'groupLinks'" />
+    <groupUsers v-if="renderApp == 'groupUsers'" />
 
 
 </div> <!-- end top_view -->
@@ -90,6 +91,7 @@ import about from '../components/about.vue'
 import listGroups from '../components/listGroups.vue'
 import groupLinks from '../components/groupLinks.vue'
 import addGroup from '../components/addGroup.vue'
+import groupUsers from '../components/groupUsers.vue'
 
 
 export default {
@@ -104,7 +106,8 @@ export default {
     about,
     addGroup,
     listGroups,
-    groupLinks
+    groupLinks,
+    groupUsers
   },
   props: {
     msg: String

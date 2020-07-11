@@ -15,14 +15,14 @@ Done - Show last use date as icon.
 Done - default order grid by useDate (descending)
 Done - Add Bug/feature report (help?) page. 
 Done (first cut) - Implement groups
-- Way to add users to group.
-- Way to add admins to group.
-- allow access to public groups (password? PW on link?)
-- Remove group icon from link list when in group mode (or show other users of link?).
-- Delete groups.
-- check for adding duplicate links to group.
-- Allow user to join existing group. (ie wisdom2020 -> wisdom2020 group)
+Done - Way to add users to group.
+Done - Way to add admins to group.
+- allow access to public groups by "guest" user.
 - Allow initial URL to direct to a group, user, or link.
+- Remove group icon from link list when in group mode (or show other users of link?).
+- Delete group function needed.
+- check for adding duplicate links to group.
+- Allow user to request add to group. (ie jsmith -> wisdom2020 group)
 - Add date/day and time (e.g. of zoom call) option
 - move to port 80
 - Implement "Add to calendar"
