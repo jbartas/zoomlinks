@@ -1,11 +1,10 @@
 <template>
   <div class="linkList">
    <div class="place-grid" >
+
+       <!-- If invoked from group then group asdds table header, else: -->
       <div class="table-header" v-if="linksfor == 'user'" >
           <strong> My Links: </strong>
-      </div>
-      <div class="table-header" v-if="linksfor == 'group'" >
-          <strong> Links for group {{activeGroup.groupName}}: </strong>
       </div>
 
       <grid class="grid_wrapper"
@@ -115,7 +114,7 @@ export default {
     },
     addLinkToGroup: function ( link, group ) {
         group.links.push( link._id );   // add link to group local copy
-        let url = this.$parent.baseURL + "/updateGroup";
+        let url = this.$parent.baseURL + "/updateGroup/";
 
         axios.post( url, group /*,  headers*/ )
         .then( reply => {

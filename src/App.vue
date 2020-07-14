@@ -73,7 +73,6 @@ input:hover {
 
 button {
     height:         2em;
-    width:          10em;
     overflow:       visible;
     color:          var(--bt-form-text);
     background-color:  white;
@@ -95,7 +94,6 @@ button:hover {
     font-size:        1.0em;
     padding-top:      1em;
     background-color: var(--bt-table-backgroud) ;
-    margin:           6px;
     padding:          12px;
 }
 

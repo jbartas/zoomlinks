@@ -205,7 +205,7 @@ export default {
 </script>
 
 
-<style scoped>
+<style>
 
 /* Outer container */
 .adduser {
@@ -217,20 +217,20 @@ export default {
 .place-form {
     position:   relative;
     top:        1.8em;
-    width:      80%;
-    max-width:  500px;
+    width:      36em;
+    max-width:  50em;
     margin:     auto;
 }
 
 /* Over-write default 2cols */
 .grid-2cols {
      display:           grid;
-     grid-template-columns:  30%  auto;
+     grid-template-columns:  10em  auto;
      grid-gap:          4px;
 }
 
 input {
-    min-width: 90%;
+    min-width: 80%;
 }
 
 .input-box {
@@ -249,6 +249,12 @@ input {
 }
 
 .submit_button {
-    text-align:         center;
+    text-align:     center;
+    margin:         1em;
 }
+
+button {
+    width:          10em;
+}
+
 </style>

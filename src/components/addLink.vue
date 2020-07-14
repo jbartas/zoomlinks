@@ -1,7 +1,19 @@
 <template>
   <div class="add_link">
 
-   <div class="place-form" >
+    <div class="grid-addfor"  v-if="activeGroup && (editLink == null)" 
+            title="All group links must be owner by a user. When you create a new link 
+                for a group it is automatically added to your links as well. " >
+        Add link for: 
+        <span class="ctrl-pair" >
+            <input type="radio" value="user" v-model="addfor" > User {{loggedInName}} only, or 
+        </span>
+        <span class="ctrl-pair" >
+            <input type="radio" value="group"  v-model="addfor" > Group {{activeGroup.groupName}} too.
+        </span>
+    </div>
+
+    <div class="place-form" >
       <form name="add-link" class="sb_form form-width" v-on:submit.prevent >
         <div class="grid-2cols ">
             <label> Link name: </label>
@@ -51,7 +63,7 @@
             <div></div><div> <strong> Your custom data. </strong></div>
             <div>
                 <input  placeholder="Name" v-bind="options.custom.name"
-                    title="Give you custom field a name, like 'password' or 'contact email'." 
+                    title="Give your custom field a name, like 'password' or 'contact email'." 
                     autocomplete="off" />
             </div>
             <div title="Enter your new field's text value, like 'john@gmail.com'">
@@ -97,10 +109,10 @@
         </div>
 
         <label> &nbsp; </label>
-        <div v-if="editLink == null" >
+        <div class="bottom_buttons" v-if="editLink == null" >
             <button v-on:click="submitLink()" > Save Link </button>
         </div>
-        <div v-if="editLink" >
+        <div class="bottom_buttons"  v-if="editLink" >
             <button v-on:click="submitLink()" > Save Edits </button>
             <button v-on:click="deleteLink()" > Delete Link </button>
         </div>
@@ -144,9 +156,10 @@ export default {
             "linkTags": this.linkTags,
             "type":     "basic",
             "clicks":   0,
-            "options":  this.options
+            "options":  this.options,
         }
 
+        // Add optional stuff to new group
         if( this.setZoom ) {
             newLink.type = "zoom";
         }
@@ -170,6 +183,25 @@ export default {
                     }
                     else {
                         this.resultMsg = "Created new link entry";
+                    }
+
+                    if( this.addfor == "group" ) {      // Add link to group as well
+                        console.log("adding new link to group, newLink: ", reply.newLink );
+                        // add link to group local copy
+                        this.activeGroup.links.push( reply.newLink._id );
+
+                        restapi.post( "/updateGroup", this.activeGroup )
+                        .then( reply => {
+                            // check reply for status error later? 
+                            let msg = "Updated group " + this.activeGroup.groupName + 
+                                " with link " + this.linkName ;
+                            console.log( msg, reply );
+                            this.resultMsg = msg;
+                        }).catch( error => {
+                            console.log( error );
+                            this.networkError = error;
+                            this.resultMsg = "";
+                        });
                     }
 
                     // Clear the saved fields from display
@@ -266,6 +298,9 @@ export default {
         if( this.setZoom ) {
             this.getOptions();
         }
+    },
+    setCustoms: function() {
+        this.options.custom = { name: "", value:"" };
     }
   },
   created: function() {
@@ -275,6 +310,13 @@ export default {
         // eslint-disable-next-line
         console.log( "addLink create(), edit: ", this.editLink );
         this.$parent.editLink = null;       // we have a local copy, slear the parent
+
+        /* Set up globals */
+        this.loggedInName = this.$parent.loggedInName;
+        this.activeGroup = this.$parent.activeGroup;
+        if( this.activeGroup ) {
+            this.addfor = "group"
+        }
 
         // If we're editing a link, get the fields from the server
         if ( this.editLink ) {
@@ -295,6 +337,11 @@ export default {
         networkError: "",
         resultMsg: "",
         editLinkId: "",     // ID of link if a link is being edited.
+
+        loggedInName: "",
+        activeGroup: "",
+
+        addfor: "user",     // adding link to "user" or "group"
 
         // Fields in form for new link
         linkURL: "",
@@ -341,24 +388,46 @@ export default {
 }
 
 .grid-2cols {
-     display:       grid;
-     grid-template-columns:  8em  auto;
-     grid-gap:      4px;
-     transition:    0.3s;
+    display:        grid;
+    grid-template-columns:  8em  auto;
+    grid-gap:       4px;
+    transition:     0.3s;
+}
+
+.grid-addfor {
+    position:       relative;
+    top:            0.8em;
+    text-align:     left;
+    display:        grid;
+    grid-template-columns:  auto  auto auto;
+    grid-gap:       4px;
+    max-width:      38em;
+    margin:         auto;
 }
 
 .zoom-2cols {
-     display:       grid;
-     grid-template-columns:  40%  auto;
-     grid-gap:      4px;
-     transition:    0.3s;
+    display:        grid;
+    grid-template-columns:  40%  auto;
+    grid-gap:       4px;
+    transition:     0.3s;
 }
 
+.ctrl-pair {
+    display:        grid;
+    grid-template-columns:  auto  auto;
+}
+
+.bottom_buttons {
+    position:       relative;
+    top:            0.8em;
+    margin:         0.5em;
+}
 
 .checkboxes {
     position:       relative;
     top:            0.8em;
-    height:         2.5em;
+    height:         2.1em;
+    margin:         0.9em;
     text-align:     left;
     display:        grid;
     grid-template-columns:  auto  4em  auto  4em  auto  4em  auto;

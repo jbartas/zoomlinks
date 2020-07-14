@@ -1,7 +1,7 @@
 Todo list for Linkshare - both ends
 
 Done - Add password to link records
-Done - Update link use date on click
+Done - Update link use date on click (so we can sort links by last-used)
 Done - implement per-cell grid table formatting
 Done - delete links
 Done - edit links 
@@ -17,8 +17,13 @@ Done - Add Bug/feature report (help?) page.
 Done (first cut) - Implement groups
 Done - Way to add users to group.
 Done - Way to add admins to group.
-- allow access to public groups by "guest" user.
-- Allow initial URL to direct to a group, user, or link.
+Done - Implement "add link" button on groups page if permissions are OK.
+- allow access to public groups by "guest" user. 
+- Allow initial URL to direct to a group, user, or link. Include "search" parameter to narrow link lists.
+- Add waiting animation (twirler or wheel gif.)
+- Convert last-user alert to swal popup.
+- Add user face/avatar icon. Read from Google or Facebook?
+- Twirling "wait" icon when accessinhg server. Snorelax?
 - Remove group icon from link list when in group mode (or show other users of link?).
 - Delete group function needed.
 - check for adding duplicate links to group.

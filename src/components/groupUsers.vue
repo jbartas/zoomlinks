@@ -12,13 +12,13 @@
 
                 <label> Name of User: </label>
                 <input type=text v-model="userName" />
-                <button class="submit_button" v-on:click="userChange('add','user')" > Add </button>
-                <button class="submit_button" v-on:click="userChange('delete','user')" > Delete </button>
+                <button class="submit_user_button" v-on:click="userChange('add','user')" > Add </button>
+                <button class="submit_user_button" v-on:click="userChange('delete','user')" > Delete </button>
 
                 <label> Name of Admin: </label>            
                 <input type=text v-model="adminName" />
-                <button class="submit_button" v-on:click="userChange('add','admin')" > Add </button>
-                <button class="submit_button" v-on:click="userChange('delete','admin')" > Delete </button>
+                <button class="submit_user_button" v-on:click="userChange('add','admin')" > Add </button>
+                <button class="submit_user_button" v-on:click="userChange('delete','admin')" > Delete </button>
             </div>
             <hr>
             <div class="grid-2cols" >
@@ -105,6 +105,7 @@ export default {
                 this.activeGroup = response.data.updatedGroup;
 
                 // fix up the display screen
+                this.resultStatus = "";
                 this.adminName = "";
                 this.userName = "";
                 this.getMembers();
@@ -179,7 +180,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 .addUser{
     position:   relative;
@@ -195,18 +196,19 @@ export default {
 
 /* Over-write default 2cols */
 .grid-controls {
-    display:           grid;
+    display:            grid;
     grid-template-columns:  9em  auto  5em 6em;
-    grid-gap:          4px;
+    grid-gap:           4px;
+    padding:            0.4em;
 }
 
 .grid-2cols {
     position:       relative;
     top:            1em;
     text-align:     left;
-    display:       grid;
+    display:        grid;
     grid-template-columns:  50%  50%;
-    grid-gap:      4px;
+    grid-gap:       4px;
 }
 
 label {
@@ -235,9 +237,11 @@ input {
     background-color:   #f6f6fb;
 }
 
-.submit_button {
-    position:   relative;
-    max-width:  5em;
+.submit_user_button {
+    position:       relative;
+    max-width:      6em;
+    margin-left:    0.9em;
+    margin-right:   0.9em;
 }
 
 </style>

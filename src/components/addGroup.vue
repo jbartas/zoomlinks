@@ -30,6 +30,7 @@
             </div>
         </div>      <!-- end grid-2cols -->
     </div>      <!-- end Group name area -->
+    <br>
     <div class="form-text" title="Both these fields will be used when searching for the group.">
         Add a desription &amp; tags:
         <i class="fa fa-question-circle float-right"></i>

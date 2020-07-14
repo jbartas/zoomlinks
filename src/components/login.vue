@@ -107,7 +107,6 @@ export default {
 
 .place-form {
     position:   relative;
-    width:      25em;
     top:        2em;
     margin:     auto;
 }
