@@ -91,6 +91,7 @@ export default {
     this.$parent.loggedInStatus = false;
     this.$parent.loggedInName = "";
     this.$parent.userEmail = "";
+    this.$parent.activeGroup = null;
   }
 }
 

@@ -82,7 +82,7 @@
                     autocomplete="off" />
             </div>
             <label> Zoom Meeting ID (9 digits, from Zoom) </label>
-            <div title="Meeting ID is usually 9 digits" >
+            <div title="Meeting ID is usually 9-11 digits" >
                 <input  placeholder="Meeting ID number" v-model="zoomID"
                     autocomplete="off" />
             </div>

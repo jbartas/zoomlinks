@@ -12,14 +12,22 @@
           <h2>
               LinkShare
           </h2>
-          A way to share Zoom, chat and other links
+          <div class="toptext">
+          A way to share Zoom, chat and other links<br>
+          </div>
+          <span class="toptext-span">
+          {{loggedInText}}
+          </span>
+          <span class="toptext-span"> - 
+          </span>
+          <span class="toptext-span">
+          {{ActiveGroupText}}
+          </span>
+
         </td><td>
 		<div class="topbuttons">
           <button  v-on:click="showApp( 'login')" > Log {{loggedInStatus == true?'Out':'In'}} </button>
           <button  v-on:click="showApp( 'addUser')" >Create Account</button>
-		</div>
-		<div  class="topbuttons" >
-         {{loggedInText}}
 		</div>
     </td></tr>
     </table>
@@ -126,6 +134,7 @@ export default {
       activeGroup: null,    // group currently in use, null if none
       userEmail: "",
       editLink: null,       // For passing link fields to editor
+      ActiveGroupText: "No active Group",
 
       /* PRIVATE - you can mess with this if you want. */
       loggedInText: "Not Logged In"    // generated from loggedInStatus and loggedInName
@@ -140,12 +149,21 @@ export default {
   },
   watch: {
     'loggedInName': function() {
-      if( this.loggedInStatus == true) {
-        this.loggedInText = "Logged in as " + this.loggedInName ;
-      }
-      else {
-        this.loggedInText = "Not Logged in" ;
-      }
+        if( this.loggedInStatus == true) {
+            this.loggedInText = "Logged in as " + this.loggedInName ;
+        }
+        else {
+            this.loggedInText = "Not Logged in" ;
+        }
+    },
+    'activeGroup': function() {
+        if( this.activeGroup ) {
+            this.ActiveGroupText = "Active group is " + this.activeGroup.groupName ;
+        }
+        else {
+            this.ActiveGroupText = "No active group" ;
+        }
+
     }
   } 
 }
@@ -208,5 +226,13 @@ nav {
     min-height: 3.2em;
 }
 
+.toptext {
+    position:     relative;
+    margin:       auto;
+}
+
+.toptext-span {
+    font-weight:  600;
+}
 
 </style>
