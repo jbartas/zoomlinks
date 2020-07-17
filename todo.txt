@@ -21,6 +21,9 @@ Done - Implement "add link" button on groups page if permissions are OK.
 - Allow initial URL to direct to a group, user, or link. Include "search" parameter to narrow link lists.
 - allow access to public groups by "guest" user. 
 - Check session security
+- move to port 80
+- convert to SSH (get Cert?) - Certbot? 
+- Way to remove meeting from group without removing form user
 - Add waiting animation (twirler or wheel gif.)
 - Convert last-user alert to swal popup.
 - Twirling "wait" icon when accessinhg server. Snorelax?
@@ -29,11 +32,9 @@ Done - Implement "add link" button on groups page if permissions are OK.
 - check for adding duplicate links to group.
 - Allow user to request add to group. (ie jsmith -> wisdom2020 group)
 - Add date/day and time (e.g. of zoom call) option
-- move to port 80
 - Add "stay logged in on this computer"
 - Implement "Add to calendar"
 - allow users to set alarms for events - recurring (week, day), one-shot.
-- convert to SSH (get Cert?) - Certbot? 
 - caching of links list on browser - prevent reloads.
 - Create "Friends" - Array of user Ids in each user.
 - Add user face/avatar icon. Read from Google or Facebook?

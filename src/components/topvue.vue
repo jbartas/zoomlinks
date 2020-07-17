@@ -135,9 +135,11 @@ export default {
       userEmail: "",
       editLink: null,       // For passing link fields to editor
       ActiveGroupText: "No active Group",
+      urlParams: {},          // params from the invoking URL
 
       /* PRIVATE - you can mess with this if you want. */
-      loggedInText: "Not Logged In"    // generated from loggedInStatus and loggedInName
+      loggedInText: "Not Logged In",   // generated from loggedInStatus and loggedInName
+      GUESTUSER: "guest"    // const
     }
   },
   methods: {
@@ -165,9 +167,54 @@ export default {
         }
 
     }
-  } 
+  },
+  created : function() {
+    console.log("Invoking URL: ",  window.location.href );
+    let uri = window.location.href.split('?');
+    if (uri.length == 2)
+    {
+      let vars = uri[1].split('&');
+      let tmp = '';
+      let params = {};
+      vars.forEach(function(v){
+        tmp = v.split('=');
+        if(tmp.length == 2)
+          params[tmp[0]] = tmp[1];
+      });
+      this.urlParams = params;     // save for other pages
+      console.log( "urlParams: ", this.urlParams );
+
+      if( !this.urlParams.user ) {
+          console.log( "urlParams: no user." );
+          return;   // can't do anything without a user
+      }
+
+      // If user is not guest, this make sure they're logged in.
+      if( this.urlParams.user != this.GUESTUSER ) {
+          console.log( "urlParams: user not guest." );
+          if( (!this.loggedInStatus) || (this.urlParams.user != this.loggedInName) ) {
+            console.log( "urlParams: non-guest user not logged in." );
+              return;   // Do nothing, will default to login page
+          }
+      }
+      else {    // log in guest user
+          this.loggedInName = this.GUESTUSER;
+          this.loggedInStatus = true;
+      }
+
+      // Fall to here if user is "guest" or logged-in non-guest
+      if( this.urlParams.app == "linkList" ) {
+          this.showApp("linkList");
+      }
+      else if( this.urlParams.app == "groupLinks" ) {
+          //this.activeGroup = write a generic group finder
+          this.showApp("groupLinks");
+      }
+    }    
+  }
 }
 </script>
+
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
