@@ -69,7 +69,7 @@ export default {
   methods: {
       /* Basically the "submit" handler */
       createUser: function  () {
-            let url = this.$parent.baseURL + "/newUser";
+            let url = this.global.baseURL + "/newUser";
             this.networkError = "";   // no error yet
             let headers = { headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -111,13 +111,13 @@ export default {
             });
       },
       relogin: function () {
-          this.$parent.renderApp = "login";
+          this.global.renderApp = "login";
       },
       checkData: function ( queryField ) {
           /* method to check a just-entered newUserName or password to 
            * see if it already exists in the database and warn the user if so.
            */
-            let url = this.$parent.baseURL + "/getUserInfo/";
+            let url = this.global.baseURL + "/getUserInfo/";
             this.networkError = "";   // no error yet
             let headers = { headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -169,7 +169,7 @@ export default {
       }
   },
   props: {
-    msg: String,
+    global: Object,
     topbarMsg: String
   },
   data() {

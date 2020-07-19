@@ -38,6 +38,9 @@
 <script>
 export default {
   name: 'groups',
+  props: {
+    global: Object,
+  },
   data() {
     return {
       groupsError: "",
@@ -50,25 +53,25 @@ export default {
       // eslint-disable-next-line
       console.log( "groups: showApp = ", appName  );
       if( appName == "addGroup" ) {
-        this.$parent.activeGroup = null;
+        this.global.activeGroup = null;
       }
       else if( appName == "groupLinks") {
-        if( this.$parent.activeGroup == null ) {
+        if( this.global.activeGroup == null ) {
           this.groupsError = "Please Select an active group first. ";
           return;
         }
       }
-      this.$parent.renderApp = appName;
+      this.global.renderApp = appName;
     }
   },
   created: function() {
-    this.activeGroup = this.$parent.activeGroup;
+    this.activeGroup = this.global.activeGroup;
     console.log( "groups: create: Active group is ", this.activeGroup );
     // Make sure logged in user is an admin of activeGroup 
     if( this.activeGroup ) {
-      if( this.activeGroup.admins.find( id => id == this.$parent.loggedInID )) {
+      if( this.activeGroup.admins.find( id => id == this.global.loggedInID )) {
         this.isAdmin = true;
-        console.log( "groups: create: Admin ID ", this.$parent.loggedInID );
+        console.log( "groups: create: Admin ID ", this.global.loggedInID );
       }
     }
   }

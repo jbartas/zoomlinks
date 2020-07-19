@@ -4,13 +4,14 @@
   <!-- This file is mostly a wrapper for linkList.vue component. -->
 
   <div class="gl-header" >
-    Links for group {{activeGroup.groupName}}
+    Links for group {{global.activeGroup.groupName}}
     <button v-on:click="showApp('addLink')"> 
       Add a link 
     </button>
   </div>
 
     <linkList  class="group-links"
+      :global = "global"
       linksfor= "group" 
       >
     </linkList>
@@ -27,23 +28,16 @@ export default {
   components: {
     linkList
   },
-  data() {
-    return {
-      loggedInName: "",
-      activeGroup: "",
-    }
+  props: {
+    global: Object,
   },
   methods: {
     showApp: function( appName ) {
       // eslint-disable-next-line
       console.log( "showApp: ", appName  );
-      this.$parent.renderApp = appName;
+      this.global.renderApp = appName;
     }
   },
-  created: function () {
-    this.loggedInName = this.$parent.loggedInName;
-    this.activeGroup = this.$parent.activeGroup;
-  }
 }
 
 </script>

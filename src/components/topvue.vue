@@ -26,7 +26,7 @@
 
         </td><td>
 		<div class="topbuttons">
-          <button  v-on:click="showApp( 'login')" > Log {{loggedInStatus == true?'Out':'In'}} </button>
+          <button  v-on:click="showApp( 'login')" > Log {{globals.loggedInStatus == true?'Out':'In'}} </button>
           <button  v-on:click="showApp( 'addUser')" >Create Account</button>
 		</div>
     </td></tr>
@@ -34,7 +34,7 @@
 
     <div class="nav_wrapper">
       <nav>   <!-- navigation tabs -->
-        <div  v-if="loggedInStatus == false"  class="navtab" >
+        <div  v-if="globals.loggedInStatus == false"  class="navtab" >
             <div v-on:click="showApp( 'login')">
         <i  class="fa fa-key"></i> Login </div>
         </div>
@@ -43,19 +43,19 @@
               <i class="fa fa-child"></i> Create Account </div>
         </div>
         <div class="navtab">
-          <div v-if="loggedInStatus == true" v-on:click="showApp( 'addLink')"> 
+          <div v-if="globals.loggedInStatus == true" v-on:click="showApp( 'addLink')"> 
               <i class="fa fa-link"></i> Add Link </div>
         </div>
         <div class="navtab">
-          <div v-if="loggedInStatus == true" v-on:click="showApp( 'linkList')"> 
+          <div v-if="globals.loggedInStatus == true" v-on:click="showApp( 'linkList')"> 
               <i class="fa fa-list"></i> My Links </div>
         </div>
         <div class="navtab">
-          <div v-if="loggedInStatus == true" v-on:click="showApp( 'groups')"> 
+          <div v-if="globals.loggedInStatus == true" v-on:click="showApp( 'groups')"> 
               <i class="fa fa-group"></i> Groups </div>
         </div>
         <div class="navtab">
-          <div v-if="loggedInStatus == true" v-on:click="showApp( 'requests')"> 
+          <div v-if="globals.loggedInStatus == true" v-on:click="showApp( 'requests')"> 
               <i class="fa fa-wrench"></i> requests </div>
         </div>
         <div class="navtab">
@@ -66,23 +66,24 @@
     </div> <!-- end nav_wrapper -->
   </div> <!-- end topbar -->
 
-    <login      v-if="renderApp == 'login'" />
-    <addUser    v-if="renderApp == 'addUser'" />
-    <addLink    v-if="renderApp == 'addLink'" />
+    <login      :global = "globals" v-if="globals.renderApp == 'login'" />
+    <addUser    :global = "globals" v-if="globals.renderApp == 'addUser'" />
+    <addLink    :global = "globals" v-if="globals.renderApp == 'addLink'" />
 
-    <div v-if="renderApp == 'linkList'">
-      <linkList 
+    <div v-if="globals.renderApp == 'linkList'">
+      <linkList :global = "globals" 
         linksfor = "user"
       />
     </div>
 
-    <groups     v-if="renderApp == 'groups'" />
-    <requests   v-if="renderApp == 'requests'" />
-    <about      v-if="renderApp == 'about'" />
-    <addGroup   v-if="renderApp == 'addGroup'" />
-    <listGroups v-if="renderApp == 'listGroups' || renderApp == 'groups'" />
-    <groupLinks v-if="renderApp == 'groupLinks'" />
-    <groupUsers v-if="renderApp == 'groupUsers'" />
+    <groups     :global = "globals" v-if="globals.renderApp == 'groups'" />
+    <requests    v-if="globals.renderApp == 'requests'" />
+    <about       v-if="globals.renderApp == 'about'" />
+    <addGroup   :global = "globals" v-if="globals.renderApp == 'addGroup'" />
+    <listGroups :global = "globals" v-if="globals.renderApp == 'listGroups'  
+                 || globals.renderApp == 'groups'" />
+    <groupLinks :global = "globals" v-if="globals.renderApp == 'groupLinks'" />
+    <groupUsers :global = "globals" v-if="globals.renderApp == 'groupUsers'" />
 
 
 </div> <!-- end top_view -->
@@ -122,45 +123,47 @@ export default {
   },
   data() {
     return {
-      /* PUBLIC */
-      /* These are referenced by child modules, don't change their names unless you 
-       * are willing to make the changes in all the children.
-       */
-      baseURL: "http://3.212.103.152:3001/zlapi",
-      renderApp: "login",
-      loggedInStatus: false,
-      loggedInName: "",
-      loggedInID: "",
-      activeGroup: null,    // group currently in use, null if none
-      userEmail: "",
-      editLink: null,       // For passing link fields to editor
-      ActiveGroupText: "No active Group",
-      urlParams: {},          // params from the invoking URL
+      globals: {
+          /* "globals" is the master list of global data. Don't change  
+          * the names unless you are willing to make the changes in all 
+          * the components.
+          */
+          renderApp: "login",   // App page to display
+          loggedInStatus: false,
+          loggedInName: "",
+          loggedInID: "",
+          activeGroup: null,    // group currently in use, null if none
+          userEmail: "",
+          editLink: null,       // For passing link fields to editor
+          urlParams: {},        // params from the invoking URL
+      },
 
-      /* PRIVATE - you can mess with this if you want. */
+      ActiveGroupText: "No active Group",
       loggedInText: "Not Logged In",   // generated from loggedInStatus and loggedInName
-      GUESTUSER: "guest"    // const
+      GUESTUSER: "guest",        // const
+
+      baseURL: "http://3.212.103.152:3001/zlapi",   // move to restapi
     }
   },
   methods: {
     showApp: function( appName ) {
       // eslint-disable-next-line
       console.log( "showApp: ", appName  );
-      this.renderApp = appName;
+      this.globals.renderApp = appName;
     }
   },
   watch: {
-    'loggedInName': function() {
-        if( this.loggedInStatus == true) {
-            this.loggedInText = "Logged in as " + this.loggedInName ;
+    'globals.loggedInName': function() {
+        if( this.globals.loggedInStatus == true) {
+            this.loggedInText = "Logged in as " + this.globals.loggedInName ;
         }
         else {
             this.loggedInText = "Not Logged in" ;
         }
     },
-    'activeGroup': function() {
-        if( this.activeGroup ) {
-            this.ActiveGroupText = "Active group is " + this.activeGroup.groupName ;
+    'globals.activeGroup': function() {
+        if( this.globals.activeGroup ) {
+            this.ActiveGroupText = "Active group is " + this.globals.activeGroup.groupName ;
         }
         else {
             this.ActiveGroupText = "No active group" ;
@@ -169,6 +172,12 @@ export default {
     }
   },
   created : function() {
+    /* This handles any parameters which were appended to the initial
+     * URL which invoked the web site. These are things like "user" 
+     * and "group" which let the invoker go directly to an internet 
+     * location inside linkshare, for example going straight to a group 
+     * being accessed as "guest".
+     * */
     console.log("Invoking URL: ",  window.location.href );
     let uri = window.location.href.split('?');
     if (uri.length == 2)
@@ -181,32 +190,37 @@ export default {
         if(tmp.length == 2)
           params[tmp[0]] = tmp[1];
       });
-      this.urlParams = params;     // save for other pages
-      console.log( "urlParams: ", this.urlParams );
+      this.globals.urlParams = params;     // save for other pages
+      console.log( "urlParams: ", this.globals.urlParams );
 
-      if( !this.urlParams.user ) {
+      if( !this.globals.urlParams.user ) {
           console.log( "urlParams: no user." );
           return;   // can't do anything without a user
       }
 
       // If user is not guest, this make sure they're logged in.
-      if( this.urlParams.user != this.GUESTUSER ) {
+      if( this.globals.urlParams.user != this.GUESTUSER ) {
           console.log( "urlParams: user not guest." );
-          if( (!this.loggedInStatus) || (this.urlParams.user != this.loggedInName) ) {
-            console.log( "urlParams: non-guest user not logged in." );
+          if( (!this.globals.loggedInStatus) || (this.globals.urlParams.user != this.loggedInName) ) {
+              console.log( "urlParams: non-guest user not logged in." );
+              this.globals.urlParams.user = null;
               return;   // Do nothing, will default to login page
           }
       }
       else {    // log in guest user
-          this.loggedInName = this.GUESTUSER;
-          this.loggedInStatus = true;
+          console.log( "urlParams: logging in guest." );
+          this.globals.loggedInName = this.GUESTUSER;
+          this.globals.loggedInStatus = true;
       }
 
+      // only handle user param once per invocation
+      this.globals.urlParams.user = null;
+
       // Fall to here if user is "guest" or logged-in non-guest
-      if( this.urlParams.app == "linkList" ) {
+      if( this.globals.urlParams.app == "linkList" ) {
           this.showApp("linkList");
       }
-      else if( this.urlParams.app == "groupLinks" ) {
+      else if( this.globals.urlParams.app == "groupLinks" ) {
           //this.activeGroup = write a generic group finder
           this.showApp("groupLinks");
       }

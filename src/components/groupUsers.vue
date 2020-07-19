@@ -59,6 +59,9 @@ import restapi from "../restapi.js";
 
 export default {
   name: 'groupUsers',
+  props: {
+      global: Object,
+  },
   data() {
     return {
         isAdmin: false,
@@ -157,13 +160,13 @@ export default {
   },
   created: function() {
 
-    this.activeGroup = this.$parent.activeGroup;
+    this.activeGroup = this.global.activeGroup;
 
     console.log("groupUsers; create for group ", this.activeGroup);
 
     // Make sure logged in user is an admin of activeGroup 
     if( this.activeGroup ) {
-      if( this.activeGroup.admins.find( id => id == this.$parent.loggedInID )) {
+      if( this.activeGroup.admins.find( id => id == this.global.loggedInID )) {
         this.isAdmin = true;
       }
     }

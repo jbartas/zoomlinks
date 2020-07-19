@@ -31,7 +31,6 @@
 <script>
 import restapi from "../restapi.js";
 import grid    from "./grid.vue";
-import axios   from "axios";
 
 export default {
   name: 'listLink',
@@ -39,6 +38,7 @@ export default {
       grid
   },
   props: {
+      global: Object,
       linksfor: String,
   },
   methods: {
@@ -83,13 +83,16 @@ export default {
     addToGroupDialog: function( gridlink ) {
         let link = this.linkRecs.find( rec => rec._id == gridlink._id );
 
-        if( !this.activeGroup ) {
+        if( !this.global.activeGroup ) {
             let alerthtml = "You must first set an 'active group' with groups->group info->select.";
             this.$swal.fire({ html: alerthtml });
             return;
         }
-        let alerthtml = "<p  class='more-table'> Add link " + link.linkName + 
-                " to group " + this.activeGroup.groupName + " ? </p>";
+        let alerthtml = "<p  class='more-table'> " + 
+            ((this.deleting) ? "Remove" : "Add") +
+            " link " + link.linkName + 
+            ((this.deleting) ? " from" :" to") +
+            " group " + this.global.activeGroup.groupName + " ? </p>";
         this.$swal.fire({ 
             html: alerthtml,
             showCloseButton: true,
@@ -105,7 +108,7 @@ export default {
         .then((result) => {
             if (result.value) {
                 console.log( "$swal addToGroupDialog true." );
-                this.addLinkToGroup( link, this.activeGroup ); 
+                this.addLinkToGroup( link, this.global.activeGroup ); 
             }
             else {
                 console.log( "$swal addToGroupDialog false." );
@@ -113,15 +116,40 @@ export default {
         });
     },
     addLinkToGroup: function ( link, group ) {
-        group.links.push( link._id );   // add link to group local copy
-        let url = this.$parent.baseURL + "/updateGroup/";
 
-        axios.post( url, group /*,  headers*/ )
+        // This function also handles removing links from groups
+        let index = group.links.indexOf(link._id);
+        console.log("addLinkToGroup, deleting", this.deleting, 
+            ", index: ", index, ", link: ", link, ", group: ", group );
+
+        if( this.deleting ) {
+            if ( index == -1 ) {
+                console.log("link ID not in group." );
+                return;
+            }
+            // remove link from local copy of group
+            group.links.splice( index, 1 );
+            console.log("link ID removed from group.", group );
+        }
+        else {
+            if( index != -1 ) {
+                this.resultMsg = "Link " + link.linkName + 
+                    " is already in group";
+                return;
+            }
+            group.links.push( link._id );   // add link to group local copy
+        }
+
+        restapi.post( "/updateGroup/", group )
         .then( reply => {
             // check reply for status error later? 
             let msg = "Updated group " + group.groupName + " with link " + link.linkName ;
             console.log( msg, reply );
             this.resultMsg = msg;
+            if( this.deleting ) {
+                this.getLinkData( "" );
+            }
+            this.deleting = false;      // clear flag
         }).catch( error => {
             console.log( error );
             this.networkError = error;
@@ -145,11 +173,16 @@ export default {
                 reclink.options = [{ name: "Zoom Password", value: reclink.password }];
             }
             console.log( "gridCallback, added options: ", reclink );
-            this.$parent.editLink = reclink;       // pass link fields to "add"" form
-            this.$parent.renderApp = "addLink";
+            this.global.editLink = reclink;       // pass link fields to "add"" form
+            this.global.renderApp = "addLink";
         }
         else if( cell == "group" ) {
-            // Show extra fields
+            /* Add or delete a link from the active group. 
+             * If links are displayed for a user then Add to user's active 
+             * group; if displayed for a group then delete from group. 
+             * First set deleting flag true/false
+             */
+            this.deleting  = (this.linksfor == "group");
             this.addToGroupDialog( link );
         }
         else if( cell == "more" ) {
@@ -157,7 +190,6 @@ export default {
             this.showMore( link );
         }
         else if( cell == "link" ) {
-            let url = "/bumpClick/";
             this.networkError = "";     // clear any visible error message
 
             // Bump click count in server records
@@ -165,7 +197,7 @@ export default {
             // eslint-disable-next-line
             console.log( "bumpClick, linkId: ", linkId );
 
-            restapi.post( url, linkId )
+            restapi.post( "/bumpClick/", linkId )
             .then ( response => {
                 let reply = response.data;
                 // eslint-disable-next-line
@@ -194,12 +226,12 @@ export default {
 
         let url = "" 
         if(this.linksfor == "group" ) {
-            console.log( "getLinkData: activeGroup:", this.activeGroup );
-            if( !this.activeGroup ) {
+            console.log( "getLinkData: global.activeGroup:", this.global.activeGroup );
+            if( !this.global.activeGroup ) {
                 console.log( "getLinkData: no active group." );
                 return;
             }
-            url = "/getGroupLinks/" + this.activeGroup._id ;
+            url = "/getGroupLinks/" + this.global.activeGroup._id ;
         }
         else {
             url = "/getLinks/" + user ;
@@ -223,7 +255,7 @@ export default {
             this.gridData = [];
             if( reply.recordList.length == 0 ) {
                 if( this.linksfor == "group" ) {   // who has no links, group or user? 
-                    this.resultMsg = "No links found for group " + this.activeGroup.groupName + 
+                    this.resultMsg = "No links found for group " + this.global.activeGroup.groupName + 
                         ". Save some from your 'My Links' page or with 'Add Link'.";
                 }
                 else {
@@ -255,16 +287,15 @@ export default {
     }
   },
   created: function() {
-    let user = this.$parent.loggedInName;
+    let user = this.global.loggedInName;
     if( user == "" ) {    // No one is logged in.
         return;
     }
-    this.activeGroup = this.$parent.activeGroup;
     /*
-    if( !this.activeGroup ) {
+    if( !this.global.activeGroup ) {
         this.resultMsg = "No Active Group!";
         alert("No active group is set.");
-        this.$parent.renderApp = "listGroups";
+        this.global.renderApp = "listGroups";
     }
     */
     this.getLinkData( user );
@@ -275,7 +306,7 @@ export default {
         resultMsg: "",
         networkError: "",
         linkRecs: [],       // list of full records of links
-        activeGroup: null,
+        deleting: false,    // true on button to remove from group
 
         /* grid stuff */
         gridColumns: [ 'name', 'link', 'tags', "use", "more", "group", "edit" ], // titles
@@ -283,9 +314,9 @@ export default {
             "select": "width: 36%", 
             "link":   "width: 20%", 
             "tags":   "width: auto",
-            "use" :   "width: 1.8em", 
-            "more":   "width: 1.8em",
-            "group":  "width: 1.8em",
+            "use" :   "width: 1.6em", 
+            "more":   "width: 1.6em",
+            "group":  "width: 1.6em",
             "edit":   "width: 6em" 
         }, 
         gridData: []        // sub-records for grid display
@@ -389,18 +420,18 @@ export default {
 }
 
 .button_cell {
-  height:       0.8em;
-  /* width: controlled by col in table (grid.vue) */
-  color:        var(--bt-form-text);
+  /* width: controlled by col in table. */
+  color:                var(--bt-form-text);
   /*  background-color:   var(--bt-table-backgroud);*/
-  margin:       auto;
+  text-align:           center;
+  margin:               auto;
   background-color:   white;
   
   border: 2px solid var( --bt-zoom-blue );
   border-radius: 12px;
   padding:      1px;
   text-align:   center;
-  font-size:    1.2em;
+  font-size:    1.1em;
 }
 
 .button_cell:hover {

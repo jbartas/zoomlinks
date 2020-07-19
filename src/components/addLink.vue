@@ -133,6 +133,9 @@ import restapi from "../restapi.js";
 
 export default {
   name: 'addLink',
+  props: {
+      global: Object,
+  },
   methods: {
       submitLink: function() {
 
@@ -150,7 +153,7 @@ export default {
         this.setOptions();
 
         let newLink = {
-            "userName": this.$parent.loggedInName,
+            "userName": this.global.loggedInName,
             "linkName": this.linkName,
             "linkURL":  this.linkURL,
             "linkTags": this.linkTags,
@@ -231,7 +234,7 @@ export default {
         this.networkError = "";
         let linkInfo = {
             "link_id": this.editLink._id, 
-            "userName": this.$parent.loggedInName
+            "userName": this.global.loggedInName
         };
 
         restapi.post( "/deleteLink", linkInfo )
@@ -305,15 +308,15 @@ export default {
   },
   created: function() {
         // editLink also serves as a flag for edit display
-        this.editLink = this.$parent.editLink;
+        this.editLink = this.global.editLink;
 
         // eslint-disable-next-line
         console.log( "addLink create(), edit: ", this.editLink );
-        this.$parent.editLink = null;       // we have a local copy, slear the parent
+        this.global.editLink = null;       // we have a local copy, slear the parent
 
         /* Set up globals */
-        this.loggedInName = this.$parent.loggedInName;
-        this.activeGroup = this.$parent.activeGroup;
+        this.loggedInName = this.global.loggedInName;
+        this.activeGroup = this.global.activeGroup;
         if( this.activeGroup ) {
             this.addfor = "group"
         }

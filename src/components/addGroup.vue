@@ -117,14 +117,13 @@ private - Only group members can view the group's links.
 
 
 <script>
-import axios from "axios";
+import restapi from "../restapi.js";
 const bcrypt = require('bcryptjs');
-
 
 export default {
   name: 'addGroup',
   props: {
-    msg: String,
+      global: Object,
   },
   data() {
       return {
@@ -160,17 +159,11 @@ export default {
         }
 
         this.resultStatus = "Creating group " + this.groupName;
-        let headers = { headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST, GET, PUT, OPTIONS, DELETE',
-            'Access-Control-Allow-Headers': 'Access-Control-Allow-Methods, Access-Control-Allow-Origin, Origin, Accept, Content-Type'
-            }};
-
         console.log("Create group; name: ", this.groupName );
 
         /* hash the password */
         let hashPW = bcrypt.hashSync( this.password, 10);
-        let userId = this.$parent.loggedInID;
+        let userId = this.global.loggedInID;
         let newGroup = { 
             admins:     [ userId ],     	// Array of admins
             groupName:  this.groupName,
@@ -182,16 +175,13 @@ export default {
             members:   	[ userId ],     // _id list of member users
         };
 
-        let url = this.$parent.baseURL + "/newGroup";
-        console.log("Create group; object: ", newGroup, ", URL: ", url );
-
-        axios.post( url, newGroup, headers )
+        restapi.post( "/newGroup", newGroup )
         .then( reply => {
             // eslint-disable-next-line
             console.log( "addGroup; reply: ", reply );
             this.resultStatus = "New Group " + this.groupName + " created.";
-            this.$parent.activeGroup = newGroup;
-            this.$parent.renderApp = "editGroup";
+            this.global.activeGroup = newGroup;
+            this.global.renderApp = "editGroup";
         }).catch( error =>  {
             // eslint-disable-next-line
             console.log( error );
@@ -201,17 +191,12 @@ export default {
 
     },
     checkData: function ( queryField ) {
-        /* method to check a just-entered newUserName or password to 
+        /* method to check a just-entered groupName or password to 
          * see if it already exists in the database and warn the user if so.
          */
-        let url = this.$parent.baseURL + "/getGroupInfo/";
+        let url = "/getGroupInfo/";
         this.networkError = "";   // no error yet
         this.resultStatus = "";   // no status, either.
-        let headers = { headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST, GET, PUT, OPTIONS, DELETE',
-            'Access-Control-Allow-Headers': 'Access-Control-Allow-Methods, Access-Control-Allow-Origin, Origin, Accept, Content-Type'
-            }};
 
         // See if we issue query for newUserName.
         if( queryField == "groupName"  && this.groupName != "" ) {
@@ -224,7 +209,7 @@ export default {
         // eslint-disable-next-line
         console.log( "getGroupRecord request url: ", url );
         
-        axios.get( url, headers )
+        restapi.get( url )
         .then ( reply => {
             // eslint-disable-next-line
             console.log( "getGroupRecord Reply: ", reply );
@@ -281,9 +266,8 @@ export default {
     }
   },
   created: function () {
-    this.$parent.$parent.renderApp = "";      // clear groups nav bar
-    this.userName = this.$parent.loggedInName;
-    this.editing = this.$parent.activeGroup;
+    this.userName = this.global.loggedInName;
+    this.editing = this.global.activeGroup;
 
     if( this.editing ) {
         this.groupName = this.editing.groupName;

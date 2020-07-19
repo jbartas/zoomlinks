@@ -35,8 +35,7 @@ import restapi from "../restapi.js";
 export default {
   name: 'login',
   props: {
-    msg: String,
-    topbarMsg: String
+    global: Object,
   },
   data() {
       return {
@@ -66,19 +65,20 @@ export default {
         .then(
             response => {
                 let reply = response.data;
+                console.log( "login: ", reply );
                 if( reply.status == "success") {
                     this.loginStatus = "";
-                    this.$parent.loggedInName = this.userName;
-                    this.$parent.loggedInStatus = true;
-                    this.$parent.loggedInID = reply.userID;
-                    this.$parent.userEmail = reply.userEmail;
-                    this.$parent.renderApp = "linkList";
+                    this.global.loggedInName = this.userName;
+                    this.global.loggedInStatus = true;
+                    this.global.loggedInID = reply.userID;
+                    this.global.userEmail = reply.userEmail;
+                    this.global.renderApp = "linkList";
                 }
                 else {
                     this.loginStatus = "Login FAILED: " + reply.message;
-                    this.$parent.loggedInStatus = false;
-                    this.$parent.loggedInName = "";
-                    this.$parent.userEmail = "";
+                    this.global.loggedInStatus = false;
+                    this.global.loggedInName = "";
+                    this.global.userEmail = "";
                 }
             }).catch( error =>  {
                 // eslint-disable-next-line
@@ -88,10 +88,10 @@ export default {
         }
   },
   created: function() {
-    this.$parent.loggedInStatus = false;
-    this.$parent.loggedInName = "";
-    this.$parent.userEmail = "";
-    this.$parent.activeGroup = null;
+    this.global.loggedInStatus = false;
+    this.global.loggedInName = "";
+    this.global.userEmail = "";
+    this.global.activeGroup = null;
   }
 }
 

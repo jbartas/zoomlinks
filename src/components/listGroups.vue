@@ -33,6 +33,9 @@ export default {
   components: {
     grid,
   },
+  props: {
+    global: Object,
+  },
   data() {
       return {
         resultMsg: "",
@@ -57,14 +60,14 @@ export default {
         console.log( "gridCallback: ", key, gridlink );
         // find record in this.groupRecs
         let group = this.groupRecs.find( rec => rec._id == gridlink._id );
-        this.$parent.activeGroup = group;
+        this.global.activeGroup = group;
 
         if( key == "select") {
           //this.resultMsg = "Group '" + group.groupName + "' is now the active group";
-          this.$parent.renderApp = "groupLinks";
+          this.global.renderApp = "groupLinks";
         }
         else if( key == "edit") {
-          this.$parent.renderApp = "addGroup";
+          this.global.renderApp = "addGroup";
         }
     },
     getGroupData: function ( ) {
@@ -72,7 +75,7 @@ export default {
         this.resultMsg = "";
 
         // get groups for the logged in user
-        let url = "/getGroups/" +  this.$parent.loggedInID;
+        let url = "/getGroups/" +  this.global.loggedInID;
 
         console.log( "getGroupData: ", url );
         restapi.get( url )
