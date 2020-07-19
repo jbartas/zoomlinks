@@ -310,6 +310,12 @@ export default {
         // editLink also serves as a flag for edit display
         this.editLink = this.global.editLink;
 
+        if( this.global.loggedInName == "guest" ) {
+            alert( "User 'guest' is not allowed to create or edit links. " +
+                "Please log in as a different user." );
+            this.global.renderApp = "login";
+        }
+
         // eslint-disable-next-line
         console.log( "addLink create(), edit: ", this.editLink );
         this.global.editLink = null;       // we have a local copy, slear the parent

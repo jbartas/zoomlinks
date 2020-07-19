@@ -221,7 +221,6 @@ export default {
           this.showApp("linkList");
       }
       else if( this.globals.urlParams.app == "groupLinks" ) {
-          //this.activeGroup = write a generic group finder
           this.showApp("groupLinks");
       }
     }    

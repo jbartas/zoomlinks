@@ -16,12 +16,18 @@
       >
     </linkList>
 
+    <div class="place-error" >
+      <div class="errorMsg">{{networkError}}</div>
+      <div class="resultMsg">{{resultMsg}}</div>
+    </div>
+
 </div>
 </template>
 
 
 <script>
 import linkList from '../components/linkList.vue'
+import restapi from "../restapi.js";
 
 export default {
   name: 'groupLinks',
@@ -31,13 +37,47 @@ export default {
   props: {
     global: Object,
   },
+  data() {
+    return {
+      resultMsg: "",
+      networkError: "",
+    }
+  },
   methods: {
     showApp: function( appName ) {
-      // eslint-disable-next-line
       console.log( "showApp: ", appName  );
       this.global.renderApp = appName;
     }
   },
+  created: function() {
+    if( this.global.urlParams.group ) {
+      console.log( "groupLinks; from URL" );
+
+      // Set up a temporary activeGroup while we load the record
+      this.global.activeGroup = {};
+      this.global.activeGroup.groupName = this.global.urlParams.group;
+
+      let url = "/getGroupByName/" + this.global.urlParams.group;
+      restapi.get( url )
+      .then(  response => {
+          let reply = response.data;
+          if( reply.status == "success" ) {
+              console.log( "groupLinks guest group ", reply.group );
+              this.global.activeGroup = reply.group;
+              // Clear group from URL params
+              this.global.urlParams.group = null;
+          }
+          else {
+              let msg = "No group found named " + this.global.urlParams.group;
+              console.log( msg );
+              this.resultMsg = msg;
+          }
+      }).catch( error =>  {
+          console.log( error );
+          this.networkError = error;
+      });
+    }
+  }
 }
 
 </script>
