@@ -291,13 +291,34 @@ export default {
     if( user == "" ) {    // No one is logged in.
         return;
     }
-    /*
-    if( !this.global.activeGroup ) {
-        this.resultMsg = "No Active Group!";
-        alert("No active group is set.");
-        this.global.renderApp = "listGroups";
+
+    /* Handle arriving here from a URL driven invocation for a group. 
+     * One indicator of this is an activeGroup with a name but no ID yet. 
+     */
+    console.log( "linkList; create: ", this.global.activeGroup );
+    if( this.global.activeGroup &&
+        this.global.activeGroup.groupName && 
+        !this.global.activeGroup._id ) {
+
+        // Get the group ID, then daiseychain to get the links
+        let url = "/getGroupInfo/" + this.global.activeGroup.groupName;
+        restapi.get( url )
+        .then ( reply => {
+            console.log( "getGroupRecord Reply.data: ", reply.data );
+            if(reply.data.status == "success" ) {
+                this.global.activeGroup = reply.data.groupList[0];
+            }
+            else {
+                this.networkError = reply.data.message;
+            }
+            this.getLinkData( user );
+        }).catch( error =>  {
+            console.log( error );
+            this.networkError = error;
+        });
+        return;
     }
-    */
+
     this.getLinkData( user );
   },
   data() {

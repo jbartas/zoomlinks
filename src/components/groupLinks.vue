@@ -53,29 +53,11 @@ export default {
     if( this.global.urlParams.group ) {
       console.log( "groupLinks; from URL" );
 
-      // Set up a temporary activeGroup while we load the record
+      /* Set up a temporary activeGroup. This will be used in linkLIst:create() 
+       * to load the full activeGroup record.
+       */
       this.global.activeGroup = {};
       this.global.activeGroup.groupName = this.global.urlParams.group;
-
-      let url = "/getGroupByName/" + this.global.urlParams.group;
-      restapi.get( url )
-      .then(  response => {
-          let reply = response.data;
-          if( reply.status == "success" ) {
-              console.log( "groupLinks guest group ", reply.group );
-              this.global.activeGroup = reply.group;
-              // Clear group from URL params
-              this.global.urlParams.group = null;
-          }
-          else {
-              let msg = "No group found named " + this.global.urlParams.group;
-              console.log( msg );
-              this.resultMsg = msg;
-          }
-      }).catch( error =>  {
-          console.log( error );
-          this.networkError = error;
-      });
     }
   }
 }

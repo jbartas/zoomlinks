@@ -19,6 +19,7 @@ Done - Way to add users to group.
 Done - Way to add admins to group.
 Done - Implement "add link" button on groups page if permissions are OK.
 - Allow initial URL to direct to a group, user, or link. Include "search" parameter to narrow link lists.
+- Make a "create link" button & function to generate the above links. 
 - allow access to public groups by "guest" user. 
 - Check session security
 - move to port 80
