@@ -18,13 +18,15 @@ Done (first cut) - Implement groups
 Done - Way to add users to group.
 Done - Way to add admins to group.
 Done - Implement "add link" button on groups page if permissions are OK.
-- Allow initial URL to direct to a group, user, or link. Include "search" parameter to narrow link lists.
-- Make a "create link" button & function to generate the above links. 
-- allow access to public groups by "guest" user. 
-- Check session security
+Done - Allow initial URL to direct to a group, user, or link. 
+Done - allow access to public groups by "guest" user. 
+Done - Way to remove meeting from group without removing from user
 - move to port 80
 - convert to SSH (get Cert?) - Certbot? 
-- Way to remove meeting from group without removing form user
+- Check session security
+- Make a YouTube Video for basic use cases.
+- Include initial URL "search" parameter to narrow link lists.
+- Make a "create link" button & function to generate the above links. 
 - Add waiting animation (twirler or wheel gif.)
 - Convert last-user alert to swal popup.
 - Twirling "wait" icon when accessinhg server. Snorelax?
@@ -41,9 +43,14 @@ Done - Implement "add link" button on groups page if permissions are OK.
 - Add user face/avatar icon. Read from Google or Facebook?
 - Bulk-assign links to friends, groups.
 - Feature to send emails with link set - LinkShareBot.
-- Make a YouTube Video for basic use cases.
 - implement data checking (on server ??) for addUser page
 
+
+Phone interface:
+- Detect phone browser clients
+- rework list (grid) screens with tole options.
+- Make sure forms work in portrait mode.
+- Alerts? 
 
 
 Component create steps:

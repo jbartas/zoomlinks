@@ -8,7 +8,7 @@
 Linkshare is a free web site where you can save, share, name and tag 
 your favotite links. The links are always available, and easy to 
 sort &amp; search. It's better than bookmarks because your links are available 
-from any computer and browser, anywhere. The tags make searching for links 
+from any device and browser, anywhere. The tags make searching for links 
 super easy, and built-in sharing groups and sharing make handling many links 
 across an organization a breeze. 
 </p>
@@ -22,12 +22,14 @@ flooded with cryptic, unnamed zoom links. Links for work, hobbies, social
 groups, friends - we went from having 3-4 zooms to dozens. And 
 zoom meetings change group Ids and passwords regularly.
 </p><p>
-As computer people, we use different computers with a variety of Browsers 
+As computer people, we use different computers, phones, and tablets 
+with a variety of Browsers 
 and operating systems. A solution like bookmarks or iCloud would only work 
-on a few of these environments. A free public online space like Google Drive 
+in a few of these environments. A free public online space like Google Drive 
 might work, but they are pretty much guaranteed to sell your information 
 or use it for advertising. Plus most of these systems lack a fast search 
-and click option.
+and click option, and do not address sharing lists of links with friends 
+or co-workers.
 </p><p>
 Thus we created Linkshare.link. Fast, free, flexible saving and sharing of 
 Zoom and all your other links, and we promise we will never sell your 
@@ -37,6 +39,16 @@ information.
 
 <button class="accordion"  v-on:click="onClick('new')" > What's New </button>
 <div class="panel" id="new">
+<p>
+  <strong>July 19, 2020 - </strong> We now support <strong>groups.</strong> <br>
+  Sharing links just got much easier. <br>
+  Form a group, invite friends, and then everybody in the group can 
+  have the latest updated info for all the links the group uses. If you 
+  need to change a link or password you can update it in the group and 
+  the whole group immediatly has the lastest info. Groups can be private - only 
+  viewable by members - or a special "guest" user account allows public groups 
+  to be viewed by people without a LinkShare account. 
+</p>
 <p>
   <strong>June 29th, 2020 - </strong> New support created for info 
   specific to Zoom links (and other video 
@@ -64,10 +76,8 @@ what links you saved).
 <button class="accordion"  v-on:click="onClick('soon')" > Features Coming Soon </button>
 <div class="panel" id="soon">
 <p>
-<strong>Groups</strong> - form a group, invite friends, and then everybody in the group can 
-have the latest updated info for all the links the group uses. Groups can be  
-private so you don't get Zoom Bombed; and if you need to change a link or 
-password you can instantly update it and notify the whole group.
+<strong>Phone &amp; mobile support </strong> - People on mobile devices will get a special 
+scaled-down GUI specially designed for use as a phone app. 
 </p><p>
 <strong>Friends</strong> - Friend another LinkShare user and you can easily share any links 
 you want with them.

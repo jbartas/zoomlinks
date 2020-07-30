@@ -27,7 +27,6 @@
 
 <script>
 import linkList from '../components/linkList.vue'
-import restapi from "../restapi.js";
 
 export default {
   name: 'groupLinks',
