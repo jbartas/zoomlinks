@@ -136,6 +136,7 @@ export default {
           userEmail: "",
           editLink: null,       // For passing link fields to editor
           urlParams: {},        // params from the invoking URL
+          portrait: false,
       },
 
       ActiveGroupText: "No active Group",
@@ -150,38 +151,16 @@ export default {
       // eslint-disable-next-line
       console.log( "showApp: ", appName  );
       this.globals.renderApp = appName;
-    }
-  },
-  watch: {
-    'globals.loggedInName': function() {
-        if( this.globals.loggedInStatus == true) {
-            this.loggedInText = "Logged in as " + this.globals.loggedInName ;
-        }
-        else {
-            this.loggedInText = "Not Logged in" ;
-        }
     },
-    'globals.activeGroup': function() {
-        if( this.globals.activeGroup ) {
-            this.ActiveGroupText = "Active group is " + this.globals.activeGroup.groupName ;
-        }
-        else {
-            this.ActiveGroupText = "No active group" ;
-        }
-
-    }
-  },
-  created : function() {
-    /* This handles any parameters which were appended to the initial
-     * URL which invoked the web site. These are things like "user" 
-     * and "group" which let the invoker go directly to an internet 
-     * location inside linkshare, for example going straight to a group 
-     * being accessed as "guest".
-     * */
-    console.log("Invoking URL: ",  window.location.href );
-    let uri = window.location.href.split('?');
-    if (uri.length == 2)
-    {
+    parseURLParams: function() {
+      /* URL params are things like "user" and "group" which let the invoker 
+       * go directly to an internet location inside linkshare, for example 
+       * going straight to a group being accessed as "guest".
+       */
+      let uri = window.location.href.split('?');
+      if (uri.length < 2) {
+        return;
+      }
       let vars = uri[1].split('&');
       let tmp = '';
       let params = {};
@@ -223,7 +202,50 @@ export default {
       else if( this.globals.urlParams.app == "groupLinks" ) {
           this.showApp("groupLinks");
       }
-    }    
+    }
+  },
+  watch: {
+    'globals.loggedInName': function() {
+        if( this.globals.loggedInStatus == true) {
+            this.loggedInText = "Logged in as " + this.globals.loggedInName ;
+        }
+        else {
+            this.loggedInText = "Not Logged in" ;
+        }
+    },
+    'globals.activeGroup': function() {
+        if( this.globals.activeGroup ) {
+            this.ActiveGroupText = "Active group is " + this.globals.activeGroup.groupName ;
+        }
+        else {
+            this.ActiveGroupText = "No active group" ;
+        }
+
+    }
+  },
+  created : function() {
+
+    /* Handle any parameters which were appended to the initial
+     * URL which invoked the web site. 
+     */
+    console.log("Invoking URL: ",  window.location.href );
+    this.parseURLParams();
+
+    console.log("Window.width ", window.outerWidth );
+
+    /* Figure out if this should get the portrait display (phones) or the 
+     * real computer disp[lay.
+     */
+    if( window.outerWidth < window.outerHeight ) {
+        console.log("Do vertical/phone GUI");
+        this.globals.portrait = true;
+    }
+    else {
+        console.log("Do horizontal GUI");
+        this.globals.portrait = false;
+    }
+
+
   }
 }
 </script>
@@ -241,6 +263,7 @@ export default {
 
 .topvue {
     color: var(--bt-zoom-form);
+    /* overflow: hidden; /* Hide horizontal scrollbar */
 }
 
 .topbuttons {

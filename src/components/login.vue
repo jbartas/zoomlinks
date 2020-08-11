@@ -65,7 +65,7 @@ export default {
         .then(
             response => {
                 let reply = response.data;
-                console.log( "login: ", reply );
+                console.log( "login reply: ", reply );
                 if( reply.status == "success") {
                     this.loginStatus = "";
                     this.global.loggedInName = this.userName;

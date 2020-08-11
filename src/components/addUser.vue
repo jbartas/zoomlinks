@@ -43,7 +43,7 @@
     <div class="resultMsg" >
         {{resultStatus}}
     </div>
-    <div class="resultMsg" v-on:click="relogin()" >
+    <div class="resultMsg url_line" v-on:click="relogin()" >
         {{reLogin}}
     </div>
   </div>
@@ -53,7 +53,7 @@
 
 
 <script>
-import axios from "axios";
+import restapi from "../restapi.js";
 const bcrypt = require('bcryptjs');
 
 /* Password hashing:
@@ -69,13 +69,8 @@ export default {
   methods: {
       /* Basically the "submit" handler */
       createUser: function  () {
-            let url = this.global.baseURL + "/newUser";
+            let url = "/newUser";
             this.networkError = "";   // no error yet
-            let headers = { headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST, GET, PUT, OPTIONS, DELETE',
-                'Access-Control-Allow-Headers': 'Access-Control-Allow-Methods, Access-Control-Allow-Origin, Origin, Accept, Content-Type'
-                }};
             
             if( this.email == "" || this.newUserName == "" || this.password.length < 6 ) {
                 this.networkError = "missing a required field";
@@ -92,9 +87,9 @@ export default {
                 "admin" :   false, 
             }
             // eslint-disable-next-line
-            console.log( newuser );
+            console.log( "createUser: url: ", url, ", newuser: " + newuser );
 
-            axios.post( url, newuser, headers )
+            restapi.post( url, newuser )
             .then( reply => {
                 // eslint-disable-next-line
                 console.log( "newUser; reply: ", reply );
@@ -114,16 +109,12 @@ export default {
           this.global.renderApp = "login";
       },
       checkData: function ( queryField ) {
-          /* method to check a just-entered newUserName or password to 
-           * see if it already exists in the database and warn the user if so.
-           */
-            let url = this.global.baseURL + "/getUserInfo/";
+            /* method to check a just-entered newUserName or password to 
+             * see if it already exists in the database and warn the user if so.
+             */
+            let url = "/getUserInfo/";
             this.networkError = "";   // no error yet
-            let headers = { headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST, GET, PUT, OPTIONS, DELETE',
-                'Access-Control-Allow-Headers': 'Access-Control-Allow-Methods, Access-Control-Allow-Origin, Origin, Accept, Content-Type'
-                }};
+            console.log( "getUserInfo request url 1: ", url );
 
             // See if we issue query for newUserName.
             if( queryField == "newUserName"  && this.newUserName != "" ) {
@@ -132,10 +123,9 @@ export default {
             else {
                 return;
             }
-            // eslint-disable-next-line
             console.log( "getUserInfo request url: ", url );
-            
-            axios.get( url, headers )
+
+            restapi.get( url )
             .then ( reply => {
                 // eslint-disable-next-line
                 console.log( "getUserInfo Reply: ", reply );
@@ -255,6 +245,12 @@ input {
 
 button {
     width:          10em;
+}
+
+.url_line {
+    color:          var(--grid-url-color);
+    text-decoration: underline;
+    cursor:         pointer;
 }
 
 </style>

@@ -1,13 +1,14 @@
 <template>
   <div class="linkList">
-   <div class="place-grid" >
+    <div class="place-grid" >
 
-       <!-- If invoked from group then group asdds table header, else: -->
-      <div class="table-header" v-if="linksfor == 'user'" >
-          <strong> My Links: </strong>
-      </div>
+        <!-- If invoked from group then group adds table header, else: -->
+        <div class="table-header" v-if="linksfor == 'user'" >
+            <strong> My Links: </strong>
+        </div>
 
-      <grid class="grid_wrapper"
+        <!-- Show grid or tile display, based on screen orientation -->
+        <grid class="grid_wrapper" v-if="! global.portrait" 
             :data     = "gridData" 
             :columns  = "gridColumns" 
             :callback = "gridCallback"
@@ -16,7 +17,11 @@
                 "{ edit: 'button_cell', use: 'clock_cell fa-calendar-check-o', more: 'clock_cell fa-list', link: 'url_cell', group: 'clock_cell fa-group' }"
             buttoncol = "edit" 
             >
-       </grid>
+        </grid>
+        <tiles class="tiles_wrapper" v-if="global.portrait" 
+            :data     = "gridData" 
+            >
+        </tiles>
     </div>
 
     <div class="place-error" >
@@ -31,11 +36,14 @@
 <script>
 import restapi from "../restapi.js";
 import grid    from "./grid.vue";
+import tiles   from "./tiles.vue";
+
 
 export default {
   name: 'listLink',
   components: {
-      grid
+      grid,
+      tiles
   },
   props: {
       global: Object,
@@ -351,12 +359,12 @@ export default {
 
 .linkList {
     position:   relative;
-    min-width:  640px;
 }
 
 .place-grid {
     position:   relative;
     width:      92%;
+    min-width:  640px;
     margin:     auto;
 }
 
