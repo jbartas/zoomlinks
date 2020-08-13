@@ -3,7 +3,7 @@
     <div class="place-grid" >
 
         <!-- If invoked from group then group adds table header, else: -->
-        <div class="table-header" v-if="linksfor == 'user'" >
+        <div class="table-header" v-if="linksfor == 'user' && !global.portrait" >
             <strong> My Links: </strong>
         </div>
 
@@ -20,6 +20,7 @@
         </grid>
         <tiles class="tiles_wrapper" v-if="global.portrait" 
             :data     = "gridData" 
+            :callback = "gridCallback"
             >
         </tiles>
     </div>
@@ -385,6 +386,11 @@ export default {
     background-color:   rgba(200, 190, 180, 0.5);
     padding:    18px;
     text-align: left;
+}
+
+.tiles_wrapper {
+    position:   relative;
+    top:        1.1em;
 }
 
 .grid_tr {

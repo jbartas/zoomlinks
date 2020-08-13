@@ -7,20 +7,24 @@
 
     <div class="place-tiles" >
         <div v-for="entry in filteredData" :key="entry._id"  class="one-tile" >
-            <div class="data-item tile_title">
+            <div class="tile_title">
                 {{entry["name"]}}
             </div>
-            <div class="grid-2cols" >
+            <div class="tile-2cols" >
                 <div class="buttons-3cols">
-                    <button class="tile-button clock_cell fa-calendar-check-o">
+                    <button class="tile-button clock_cell fa-calendar-check-o" 
+                        @click="clicked( entry, 'more' )" >
                     </button>
-                    <button class="tile-button clock_cell fa-list">
+                    <button class="tile-button clock_cell fa-list"
+                        @click="clicked( entry, 'edit' )" >
                     </button>
-                    <button class="tile-button clock_cell fa-group">
+                    <button class="tile-button clock_cell fa-group"
+                        @click="clicked( entry, 'group' )" >
                     </button>
                 </div>
                 <div>
-                    <div class="data-item url_cell">
+                    <div class="data-item url_cell"
+                            @click="clicked( entry, 'link' )" >
                         {{entry["link"]}}
                     </div>
                     <div class="data-item">
@@ -38,9 +42,10 @@
 <script>
 
 export default {
-    name: "grid",
+    name: "tiles",
     props: {
         data: Array,
+        callback: Function,
     },
     data(){
         return {
@@ -53,6 +58,9 @@ export default {
         sortBy: function (key) {
         this.sortKey = key;
         this.sortOrders[key] = this.sortOrders[key] * -1
+        },
+        clicked: function( link, item ) {
+            this.callback( link, item );
         }
     },
     computed: {
@@ -90,51 +98,47 @@ export default {
 
 .tile-wrapper {
     overflow:   clip;
+    background-color:   var( --bt-table-backgroud );
 }
 
 .place-tiles {
-    position:   relative;  
-    --grid-url-color:   #4a2888;
+    position:   relative;
 }
 
 .data-item {
-    border:         1px solid grey;
-    border-radius:  4px;
-    max-width:      62vw;
-    height:         1.2em;
+    height:         1.1em;
+    width:          21em;
+    max-width:      64vw;
     margin:         3px;
     padding:        3px;
-    color:          var( --bt-form-color );
-    background-color:   white;
+    color:          var( --bt-dark-text );
     overflow:       hidden;
     white-space:    nowrap;
 }
 
 .tile_title {
     font-weight:    700;
-    width:          94%;
-    max-width:      86vw;
 }
 
 .one-tile {
-    border:         1px solid grey;
     border-radius:  6px;
-    max-width:      94vw;
+    width:          30em;
+    max-width:      93vw;
     margin:         6px;
     padding:        4px;
     text-align:     left;
-    background-color:   var( --bt-table-backgroud );
+    background-color:   white;
 }
 
 .url_cell {
+    border:         1px solid grey;
+    color:          var( --bt-form-color );
     background-color:   var( --bt-hover-color );
-    font-weight:        700;
 }
 
-/* Over-write default grids */
-.grid-2cols {
+.tile-2cols {
     display:           grid;
-    grid-template-columns:  8em  auto;
+    grid-template-columns:  8em  22em;
     grid-gap:          4px;
 }
 

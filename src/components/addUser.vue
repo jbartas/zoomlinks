@@ -5,7 +5,7 @@
       Create a New Account
   </div>
   <form class="place-form sb_form" v-on:submit.prevent  >
-    <div class="grid-2cols" >
+    <div class="adduser-2cols" >
         <label>email:</label>
         <div class="input-box" >
             <input name="email" v-model="email" v-on:blur="checkData( 'email' )" 
@@ -28,9 +28,9 @@
             <input type="password" name="password2" v-model="password2" autocomplete="new-password" />
         </div>
 
-        <div class="submit_button" >
-            <button  v-on:click="createUser()" > Create account </button>
-        </div>
+    </div>
+    <div class="submit_button" >
+        <button  v-on:click="createUser()" > Create account </button>
     </div>
   </form>
   <div class="place-error" >
@@ -207,20 +207,22 @@ export default {
 .place-form {
     position:   relative;
     top:        1.8em;
-    width:      36em;
-    max-width:  50em;
+    left:       0em;
+    max-width:  40em;
     margin:     auto;
 }
 
 /* Over-write default 2cols */
-.grid-2cols {
+.adduser-2cols {
      display:           grid;
      grid-template-columns:  10em  auto;
      grid-gap:          4px;
 }
 
 input {
-    min-width: 80%;
+    width:     20em;
+    min-width: 12em;
+    max-width: 50%;
 }
 
 .input-box {

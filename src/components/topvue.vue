@@ -2,35 +2,36 @@
   <div class="topvue">
 
     <div id="topbar" class="topbar">
-    <table border=0 width=100% >
-      <tr><td width=12% >
-		<!-- give myself an easy way to click back home -->
-		<a href="/" >
-			<img src="../assets/logo.png" alt="logo" width="140px" >
-		</a> 
-        </td><td width=70% >
+    <div class="top-3cols" >
+      <!-- Column 1  - logo and easy way to click back home -->
+      <a href="/" >
+       <img src="../assets/logo.png" alt="logo" width="140px" >
+     </a> 
+      <div> <!-- Column 2 -->
           <h2>
               LinkShare
           </h2>
-          <div class="toptext">
-          A way to share Zoom, chat and other links<br>
+          <div v-if="globals.portrait == false" class="toptext">
+            A way to share Zoom, chat and other links<br>
           </div>
-          <span class="toptext-span">
-          {{loggedInText}}
-          </span>
-          <span class="toptext-span"> - 
-          </span>
-          <span class="toptext-span">
-          {{ActiveGroupText}}
-          </span>
-
-        </td><td>
-		<div class="topbuttons">
-          <button  v-on:click="showApp( 'login')" > Log {{globals.loggedInStatus == true?'Out':'In'}} </button>
-          <button  v-on:click="showApp( 'addUser')" >Create Account</button>
-		</div>
-    </td></tr>
-    </table>
+      </div>
+      <div class="topbuttons">  <!-- Column 3 -->
+          <button  v-on:click="showApp( 'login')" > 
+              Log {{globals.loggedInStatus == true?'Out':'In'}} </button>
+          <button  v-on:click="showApp( 'addUser')" v-if="globals.portrait == false" >
+              Create Account</button>
+      </div>
+    </div>  <!-- end of 3cols -->
+    <div>
+      <span class="toptext-span">
+      {{loggedInText}}
+      </span>
+      <span class="toptext-span"> - 
+      </span>
+      <span class="toptext-span">
+      {{ActiveGroupText}}
+      </span>
+    </div>  <!-- end of info status spans -->
 
     <div class="nav_wrapper">
       <nav>   <!-- navigation tabs -->
@@ -202,6 +203,21 @@ export default {
       else if( this.globals.urlParams.app == "groupLinks" ) {
           this.showApp("groupLinks");
       }
+    },
+    setPortraitMode: function() {
+      console.log("setPortraitMode, Window.width ", window.outerWidth );
+
+      /* Figure out if this should get the portrait display (phones) or the 
+       * real computer disp[lay.
+       */
+      if( window.outerWidth < window.outerHeight ) {
+        console.log("Do vertical/phone GUI");
+        this.globals.portrait = true;
+      }
+      else {
+        console.log("Do horizontal GUI");
+        this.globals.portrait = false;
+      }
     }
   },
   watch: {
@@ -220,7 +236,9 @@ export default {
         else {
             this.ActiveGroupText = "No active group" ;
         }
-
+    },
+    'window.outerWidth': function() {   // watch doesn't work? 
+        this.setPortraitMode();
     }
   },
   created : function() {
@@ -231,21 +249,7 @@ export default {
     console.log("Invoking URL: ",  window.location.href );
     this.parseURLParams();
 
-    console.log("Window.width ", window.outerWidth );
-
-    /* Figure out if this should get the portrait display (phones) or the 
-     * real computer disp[lay.
-     */
-    if( window.outerWidth < window.outerHeight ) {
-        console.log("Do vertical/phone GUI");
-        this.globals.portrait = true;
-    }
-    else {
-        console.log("Do horizontal GUI");
-        this.globals.portrait = false;
-    }
-
-
+    this.setPortraitMode();   // vertical (phone) or horizontal (screen)? 
   }
 }
 </script>
@@ -254,22 +258,28 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 
-/* this contains the entire site. */
+/* Outer container for the entire GUI */
+.topvue {
+    color:      var(--bt-zoom-form);
+    overflow:   hidden; /* Hide horizontal scrollbar */
+}
+
+
+/* this is the top area for every page in the GUI. */
 .topbar {
     position:       relative;
     max-width:      1000px;   /* Max width for whole site.  */
     margin:         auto;
 }
 
-.topvue {
-    color: var(--bt-zoom-form);
-    /* overflow: hidden; /* Hide horizontal scrollbar */
+.top-3cols {
+     display:           grid;
+     grid-template-columns:  140px  auto  9em;
+     grid-gap:          4px;
 }
 
 .topbuttons {
     position:   relative;
-    left:       5%;
-    right:      13%;
     padding:    8px;
 }
 

@@ -22,13 +22,14 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 1%;
+  margin: 1%;
 }
 
 
 :root {
   --bt-text-color:  #3c4e60;
   --bt-form-color:  #3322EE;
+  --bt-dark-text:   #0033DD;
   --bt-form-text:   #1144FF;
   --bt-table-backgroud:   rgba(200, 190, 180, 0.3);
   --bt-zoom-blue:    #2c8eFF;
@@ -38,9 +39,7 @@ export default {
 
 body {
     position:   "relative";
-    margin:     10px;
-/*    background: url("./assets/zoom-w-cam.png")  fixed;*/
-    color:    var( bt-text-color );
+    margin:     auto;
 }
 
 h2 {    /* used in topbar for main title */

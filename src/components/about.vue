@@ -130,6 +130,7 @@ export default {
 .about {
     position:   relative;
     min-width:  470px;
+    min-height: 500px;
     color:      var(--bt-form-color);
     text-align: left;
 }

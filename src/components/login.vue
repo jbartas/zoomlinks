@@ -1,8 +1,8 @@
 <template>
   <div class="login">
 
-   <div class="place-form" >
-      <form name="login " class="grid-2cols sb_form" autofill="off" v-on:submit.prevent >
+   <div class="login-form" >
+      <form name="login " class="login-2cols sb_form" autofill="off" v-on:submit.prevent >
         <label> User name: </label>
         <div class="input-box" >
             <input name="userName" v-model="userName" placeholder="User name" autocomplete="off" >
@@ -102,15 +102,23 @@ export default {
 
 .login {
     position:   relative;
-    min-width:  470px;
     color:      var(--bt-form-color);
 }
 
-.place-form {
+.login-form {
     position:   relative;
     top:        2em;
+    width:      30em;
+    max-width:  90vw;
     margin:     auto;
 }
+
+.login-2cols {
+     display:           grid;
+     grid-template-columns:  7em  14em;
+     grid-gap:          4px;
+}
+
 
 .place-error {
     position:   relative;
