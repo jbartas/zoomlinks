@@ -5,21 +5,26 @@
     <div class="top-3cols" >
       <!-- Column 1  - logo and easy way to click back home -->
       <a href="/" >
-       <img src="../assets/logo.png" alt="logo" width="140px" >
-     </a> 
+       <img src="../assets/logo.png" alt="logo" width="140" v-if="globals.portrait != true" >
+       <img src="../assets/logo.png" alt="logo" width="105" v-if="globals.portrait == true" >
+      </a> 
       <div> <!-- Column 2 -->
-          <h2>
+          <span class="top-title">
               LinkShare
-          </h2>
+          </span>
           <div v-if="globals.portrait == false" class="toptext">
             A way to share Zoom, chat and other links<br>
           </div>
       </div>
-      <div class="topbuttons">  <!-- Column 3 -->
+      <!-- Column 3 - dual buttons (desktop) or menu icon (mobile) -->
+      <div class="topbuttons" v-if="globals.portrait == false" >  <!-- Column 3 -->
           <button  v-on:click="showApp( 'login')" > 
               Log {{globals.loggedInStatus == true?'Out':'In'}} </button>
-          <button  v-on:click="showApp( 'addUser')" v-if="globals.portrait == false" >
+          <button  v-on:click="showApp( 'addUser')" >
               Create Account</button>
+      </div>
+      <div class="menuicon" v-if="globals.portrait" v-on:click="hide_nav = !hide_nav" > 
+        <i class="fa fa-bars"></i> 
       </div>
     </div>  <!-- end of 3cols -->
     <div>
@@ -33,8 +38,8 @@
       </span>
     </div>  <!-- end of info status spans -->
 
-    <div class="nav_wrapper">
-      <nav>   <!-- navigation tabs -->
+    <div class="nav_wrapper" v-if="hide_nav != true" >
+      <div v-bind:class="globals.portrait?'nav_tall':'nav_wide'">   <!-- navigation tabs -->
         <div  v-if="globals.loggedInStatus == false"  class="navtab" >
             <div v-on:click="showApp( 'login')">
         <i  class="fa fa-key"></i> Login </div>
@@ -63,7 +68,7 @@
           <div v-on:click="showApp( 'about')"> 
               <i class="fa fa-question-circle"></i> About... </div>
         </div>
-      </nav>
+      </div>
     </div> <!-- end nav_wrapper -->
   </div> <!-- end topbar -->
 
@@ -145,12 +150,20 @@ export default {
       GUESTUSER: "guest",        // const
 
       baseURL: "http://3.212.103.152:3001/zlapi",   // move to restapi
+
+      hide_nav: false,      // hide nav panel (for phones)
     }
   },
   methods: {
     showApp: function( appName ) {
-      // eslint-disable-next-line
       console.log( "showApp: ", appName  );
+
+      // If on phone, hide the menu after selection
+      if( this.globals.portrait == true) {
+        this.hide_nav = true;
+      }
+
+      // load next app
       this.globals.renderApp = appName;
     },
     parseURLParams: function() {
@@ -213,6 +226,7 @@ export default {
       if( window.outerWidth < window.outerHeight ) {
         console.log("Do vertical/phone GUI");
         this.globals.portrait = true;
+        this.hide_nav = true;
       }
       else {
         console.log("Do horizontal GUI");
@@ -283,7 +297,8 @@ export default {
     padding:    8px;
 }
 
-nav {
+/* A wide nav bar for screens */
+.nav_wide {
     position:       relative;
     top:            0.6em;
     max-width:      49em;  /* Adjust if adding/removing tabs */
@@ -295,6 +310,17 @@ nav {
     display:        flex;
     flex-direction: row;
     align-items:    center;
+}
+
+/* A tall nav bar for phones */
+.nav_tall {
+    position:   relative;
+    margin:     auto;
+    border:     2px solid var( --bt-zoom-blue );
+    display:    grid;
+    grid-template-columns:  auto auto;
+    grid-gap:   4px;
+    text-align: left;
 }
 
 .navtab {
@@ -313,10 +339,20 @@ nav {
     color:              #FFEE11;
 }
 
+.menuicon {
+    width:              2.2em;
+    font-size:          2.0em;
+}
+
 .nav_wrapper {
     position:   relative;
     margin:     auto;
     min-height: 3.2em;
+}
+
+.top-title {
+    padding:      8px;
+    font-size:    1.6em;
 }
 
 .toptext {
