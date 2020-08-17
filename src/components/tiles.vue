@@ -23,11 +23,11 @@
                     </button>
                 </div>
                 <div>
-                    <div class="data-item url_cell"
+                    <div class="tile-item url_cell"
                             @click="clicked( entry, 'link' )" >
                         {{entry["link"]}}
                     </div>
-                    <div class="data-item">
+                    <div class="tile-item">
                         {{entry["tags"]}}
                     </div>
                 </div>
@@ -105,41 +105,10 @@ export default {
     position:   relative;
 }
 
-.data-item {
-    height:         1.1em;
-    width:          21em;
-    max-width:      64vw;
-    margin:         3px;
-    padding:        3px;
-    color:          var( --bt-dark-text );
-    overflow:       hidden;
-    white-space:    nowrap;
-}
-
-.tile_title {
-    font-weight:    700;
-}
-
-.one-tile {
-    border-radius:  6px;
-    width:          30em;
-    max-width:      93vw;
-    margin:         6px;
-    padding:        4px;
-    text-align:     left;
-    background-color:   white;
-}
-
 .url_cell {
     border:         1px solid grey;
     color:          var( --bt-form-color );
     background-color:   var( --bt-hover-color );
-}
-
-.tile-2cols {
-    display:           grid;
-    grid-template-columns:  8em  22em;
-    grid-gap:          4px;
 }
 
 .buttons-3cols {
@@ -148,24 +117,6 @@ export default {
     display:    grid;
     grid-template-columns:  auto auto auto;
     grid-gap:   4px;
-}
-
-.tile-button {
-    position:   relative;
-    width:      1.6em;
-    max-width:  1.6em;
-    height:     1.6em;
-}
-
-.tile-search {
-    position:   relative;
-    left:       0.6em;
-    text-align: left;
-}
-
-.search-input {
-    /* over-ride normal input min-width */
-    min-width:  60%;
 }
 
 </style>

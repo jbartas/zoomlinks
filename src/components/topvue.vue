@@ -317,6 +317,7 @@ export default {
     position:   relative;
     margin:     auto;
     border:     2px solid var( --bt-zoom-blue );
+    box-shadow: 4px 6px  var(--bt-table-backgroud);
     display:    grid;
     grid-template-columns:  auto auto;
     grid-gap:   4px;

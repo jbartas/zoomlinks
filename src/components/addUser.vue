@@ -5,7 +5,7 @@
       Create a New Account
   </div>
   <form class="place-form sb_form" v-on:submit.prevent  >
-    <div class="adduser-2cols" >
+    <div v-bind:class="global.portrait?'adduser-tall':'adduser-wide'" >
         <label>email:</label>
         <div class="input-box" >
             <input name="email" v-model="email" v-on:blur="checkData( 'email' )" 
@@ -212,17 +212,25 @@ export default {
     margin:     auto;
 }
 
-/* Over-write default 2cols */
-.adduser-2cols {
-     display:           grid;
-     grid-template-columns:  10em  auto;
-     grid-gap:          4px;
+/* Over-write default 2cols - wide version */
+.adduser-wide {
+    display:           grid;
+    grid-template-columns:  10em  auto;
+    grid-gap:          4px;
+}
+
+.adduser-tall {
+    display:            grid;
+    grid-template-columns:  auto  auto;
+    grid-template-rows: 2em  2em  2em  2em;
+    grid-row-gap:       1em;
+    grid-column-gap:    0.5em;    
+    max-width:          94vw;
 }
 
 input {
     width:     20em;
-    min-width: 12em;
-    max-width: 50%;
+    max-width: 54%;
 }
 
 .input-box {

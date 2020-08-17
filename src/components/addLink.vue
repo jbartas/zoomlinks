@@ -15,7 +15,7 @@
 
     <div class="place-form" >
       <form name="add-link" class="sb_form form-width" v-on:submit.prevent >
-        <div class="grid-2cols ">
+        <div v-bind:class="global.portrait?'controls-tall':'controls-wide'" >
             <label> Link name: </label>
             <div>
                 <input name="linkName" v-model="linkName" placeholder="Give link a name" 
@@ -32,26 +32,20 @@
                     title="Put 'tag' (sets of words separated by commas) here to find the link later." 
                     autocomplete="off" />
             </div>
-        </div>   <!-- end class = grid-2cols-->
+        </div>   <!-- end top inputs -->
 
         <div class="checkboxes" >
             <label> Add Zoom Fields:</label>
             <div  title="Check to add add typical 'zoom' items.">
                 <input type=checkbox name="setZoom" v-model="setZoom">
             </div>
-            <!-- Move this to it's own GIT branch
-            <label> Add Day/Date/Time Fields:</label>
-            <div  title="Check to add date, day of the week, and/or time for an event.">
-                <input type=checkbox name="setDayDate" v-model="setDayDate">
-            </div>
-            -->
             <label> Add Custom Fields:</label>
             <div title="Check to add your own custom field.">
                 <input type=checkbox name="setCustoms" v-model="setCustoms">
             </div>
         </div>
 
-        <div class = "grid-2cols" v-if="setDayDate" >
+        <div v-bind:class="global.portrait?'controls-tall':'controls-wide'"  v-if="setDayDate" >
             <div></div><div><br><strong> Day, Date and time info for appoinment or event. </strong></div>
             <label> Date of first or next event </label>
             <div title="Pick a date from the date picker">
@@ -59,7 +53,7 @@
             </div>
         </div>
 
-        <div class = "grid-2cols" v-if="setCustoms" >
+        <div v-bind:class="global.portrait?'controls-tall':'controls-wide'"  v-if="setCustoms" >
             <div></div><div> <strong> Your custom data. </strong></div>
             <div>
                 <input  placeholder="Name" v-bind="options.custom.name"
@@ -396,11 +390,14 @@ export default {
     min-width:  640px;
 }
 
-.grid-2cols {
+.controls-wide {
     display:        grid;
     grid-template-columns:  8em  auto;
-    grid-gap:       4px;
-    transition:     0.3s;
+    grid-row-gap:   4px;
+}
+
+input {
+    max-width:      90%;
 }
 
 .grid-addfor {
@@ -418,6 +415,7 @@ export default {
     display:        grid;
     grid-template-columns:  40%  auto;
     grid-gap:       4px;
+    max-width:      94vw;
     transition:     0.3s;
 }
 
@@ -429,17 +427,20 @@ export default {
 .bottom_buttons {
     position:       relative;
     top:            0.8em;
+    max-width:      94vw;
     margin:         0.5em;
+    margin-left:    0em;
 }
 
 .checkboxes {
     position:       relative;
     top:            0.8em;
     height:         2.1em;
+    max-width:      94vw;
     margin:         0.9em;
     text-align:     left;
     display:        grid;
-    grid-template-columns:  auto  4em  auto  4em  auto  4em  auto;
+    grid-template-columns:  auto  4em  auto  4em;
     grid-gap:       4px;
 }
 

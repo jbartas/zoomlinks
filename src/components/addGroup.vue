@@ -4,23 +4,24 @@
   <div class="form-title" >
       Create a New Group
   </div>
-  <div class="form-sub-title" v-if="editing == null"
+  <div class="form-sub-title" v-if="editing == null" 
       title="You will be the admin of this group. You may add other admins 
         after the group is created. ">
-    Group admin: ({{userName}}). 
-    Questions about groups? Hover over entry fields for help <i class="fa fa-question-circle"></i>
+    You ({{userName}}) will be group admin. <br>
+    Click on <i class="fa fa-question-circle"></i> icons for help.
   </div>
-  <div class="form-sub-title" v-if="editing"
+  <div class="form-sub-title" v-if="editing" 
       title="You can change fields for this group, including adding users, and admins. ">
     Editing Group {{editing.groupName}}. 
     Questions? Hover over entry fields for help <i class="fa fa-question-circle"></i>
   </div>
 
   <form class="place-form sb_form" v-on:submit.prevent  autocomplete="Chrome-sux" >
-    <div title="Name is Case insensitive with no spaces. It will be checked for uniqueness.">
+    <div title="Name is Case insensitive with no spaces. It will be checked for uniqueness." 
+        ref="info1" >
         <div class="form-text" >
             Please choose a name for your group. 
-            <i class="fa fa-question-circle float-right"></i>
+            <i class="fa fa-question-circle float-right"  @click="info_click( $refs.info1 )"></i><br>
         </div>
         <div class="grid-2cols" >
             <label>Group Name:</label>
@@ -31,8 +32,9 @@
         </div>      <!-- end grid-2cols -->
     </div>      <!-- end Group name area -->
     <br>
-    <div class="form-text" title="Both these fields will be used when searching for the group.">
-        Add a desription &amp; tags:
+    <div class="form-text"  ref="info2"  @click="info_click( $refs.info2 )" 
+        title="Both these fields will be used when searching for the group." >
+            Add a desription &amp; tags:
         <i class="fa fa-question-circle float-right"></i>
     </div>
     <div class="grid-2cols" >
@@ -48,33 +50,36 @@
     <br>
     <hr>
 
-    <div class="form-text" 
+    <div class="form-text" ref="info3"  @click="info_click(  $refs.info3 )"
     title=
     "    public - Anyone can view the links, but only only group members can write or edit links. 
-private - Only group members can view the group's links. 
+<br> private - Only group members can view the group's links. 
         Admin(s) must add members in the 'manage group' page. 
     "
     >
         Please make your group <strong> 'Public' </strong>  or <strong> 'private'</strong>.
-            <i class="fa fa-question-circle float-right"></i>
+            <i class="fa fa-question-circle float-right" ></i>
     </div>
     
     <div class="grid-5cols" >
         <label>Group Type:</label>
-        Public
-        <input type="radio" value="public" v-model="groupType" />
-        Private
-        <input type="radio" value="private" v-model="groupType" />
+        <span class="offset" > 
+            Public </span>
+        <input type="radio" value="public"  class="radios" v-model="groupType" />
+            Private
+        <input type="radio" value="private" class="radios" v-model="groupType" />
     </div>      <!-- end grid-2cols -->
     <br>
     <hr>
-    <div class="form-text" title="If you add a password, then it will be required for adding or changing
-   links. Leave it blank if you want anyone who can see links to be 
-   able to add or change them.">
-        <i class="fa fa-question-circle float-right"></i>
+    <div class="form-text" ref="info4" 
+    title="Password are required for private groups. 
+    On public groups they will be required for adding or changing links."  >
+        <i class="fa fa-question-circle float-right"  @click="info_click(  $refs.info4 )"></i>
         <div class="grid-checkbox" >
-            Use a group Password for editing links?
-            <input type=checkbox v-model="doPassword" />
+            <span class="shortbox" >
+                Use a group Password for editing links?
+            </span>
+            <input type=checkbox class="radios" v-model="doPassword" />
         </div>
     </div>
     
@@ -148,6 +153,13 @@ export default {
       }
   },
   methods: {
+    info_click: function( info ) {
+        /* Display 'title' text to help out user */
+        let alerthtml = "<span style='font-family: Avenir, Helvetica, Arial, sans-serif; \
+            color=red ' >" +
+            info.title + "</span>"; 
+        this.$swal.fire( { html: alerthtml } );
+    },
     /* Basically the "submit" handler */
     createGroup: function  () {
 
@@ -299,6 +311,11 @@ export default {
     padding:    2em;
 }
 
+i {
+    /* the "?" icons */
+    font-size:  1.3em;
+}
+
 /* Over-write default 2cols */
 .grid-2cols {
      display:           grid;
@@ -308,9 +325,11 @@ export default {
 
 .grid-checkbox {
     display:           grid;
-    grid-template-columns:  18em  2em  auto;
+    grid-template-columns:  auto  auto;
     grid-gap:          1px;
-    padding:           8px;
+    padding:           4px;
+    padding-top:       12px;
+    padding-bottom:    12px;
 }
 
 .grid-editbuttons {
@@ -323,7 +342,8 @@ export default {
 }
 
 input {
-    min-width: 90%;
+    width: 20em;
+    max-width: 54vw;
 }
 
 .input-box {
@@ -336,11 +356,24 @@ input {
     top:               0.3em;
     display:           grid;
     grid-template-columns:  auto  auto  2em  auto  2em 20%;
-    grid-gap:          4px;
+    grid-gap:          5px;
     text-align:        right;
 }
 
-.place-error {
+.offset {
+    margin-left: 2em;
+}
+
+.radios {
+    max-width:  1em;
+}
+
+.shortbox {
+    max-width: 58vw;
+}
+
+.place-error
+{
     position:   relative;
     top:        2em;
 }

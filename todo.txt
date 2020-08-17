@@ -47,9 +47,9 @@ Done - Way to remove meeting from group without removing from user
 
 
 Phone interface:
-- Detect phone browser clients
-- rework list (grid) screens as tiles.
-- convert NAV bar into a drop-list.
+Done (portrait mode)- Detect phone browser clients
+Done - rework list (grid) screens as tiles.
+Done- convert NAV bar into a drop-list.
 - Make sure forms work in portrait mode.
 - Alerts? 
 

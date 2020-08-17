@@ -92,7 +92,7 @@ button:hover {
     text-align:       center;
     font-size:        1.0em;
     padding-top:      1em;
-    background-color: var(--bt-table-backgroud) ;
+    background-color: var(--bt-table-backgroud);
     padding:          12px;
 }
 
@@ -109,6 +109,60 @@ label {
      grid-template-columns:  auto  auto;
      grid-gap:          4px;
 }
+
+/* tall (mobile, phones) version of form control setup */
+.controls-tall {
+    display:           grid;
+    grid-template-columns:  auto  auto;
+    grid-row-gap:      1em;
+    grid-column-gap:   0.5em;    
+    max-width:         94vw;
+}
+
+.tile-item {
+    height:         1.1em;
+    width:          21em;
+    max-width:      64vw;
+    margin:         3px;
+    padding:        3px;
+    color:          var( --bt-dark-text );
+    overflow:       hidden;
+    white-space:    nowrap;
+}
+
+.tile_title {
+    font-weight:    700;
+}
+
+.one-tile {
+    border-radius:  6px;
+    width:          30em;
+    max-width:      93vw;
+    margin:         6px;
+    padding:        4px;
+    text-align:     left;
+    background-color:   white;
+}
+
+.tile-2cols {
+    display:           grid;
+    grid-template-columns:  8em  22em;
+    grid-gap:          4px;
+}
+
+.tile-button {
+    position:   relative;
+    width:      1.6em;
+    max-width:  1.6em;
+    height:     1.6em;
+}
+
+.tile-search {
+    position:   relative;
+    left:       0.6em;
+    text-align: left;
+}
+
 
 .errorMsg {
     color:      red;

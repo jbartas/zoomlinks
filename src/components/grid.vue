@@ -152,9 +152,14 @@ export default {
 tr:hover {
     background-color:   var(--bt-hover-color);
 }
+
 .search-input {
-  width:    80%;
+  width:        60vw;
+  max-width:    80vw;
+  min-width:    10em;
+  margin:       auto;
 }
+
 
 .grid_table_head {
     max-height:    20px;
