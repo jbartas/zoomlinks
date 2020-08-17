@@ -3,7 +3,7 @@
 
     <!-- This is a simple component to make the groups selection bar -->
     <div class="nav_wrapper">
-      <div v-bind:class="globals.portrait?'nav_tall':'nav_wide'" >   <!-- navigation tabs -->
+      <div v-bind:class="global.portrait?'nav_tall':'nav_wide'" >   <!-- navigation tabs -->
         <div class="navtab" >
             <div v-on:click="showApp( 'addGroup')">
             <i class="fa fa-plus-square"></i> New Group </div>

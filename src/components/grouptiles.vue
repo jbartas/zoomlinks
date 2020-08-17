@@ -10,22 +10,18 @@
             <div class="tile_title">
                 {{entry["name"]}}
             </div>
-            <div class="tile-2cols" >
-                <div class="buttons-3cols">
-                    <button class="tile-button clock_cell fa-calendar-check-o" 
-                        @click="clicked( entry, 'more' )" >
+            <div class="grid-2cols" >
+                <div class="buttons-2cols">
+                    <button class="tile-button clock_cell fa-check-square-o" 
+                        @click="clicked( entry, 'select' )" >
                     </button>
-                    <button class="tile-button clock_cell fa-list"
+                    <button class="tile-button clock_cell fa-pencil-square-o"
                         @click="clicked( entry, 'edit' )" >
-                    </button>
-                    <button class="tile-button clock_cell fa-group"
-                        @click="clicked( entry, 'group' )" >
                     </button>
                 </div>
                 <div>
-                    <div class="tile-item url_cell"
-                            @click="clicked( entry, 'link' )" >
-                        {{entry["link"]}}
+                    <div class="tile-item" >
+                        {{entry["description"]}}
                     </div>
                     <div class="tile-item">
                         {{entry["tags"]}}
@@ -42,7 +38,7 @@
 <script>
 
 export default {
-    name: "tiles",
+    name: "grouptiles",
     props: {
         data: Array,
         callback: Function,
@@ -100,18 +96,20 @@ export default {
     position:   relative;
 }
 
-.url_cell {
-    border:         1px solid grey;
-    color:          var( --bt-form-color );
-    background-color:   var( --bt-hover-color );
+.buttons-2cols {
+    display:           grid;
+    grid-template-columns:  auto  auto;
+    grid-gap:          0.4em;
 }
 
-.buttons-3cols {
+.tile_title {
     position:   relative;
-    top:        0.5em;
-    display:    grid;
-    grid-template-columns:  auto auto auto;
-    grid-gap:   4px;
+    top:        0.3em;
+    height:     1.7em;
+}
+
+.tile-item {
+    height:     0.7em;
 }
 
 </style>

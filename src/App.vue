@@ -119,6 +119,13 @@ label {
     max-width:         94vw;
 }
 
+.tile-wrapper {
+    position:   relative;
+    padding-top:        0.7em;
+    padding-bottom:     0.3em;
+    background-color:   var( --bt-table-backgroud );
+}
+
 .tile-item {
     height:         1.1em;
     width:          21em;

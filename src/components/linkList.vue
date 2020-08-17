@@ -18,7 +18,7 @@
             buttoncol = "edit" 
             >
         </grid>
-        <tiles class="tiles_wrapper" v-if="global.portrait" 
+        <tiles v-if="global.portrait" 
             :data     = "gridData" 
             :callback = "gridCallback"
             >
@@ -386,11 +386,6 @@ export default {
     background-color:   rgba(200, 190, 180, 0.5);
     padding:    18px;
     text-align: left;
-}
-
-.tiles_wrapper {
-    position:   relative;
-    top:        1.1em;
 }
 
 .grid_tr {

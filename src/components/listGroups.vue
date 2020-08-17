@@ -1,10 +1,10 @@
 <template>
 <div class="list-groups">
    <div class="place-grid" >
-      <div class="table-header-wrapper" >
+      <div class="list-groups-title" >
         <strong> My Groups: </strong>
       </div>
-      <grid class="grid_wrapper"
+      <grid class="grid_wrapper" v-if="! global.portrait" 
             :data     = "gridData" 
             :columns  = "gridColumns" 
             :callback = "gridCallback"
@@ -13,6 +13,11 @@
                 "{ select: 'button_cell', use: 'clock_cell fa-calendar-check-o', edit:'button_cell' }"
             >
       </grid>
+      <grouptiles v-if="global.portrait"
+            :data     = "gridData" 
+            :callback = "gridCallback"
+            >
+      </grouptiles>
     </div>
 
     <div class="place-error" >
@@ -26,12 +31,14 @@
 
 <script>
 import grid    from "./grid.vue";
+import grouptiles from "./grouptiles.vue";
 import restapi from "../restapi.js";
 
 export default {
   name: 'listGroups',
   components: {
     grid,
+    grouptiles
   },
   props: {
     global: Object,
@@ -139,9 +146,11 @@ export default {
     font-size:  0.98em;
 }
 
-.table-header-wrapper {
-    padding:    0.5em;
+.list-groups-title {
+    max-width:  96vw;
+    padding:    0.6em;
 }
+
 
 .button_cell {
   height:       0.8em;
