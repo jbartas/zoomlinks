@@ -37,22 +37,20 @@ export default {
 
 .requests {
     position:   relative;
-    min-width:  470px;
+    min-width:  350px;
     color:      var(--bt-form-color);
 }
 
 .place-requests {
     position:   relative;
-    width:      70%;
-    top:        2em;
+    min-width:    18em;
+    max-width:    62em;
+    padding-top:  1em;
     margin:     auto;
 }
 
 .req-message {
-    position:     relative;
-    left:         30%;
     text-align:   center;
-    width:        40%;
 }
 
 </style>

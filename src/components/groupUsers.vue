@@ -3,19 +3,23 @@
   <div class="place-form" >
 
     <form class="sb_form" v-on:submit.prevent  autocomplete="Chrome-sux" >
-        <div class="form-title">
+        <div class="form-title"
+            title="You can cut and paste names from lists below, or just click on the name." 
+            ref="info20"
+        >
             Add/Remove a User or Admin from Group {{activeGroup.groupName}}
+            <i class="fa fa-question-circle float-right"  @click="info_click( $refs.info20 )"></i>
+            <br>
         </div>
-        <div class="form-text" >
-            <div class="grid-controls" 
-              title="You can cut and paste names from lists below, or just click on the name." >
+        <div class="form-text" >        
+            <div  v-bind:class="global.portrait?'tall-controls':'grid-controls'" >
 
-                <label> Name of User: </label>
+                <label>User Name: </label>
                 <input type=text v-model="userName" />
                 <button class="submit_user_button" v-on:click="userChange('add','user')" > Add </button>
                 <button class="submit_user_button" v-on:click="userChange('delete','user')" > Delete </button>
 
-                <label> Name of Admin: </label>            
+                <label>Admin Name: </label>            
                 <input type=text v-model="adminName" />
                 <button class="submit_user_button" v-on:click="userChange('add','admin')" > Add </button>
                 <button class="submit_user_button" v-on:click="userChange('delete','admin')" > Delete </button>
@@ -75,6 +79,13 @@ export default {
     }
   },
   methods: {
+      info_click: function( info ) {
+        /* Display 'title' text to help out user */
+        let alerthtml = "<span style='font-family: Avenir, Helvetica, Arial, sans-serif; \
+            color=red ' >" +
+            info.title + "</span>"; 
+        this.$swal.fire( { html: alerthtml } );
+      },
       userChange: function( operation, usertype ) {
           /* change status of a group user - either delete or add a user or admin.
            * The first step in all these is to get the user ID (which verifies name is OK)
@@ -193,16 +204,22 @@ export default {
 .place-form {
     position:   relative;
     margin:     auto;
-    max-width:  42em;
-    padding:    2em;
+    max-width:  46em;
+    padding:    2vw;
 }
 
-/* Over-write default 2cols */
 .grid-controls {
     display:            grid;
     grid-template-columns:  9em  auto  5em 6em;
     grid-gap:           4px;
     padding:            0.4em;
+}
+
+.tall-controls {
+    display:            grid;
+    grid-template-columns:  auto  auto;
+    grid-template-rows:     3em  3em ;
+    grid-gap:           0.5em;
 }
 
 .grid-2cols {
@@ -243,8 +260,6 @@ input {
 .submit_user_button {
     position:       relative;
     max-width:      6em;
-    margin-left:    0.9em;
-    margin-right:   0.9em;
 }
 
 </style>

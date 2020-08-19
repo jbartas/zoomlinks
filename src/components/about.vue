@@ -12,6 +12,9 @@ from any device and browser, anywhere. The tags make searching for links
 super easy, and built-in sharing groups and sharing make handling many links 
 across an organization a breeze. 
 </p>
+<p>
+It's the last link you will ever have to remember.
+</p>
 </div>
 
 <button class="accordion" v-on:click="onClick('why')" > Why we created it </button>
@@ -23,8 +26,8 @@ groups, friends - we went from having 3-4 zooms to dozens. And
 zoom meetings change group Ids and passwords regularly.
 </p><p>
 As computer people, we use different computers, phones, and tablets 
-with a variety of Browsers 
-and operating systems. A solution like bookmarks or iCloud would only work 
+with a variety of Browsers and operating systems. 
+A solution like bookmarks, a Google doc, or iCloud would only work 
 in a few of these environments. A free public online space like Google Drive 
 might work, but they are pretty much guaranteed to sell your information 
 or use it for advertising. Plus most of these systems lack a fast search 
@@ -40,14 +43,11 @@ information.
 <button class="accordion"  v-on:click="onClick('new')" > What's New </button>
 <div class="panel" id="new">
 <p>
-  <strong>July 19, 2020 - </strong> We now support <strong>groups.</strong> <br>
-  Sharing links just got much easier. <br>
-  Form a group, invite friends, and then everybody in the group can 
-  have the latest updated info for all the links the group uses. If you 
-  need to change a link or password you can update it in the group and 
-  the whole group immediatly has the lastest info. Groups can be private - only 
-  viewable by members - or a special "guest" user account allows public groups 
-  to be viewed by people without a LinkShare account. 
+  <strong>August 17, 2020 - </strong> Finally, the mobile version! <br>
+The same Zoomlinks website that works smoothly on your desktop browser 
+now scales down to your phone. On loading it detects whether your screen 
+is horizontal or vertial and adjusts accordingly. <br>
+Tested on Chrome on Android phones - try it out and send feedback. 
 </p>
 <p>
   <strong>June 29th, 2020 - </strong> New support created for info 
@@ -55,10 +55,6 @@ information.
   chat services). You can now save the password, Zoom ID, and more. 
   Click on "Zoom link" in "add link" page to fill in the Zoom info. 
   In My Links page click on the 'More' icon to see the Zoom info.
-</p>
-<p>
-<strong>June 11th, 2020 - </strong> Links now default to being ordered with the most recently 
-used links at the top of the list. 
 </p>
 </div>
 
@@ -76,9 +72,6 @@ what links you saved).
 <button class="accordion"  v-on:click="onClick('soon')" > Features Coming Soon </button>
 <div class="panel" id="soon">
 <p>
-<strong>Phone &amp; mobile support </strong> - People on mobile devices will get a special 
-scaled-down GUI specially designed for use as a phone app. 
-</p><p>
 <strong>Friends</strong> - Friend another LinkShare user and you can easily share any links 
 you want with them.
 </p><p>
@@ -129,17 +122,17 @@ export default {
 
 .about {
     position:   relative;
-    min-width:  470px;
-    min-height: 500px;
+    min-width:  370px;
     color:      var(--bt-form-color);
     text-align: left;
 }
 
 .place-about {
-    position:   relative;
-    width:      70%;
-    top:        2em;
-    margin:     auto;
+    position:     relative;
+    min-width:    18em;
+    max-width:    62em;
+    padding-top:  1em;
+    margin:       auto;
 }
 
 .accordion {
