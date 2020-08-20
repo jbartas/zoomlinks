@@ -11,18 +11,30 @@
             <i class="fa fa-question-circle float-right"  @click="info_click( $refs.info20 )"></i>
             <br>
         </div>
-        <div class="form-text" >        
-            <div  v-bind:class="global.portrait?'tall-controls':'grid-controls'" >
+        <div class="form-text" >
+            <div>
+<!--   v-bind:class="global.portrait?'tall-controls':'grid-controls'"  -->
+                <div class="grid-controls">
+                    <label>Name: </label>
+                    <input type=text v-model="userName" />
+                </div>
 
-                <label>User Name: </label>
-                <input type=text v-model="userName" />
-                <button class="submit_user_button" v-on:click="userChange('add','user')" > Add </button>
-                <button class="submit_user_button" v-on:click="userChange('delete','user')" > Delete </button>
-
-                <label>Admin Name: </label>            
-                <input type=text v-model="adminName" />
-                <button class="submit_user_button" v-on:click="userChange('add','admin')" > Add </button>
-                <button class="submit_user_button" v-on:click="userChange('delete','admin')" > Delete </button>
+                <div class="user-button" v-if="!nameIsMember()" >
+                    Add {{userName}} to members? 
+                    <button class="submit_user_button" v-on:click="userChange('add','user')" > Add </button>
+                </div>
+                <div class="user-button" v-if="nameIsMember()" >
+                    Delete {{userName}} from member list??
+                    <button class="submit_user_button" v-on:click="userChange('delete','user')" > Delete </button>
+                </div>
+                <div class="user-button" v-if="!nameIsAdmin()" >
+                    Add {{userName}} to Admin list??
+                    <button class="submit_user_button" v-on:click="userChange('add','admin')" > Add </button>
+               </div> 
+                <div class="user-button" v-if="nameIsAdmin()" >
+                    Delete {{userName}} from Admin list??
+                    <button class="submit_user_button" v-on:click="userChange('delete','admin')" > Delete </button>
+               </div> 
             </div>
             <hr>
             <div class="grid-2cols" >
@@ -30,13 +42,13 @@
                 <div class="form-title"> Admins: </div>
                 <ul class="name-list" >
                     <li v-for="user in memberList"  :key="user.userName" 
-                        v-on:click="adminName = user.userName">
+                        v-on:click="userName = user.userName">
                         {{user.userName}} 
                     </li>
                 </ul>
                 <ul class="name-list" >
                     <li v-for="user in adminList"  :key="user.userName" 
-                        v-on:click="adminName = user.userName">
+                        v-on:click="userName = user.userName">
                         {{user.userName}} 
                     </li>
                 </ul>
@@ -71,7 +83,6 @@ export default {
         isAdmin: false,
         activeGroup: {},    // group being modified
         userName: "",       // Name of user to add or remove      
-        adminName: "",      // Name of admin to add or remove
         memberList: [],     // List of group members
         adminList: [],      // List of group admins
         networkError: "",
@@ -93,9 +104,6 @@ export default {
            */
         console.log( "userChange: ", operation, usertype);
         let name = this.userName;
-        if( usertype == "admin" ) {
-            name = this.adminName;
-        }
         let cmd = {
             operation: operation,
             usertype: usertype,
@@ -120,7 +128,6 @@ export default {
 
                 // fix up the display screen
                 this.resultStatus = "";
-                this.adminName = "";
                 this.userName = "";
                 this.getMembers();
                 this.getAdmins();
@@ -130,6 +137,18 @@ export default {
             console.log( "getMembers: get error", error );
             this.networkError = error;
         }); 
+      },
+      nameIsMember: function() {
+          let result = this.memberList.find( user => user.userName == this.userName);
+          if( result ){
+              return true;
+          }
+          return false;
+      },
+      nameIsAdmin: function() {
+          return( this.adminList.find( 
+                user => user.userName == this.userName )
+          );
       },
       getMembers: function() {
           // pass list of group members IDs to server to get names
@@ -210,9 +229,9 @@ export default {
 
 .grid-controls {
     display:            grid;
-    grid-template-columns:  9em  auto  5em 6em;
+    grid-template-columns:  auto  auto;
     grid-gap:           4px;
-    padding:            0.4em;
+    padding:            0.6em;
 }
 
 .tall-controls {
@@ -220,6 +239,15 @@ export default {
     grid-template-columns:  auto  auto;
     grid-template-rows:     3em  3em ;
     grid-gap:           0.5em;
+}
+
+.user-button {
+    position:       relative;
+    left:           10vw;
+    padding:        0.1em;
+    display:        grid;
+    grid-template-columns:  16em  4em;
+    grid-gap:        0.8em;
 }
 
 .grid-2cols {
