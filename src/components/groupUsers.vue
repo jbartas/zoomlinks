@@ -4,7 +4,7 @@
 
     <form class="sb_form" v-on:submit.prevent  autocomplete="Chrome-sux" >
         <div class="form-title"
-            title="You can cut and paste names from lists below, or just click on the name." 
+            title="You enter a name manually or click on a name in the lists below." 
             ref="info20"
         >
             Add/Remove a User or Admin from Group {{activeGroup.groupName}}
@@ -13,26 +13,33 @@
         </div>
         <div class="form-text" >
             <div>
-<!--   v-bind:class="global.portrait?'tall-controls':'grid-controls'"  -->
-                <div class="grid-controls">
+                <div class="user-name-block" >
                     <label>Name: </label>
                     <input type=text v-model="userName" />
                 </div>
 
                 <div class="user-button" v-if="!nameIsMember()" >
-                    Add {{userName}} to members? 
+                    <span class="button-text" >
+                        Add {{userName}} to members? 
+                    </span>
                     <button class="submit_user_button" v-on:click="userChange('add','user')" > Add </button>
                 </div>
                 <div class="user-button" v-if="nameIsMember()" >
-                    Delete {{userName}} from member list??
+                    <span class="button-text" >
+                        Delete <strong>{{userName}}</strong> from member list??
+                    </span>
                     <button class="submit_user_button" v-on:click="userChange('delete','user')" > Delete </button>
                 </div>
                 <div class="user-button" v-if="!nameIsAdmin()" >
-                    Add {{userName}} to Admin list??
+                    <span class="button-text" >
+                        Add <strong>{{userName}}</strong> to Admin list??
+                    </span>
                     <button class="submit_user_button" v-on:click="userChange('add','admin')" > Add </button>
                </div> 
                 <div class="user-button" v-if="nameIsAdmin()" >
-                    Delete {{userName}} from Admin list??
+                    <span class="button-text" >
+                        Delete <strong>{{userName}}</strong> from Admin list??
+                    </span>
                     <button class="submit_user_button" v-on:click="userChange('delete','admin')" > Delete </button>
                </div> 
             </div>
@@ -227,36 +234,30 @@ export default {
     padding:    2vw;
 }
 
-.grid-controls {
+.user-name-block {
     display:            grid;
     grid-template-columns:  auto  auto;
-    grid-gap:           4px;
+    grid-gap:           6px;
     padding:            0.6em;
 }
 
-.tall-controls {
-    display:            grid;
-    grid-template-columns:  auto  auto;
-    grid-template-rows:     3em  3em ;
-    grid-gap:           0.5em;
+.user-button {
+    padding:        0.2em;
+    max-width:      35em;
+    display:        grid;
+    grid-template-columns:  auto  7em;
+    grid-gap:       0.9em;
 }
 
-.user-button {
-    position:       relative;
-    left:           10vw;
-    padding:        0.1em;
-    display:        grid;
-    grid-template-columns:  16em  4em;
-    grid-gap:        0.8em;
+.button-text {
+    text-align:     right;
 }
 
 .grid-2cols {
-    position:       relative;
-    top:            1em;
     text-align:     left;
     display:        grid;
     grid-template-columns:  50%  50%;
-    grid-gap:       4px;
+    grid-gap:       0.1em;
 }
 
 label {
@@ -268,10 +269,10 @@ input {
 }
 
 .form-text {
-    top:        0.1em;
-    position:   relative;
-    color:      var(--bt-form-color);
-    padding:    6px;
+    top:            0.1em;
+    position:       relative;
+    color:          var(--bt-form-color);
+    padding-top:    2vw;
 }
 
 .form-title {
@@ -283,6 +284,11 @@ input {
 
 .name-list {
     background-color:   #f6f6fb;
+    font-size:          1.1em;
+}
+
+.name-list:hover {
+    cursor:         pointer;
 }
 
 .submit_user_button {

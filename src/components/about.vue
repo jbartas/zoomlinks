@@ -46,7 +46,7 @@ information.
   <strong>August 17, 2020 - </strong> Finally, the mobile version! <br>
 The same Zoomlinks website that works smoothly on your desktop browser 
 now scales down to your phone. On loading it detects whether your screen 
-is horizontal or vertial and adjusts accordingly. <br>
+is horizontal or vertical and adjusts accordingly. <br>
 Tested on Chrome on Android phones - try it out and send feedback. 
 </p>
 <p>
