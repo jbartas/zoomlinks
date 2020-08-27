@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import { EventBus } from './eventBus.js';
 
 export default {
   name: "grid",
@@ -112,12 +113,17 @@ export default {
         }
     }
   },
-  created(){
+  created() {
     let sortOrders = {};
     this.columns.forEach(function (key) {
       sortOrders[key] = -1;
     })
     this.sortOrders = sortOrders;
+
+    EventBus.$on('SEARCH_QUERY', query => {
+        this.searchQuery = query;
+        console.log("grid SEARCH_QUERY; query:", this.searchQuery );
+    });
   }
 }
 

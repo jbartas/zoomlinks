@@ -108,6 +108,8 @@ import groupLinks from '../components/groupLinks.vue'
 import addGroup from '../components/addGroup.vue'
 import groupUsers from '../components/groupUsers.vue'
 
+import { EventBus } from '../components/eventBus.js';
+
 
 export default {
   name: 'ZoomTop',
@@ -216,6 +218,13 @@ export default {
       else if( this.globals.urlParams.app == "groupLinks" ) {
           this.showApp("groupLinks");
       }
+
+      // Send out search Query
+      if( this.globals.urlParams.search ) {
+          console.log( "Emit SEARCH_QUERY ", this.globals.urlParams.search );
+          EventBus.$emit('SEARCH_QUERY', this.globals.urlParams.search );
+      }
+
     },
     setPortraitMode: function() {
       console.log("setPortraitMode, Window.width ", window.outerWidth );

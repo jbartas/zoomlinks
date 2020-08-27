@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { EventBus } from './eventBus.js';
 
 export default {
     name: "tiles",
@@ -87,8 +88,13 @@ export default {
         }
         return data;
         },
+    },
+    created () {
+        EventBus.$on('SEARCH_QUERY', query => {
+            this.searchQuery = query;
+            console.log("tiles SEARCH_QUERY; query:", this.searchQuery );
+        });
     }
-
 }
 
 </script>
