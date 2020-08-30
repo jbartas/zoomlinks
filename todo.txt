@@ -21,12 +21,13 @@ Done - Implement "add link" button on groups page if permissions are OK.
 Done - "Magic Link" - URL to direct to a group, user, or link. 
 Done - allow access to public groups by "guest" user. 
 Done - Way to remove meeting from group without removing from user
+Done - Implement Magic Link "search" parameter to narrow link lists.
 - move to port 80
 - convert to SSH (get Cert?) - Certbot? 
 - Check session security
 - Make a YouTube Video for basic use cases.
-- Implement Magic Link "search" parameter to narrow link lists.
 - Make a "create magic link" button & function to generate the above links. 
+- Prompt for password if someone is coming in to protected data on a magic link.
 - Add waiting animation (twirler or wheel gif.)
 - Convert last-user alert to swal popup.
 - Remove group icon from link list when in group mode (or show other users of link?).

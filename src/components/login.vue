@@ -75,7 +75,7 @@ export default {
                     this.global.renderApp = "linkList";
                 }
                 else {
-                    this.loginStatus = "Login FAILED: " + reply.message;
+                    this.loginStatus = "Login problem: " + reply.message;
                     this.global.loggedInStatus = false;
                     this.global.loggedInName = "";
                     this.global.userEmail = "";

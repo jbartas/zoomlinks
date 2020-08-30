@@ -13,6 +13,7 @@
             :columns  = "gridColumns" 
             :callback = "gridCallback"
             :colstyle = "gridColStyles"
+            :global = "global"
             v-bind:cellcss  = 
                 "{ edit: 'button_cell', use: 'clock_cell fa-calendar-check-o', more: 'clock_cell fa-list', link: 'url_cell', group: 'clock_cell fa-group' }"
             buttoncol = "edit" 
@@ -21,6 +22,7 @@
         <tiles v-if="global.portrait" 
             :data     = "gridData" 
             :callback = "gridCallback"
+            :global = "global"
             >
         </tiles>
     </div>

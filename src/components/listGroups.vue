@@ -81,6 +81,16 @@ export default {
         this.networkError = "";
         this.resultMsg = "";
 
+        console.log( "getGroupData: user ", this.global.loggedInName, this.GUESTUSER );
+        if( !this.global.loggedInID ) {
+            let msg = "You are not logged in, or logged in as user <strong>\"guest\"</strong> " + 
+              "which cannot be a member of groups. Please log in as (or create) another user " +
+              "to get your group info.";
+             this.$swal.fire( { html: msg } );
+             global.renderApp = 'login';
+             return;
+        }
+
         // get groups for the logged in user
         let url = "/getGroups/" +  this.global.loggedInID;
 

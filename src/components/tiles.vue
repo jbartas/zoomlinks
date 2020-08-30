@@ -40,13 +40,13 @@
 </template>
 
 <script>
-import { EventBus } from './eventBus.js';
 
 export default {
     name: "tiles",
     props: {
         data: Array,
         callback: Function,
+        global: Object
     },
     data(){
         return {
@@ -90,10 +90,7 @@ export default {
         },
     },
     created () {
-        EventBus.$on('SEARCH_QUERY', query => {
-            this.searchQuery = query;
-            console.log("tiles SEARCH_QUERY; query:", this.searchQuery );
-        });
+        this.searchQuery = this.global.urlParams.search;
     }
 }
 

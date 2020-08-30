@@ -285,6 +285,7 @@ export default {
 .topvue {
     color:      var(--bt-zoom-form);
     overflow:   hidden; /* Hide horizontal scrollbar */
+    min-height:     50vw;
 }
 
 
