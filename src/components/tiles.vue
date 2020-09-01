@@ -13,7 +13,7 @@
             <div class="tile-2cols" >
                 <div class="buttons-3cols">
                     <button class="tile-button clock_cell fa-calendar-check-o" 
-                        @click="clicked( entry, 'more' )" >
+                        @click="clicked( entry, 'info' )" >
                     </button>
                     <button class="tile-button clock_cell fa-list"
                         @click="clicked( entry, 'edit' )" >
