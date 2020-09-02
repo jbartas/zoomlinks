@@ -15,7 +15,7 @@
             :colstyle = "gridColStyles"
             :global = "global"
             v-bind:cellcss  = 
-                "{ edit: 'button_cell', use: 'clock_cell fa-calendar-check-o', more: 'clock_cell fa-list', link: 'url_cell', group: 'clock_cell fa-group' }"
+                "{ edit: 'button_cell', last: 'clock_cell fa-calendar-check-o', info: 'clock_cell fa-list', link: 'url_cell', group: 'clock_cell fa-group' }"
             buttoncol = "edit" 
             >
         </grid>
@@ -196,7 +196,7 @@ export default {
             this.deleting  = (this.linksfor == "group");
             this.addToGroupDialog( link );
         }
-        else if( cell == "more" ) {
+        else if( cell == "info" ) {
             // Show extra fields
             this.showMore( link );
         }
@@ -222,7 +222,7 @@ export default {
             this.resultMsg = ""
             window.open( link.link, "_blank");
         }
-        else if( cell == "use" ) {
+        else if( cell == "last" ) {
             let dt = new Date(link.use);
             let date = dt.toDateString();
             let time = dt.toTimeString().substr(0, 8);
@@ -282,8 +282,8 @@ export default {
                     name: link.linkName,
                     link:  link.linkURL,
                     tags: link.linkTags,
-                    use: link.useDate,
-                    more: link.password,
+                    last: link.useDate,
+                    info: link.password,
                     edit: "Edit",
                     _id: link._id   // will not be displayed
                 }
@@ -341,14 +341,14 @@ export default {
         deleting: false,    // true on button to remove from group
 
         /* grid stuff */
-        gridColumns: [ 'name', 'link', 'tags', "use", "more", "group", "edit" ], // titles
+        gridColumns: [ 'name', 'link', 'tags', "last", "info", "group", "edit" ], // titles
         gridColStyles: {    // control the grid column widths 
             "select": "width: 36%", 
             "link":   "width: 20%", 
             "tags":   "width: auto",
-            "use" :   "width: 1.6em", 
-            "more":   "width: 1.6em",
-            "group":  "width: 1.6em",
+            "last" :  "width: 2.4em; font-size: x-small;", 
+            "info":   "width: 2.4em; font-size: x-small;",
+            "group":  "width: 2.6em; font-size: x-small;",
             "edit":   "width: 6em" 
         }, 
         gridData: []        // sub-records for grid display
