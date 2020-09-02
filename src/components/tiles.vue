@@ -12,10 +12,10 @@
             </div>
             <div class="tile-2cols" >
                 <div class="buttons-3cols">
-                    <button class="tile-button clock_cell fa-calendar-check-o" 
+                    <button class="tile-button clock_cell fa-info-circle"
                         @click="clicked( entry, 'more' )" >
                     </button>
-                    <button class="tile-button clock_cell fa-list"
+                    <button class="tile-button clock_cell fa-edit"
                         @click="clicked( entry, 'edit' )" >
                     </button>
                     <button class="tile-button clock_cell fa-group"
