@@ -49,7 +49,7 @@ export default {
   data(){
     return {
       searchQuery: '',
-      sortKey: 'use',
+      sortKey: 'last',
       sortOrders: {},
     }
   },

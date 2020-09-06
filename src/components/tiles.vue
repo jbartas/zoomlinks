@@ -13,7 +13,7 @@
             <div class="tile-2cols" >
                 <div class="buttons-3cols">
                     <button class="tile-button clock_cell fa-info-circle"
-                        @click="clicked( entry, 'more' )" >
+                        @click="clicked( entry, 'info' )" >
                     </button>
                     <button class="tile-button clock_cell fa-edit"
                         @click="clicked( entry, 'edit' )" >
@@ -51,14 +51,14 @@ export default {
     data(){
         return {
         searchQuery: '',
-        sortKey: 'use',
+        sortKey: 'last',
         sortOrders: {},
         }
     },
     methods: {
         sortBy: function (key) {
-        this.sortKey = key;
-        this.sortOrders[key] = this.sortOrders[key] * -1
+            this.sortKey = key;
+            this.sortOrders[key] = this.sortOrders[key] * -1
         },
         clicked: function( link, item ) {
             this.callback( link, item );
@@ -69,7 +69,6 @@ export default {
         let sortKey = this.sortKey;
         let filterKey = this.searchQuery && this.searchQuery.toLowerCase();
         let order = this.sortOrders[sortKey] || 1;
-        //let order = -1;
         let data = this.data;
 
         if (filterKey) {
@@ -90,6 +89,10 @@ export default {
         },
     },
     created () {
+        let sortOrders = {};
+        this.columns.forEach(function (key) {
+            sortOrders[key] = -1;
+        })
         this.searchQuery = this.global.urlParams.search;
     }
 }
