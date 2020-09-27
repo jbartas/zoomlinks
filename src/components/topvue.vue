@@ -142,6 +142,7 @@ export default {
           loggedInID: "",
           activeGroup: null,    // group currently in use, null if none
           userEmail: "",
+          sessionHash: null,
           editLink: null,       // For passing link fields to editor
           urlParams: {},        // params from the invoking URL
           portrait: false,

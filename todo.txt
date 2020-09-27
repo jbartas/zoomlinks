@@ -27,10 +27,11 @@ Done - Make sure forms work in portrait mode.
 Done - Verify Alerts on mobile devices
 Done - Way to remove meeting from group without removing from user
 Done - Implement Magic Link "search" parameter to narrow link lists.
-- Sort phone tiles by last-used.
-- move to port 80
-- convert to SSH (get Cert?) - Certbot? 
+Done - Sort phone tiles by last-used.
+Done - move to port 80
 - Check session security
+- Mount server versions (front and back end) as production systems, not dev.
+- convert to SSH (get Cert?) - Certbot? 
 - Make a YouTube Video for basic use cases.
 - Make a "create magic link" button & function to generate the above links. 
 - Add waiting animation (twirler or wheel gif.)

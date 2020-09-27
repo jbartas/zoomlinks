@@ -72,6 +72,7 @@ export default {
                     this.global.loggedInStatus = true;
                     this.global.loggedInID = reply.userID;
                     this.global.userEmail = reply.userEmail;
+                    this.global.sessionHash = reply.sessionHash;
                     this.global.renderApp = "linkList";
                 }
                 else {

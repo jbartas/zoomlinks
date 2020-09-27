@@ -64,8 +64,8 @@ export default {
         // eslint-disable-next-line
         console.log( "showMore, link: ", link );
 
-        /* old records had no customer fields, but they had passwords 
-         * which were a peer to name and tags. Fix this here:
+        /* old records had no 'options' section, but some had a password
+         * field which was a peer to name and tags. Patch this here:
          */
         if( link.password != "" && !link.options ) {
             link.options = [{ name: "password",  value: link.password }];
@@ -236,21 +236,31 @@ export default {
     getLinkData: function ( user ) {
 
         let url = "" 
+        let params = null;
         if(this.linksfor == "group" ) {
             console.log( "getLinkData: global.activeGroup:", this.global.activeGroup );
             if( !this.global.activeGroup ) {
                 console.log( "getLinkData: no active group." );
                 return;
             }
-            url = "/getGroupLinks/" + this.global.activeGroup._id ;
+            url = "/getGroupLinks";
+            params = {
+                "group": this.global.activeGroup._id ,
+                "hash": this.global.sessionHash
+            }
         }
         else {
-            url = "/getLinks/" + user ;
+            url = "/getLinks/";
+            params = {
+                "name": user,
+                "hash": this.global.sessionHash
+            }
         }
+
 
         // eslint-disable-next-line
         console.log( "getLinkData: ", url );
-        restapi.get( url )
+        restapi.post( url, params )
         .then ( response => {
             let reply = response.data;
             
