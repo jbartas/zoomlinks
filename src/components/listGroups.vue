@@ -68,6 +68,7 @@ export default {
         // find record in this.groupRecs
         let group = this.groupRecs.find( rec => rec._id == gridlink._id );
         this.global.activeGroup = group;
+        localStorage.setItem("session", JSON.stringify( this.global ));
 
         if( key == "select") {
           //this.resultMsg = "Group '" + group.groupName + "' is now the active group";

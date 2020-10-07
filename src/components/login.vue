@@ -80,10 +80,16 @@ export default {
                     this.global.loggedInStatus = false;
                     this.global.loggedInName = "";
                     this.global.userEmail = "";
+                    this.global.sessionHash = null;
+                    this.global.activeGroup = null;
                 }
+                localStorage.setItem("session", JSON.stringify( this.global ));
             }).catch( error =>  {
                 // eslint-disable-next-line
                 console.log( error );
+                if( error.toString().includes("Error: timeout of ") ) {
+                  error = "Timed out. Server may be offline, please try again later."
+                }
                 this.networkError = "Network: " + error;
             });
         }

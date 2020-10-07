@@ -145,14 +145,12 @@ export default {
           sessionHash: null,
           editLink: null,       // For passing link fields to editor
           urlParams: {},        // params from the invoking URL
-          portrait: false,
+          portrait: false,       // true if in portrait mode, false for landscape.
       },
 
       ActiveGroupText: "No active Group",
       loggedInText: "Not Logged In",   // generated from loggedInStatus and loggedInName
       GUESTUSER: "guest",        // const
-
-      baseURL: "http://3.212.103.152:3001/zlapi",   // move to restapi
 
       hide_nav: false,      // hide nav panel (for phones)
     }
@@ -164,6 +162,11 @@ export default {
       // If on phone, hide the menu after selection
       if( this.globals.portrait == true) {
         this.hide_nav = true;
+      }
+      if( appName == "login" && this.globals.loggedInStatus == true ) {
+        // Handle "log out" button from top bar.
+        this.globals.loggedInStatus = false;
+        localStorage.setItem("session", JSON.stringify( this.globals ));
       }
 
       // load next app
@@ -267,6 +270,30 @@ export default {
   },
   created : function() {
 
+    if (typeof(Storage) !== "undefined") {
+      // Code for localStorage.
+      let session = localStorage.getItem("session");
+      console.log( "localStorage.getItem(session):", session );
+      if( !session ) {
+        /* First time here? */
+        /*
+        let msg = "<strong>Welcome to Linkshare!</strong> <br> Some options: <br> - Watch an intro video ";
+        msg += "<br> - Create a new account <br> - Log In";
+        this.$swal.fire( { html: msg } );
+        */
+      }
+      else {
+        // User was here before, check for open session
+        this.globals = JSON.parse( session );
+        console.log( "session (global) data:", this.globals );
+        if( this.globals.loggedInStatus == true ) {
+          this.showApp( "linkList" );
+        }
+      }
+
+    } else {
+      console.log("No Web Storage support");
+    }
     /* Handle any parameters which were appended to the initial
      * URL which invoked the web site. 
      */
@@ -274,6 +301,9 @@ export default {
     this.parseURLParams();
 
     this.setPortraitMode();   // vertical (phone) or horizontal (screen)? 
+
+    // Save global data (URL, portrait) in local browser storage.
+    localStorage.setItem("session", JSON.stringify( this.globals ));
   }
 }
 </script>
