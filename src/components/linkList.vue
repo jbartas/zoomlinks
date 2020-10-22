@@ -4,7 +4,7 @@
 
         <!-- If invoked from group then group adds table header, else: -->
         <div class="table-header" v-if="linksfor == 'user' && !global.portrait" >
-            <strong> My Links: </strong>
+            <strong> My Links: </strong> 
         </div>
 
         <!-- Show grid or tile display, based on screen orientation -->
@@ -40,7 +40,12 @@
 import restapi from "../restapi.js";
 import grid    from "./grid.vue";
 import tiles   from "./tiles.vue";
+import { EventBus } from '../components/eventBus.js';
 
+// Listen for request for filtered list.
+EventBus.$on('FILTERED_LINKS_LIST', linkList => {
+  console.log("FILTERED_LINKS_LIST got ", linkList )
+});
 
 export default {
   name: 'listLink',

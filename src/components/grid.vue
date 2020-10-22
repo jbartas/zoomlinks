@@ -1,9 +1,15 @@
 
 <template>
 <div class="wrapper">
-  <form id="search">
-    Search <input name="query" v-model="searchQuery" class="search-input" >
-  </form>
+  <div class="grid-header" >
+    <form id="search">
+      Search <input name="query" v-model="searchQuery" class="search-input" >
+    </form>
+    <button v-on:click="listButtonClick('make')" 
+      title="Make a portable list of the links displayed below."> 
+      Make List 
+      </button>
+  </div>
   <div id="grid-template">
     <div class="table-header-wrapper">
       <table class="grid-table">
@@ -35,6 +41,9 @@
 </template>
 
 <script>
+/* This is now hard-coded for the linkshare links display. */
+import { EventBus } from '../components/eventBus.js';
+
 
 export default {
   name: "grid",
@@ -84,6 +93,11 @@ export default {
     }
   },
   methods: {
+    listButtonClick: function () {
+        console.log("listButtonClick - clicked " );
+        EventBus.$emit('FILTERED_LINKS_LIST', 
+            this.filteredData );
+    },
     getColStyle: function( key ) {
         // console.log("getColStyle: key: ", key );
         if( this.colstyle && this.colstyle[key] ) {
@@ -211,4 +225,14 @@ td {
   border-top: 4px solid #00f;
 }
 
+.grid-header {
+    display:        flex;
+    flex-direction: row;
+    align-items:    center;
+}
+
+button {
+  margin-left:  1.0em;
+  float:        right;
+}
 </style>

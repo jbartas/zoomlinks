@@ -87,10 +87,10 @@ what links you saved).
 <div class="panel" id="soon">
 <p>
 <strong>Link Lists</strong> - Make a list of links &amp; and share the 
-list with others. Lists of inks can be viewed by anyone, even if they don;t have 
+list with others. Lists of inks can be viewed by anyone, even if they don't have 
 a linkshare account. If you do have an account you can marge a list
-of links from another user with your links. This will be a fast anf easy way 
-to share lists of links with teams and freinds.  
+of links from another user with your links. This will be a fast and easy way 
+to share sets of links with teams and freinds.  
 </p><p>
 <strong>Mail tool</strong> - If you want to send a set of links to someone outside of LinkShare 
 just select the links to share and send an email or text with them.
