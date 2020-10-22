@@ -1,20 +1,14 @@
 <template>
-  <div class="requests" >
-    <div class="place-requests" >
+  <div class="linklist" >
+    <div class="link-list" >
 
-    <h2>Have a request for a new feature? </h2>
-    <h2>Noticed a bug? </h2>
-    <p class="req-message" >
-      Send us an email - we'll look into it. Feel free to attach screen captures. 
-      Be sure to let us know if you want a direct reply.
+    <h2>Lists of links: </h2>
+    <p >
+      Active lists: None.
     </p>
-    <a href="mailto:jbartas@gmail.com" >
-      <button> Email request </button>
-    </a>
     </div>
   </div>
 </template>
-
 
 
 <script>

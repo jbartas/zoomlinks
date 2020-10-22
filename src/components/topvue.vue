@@ -61,8 +61,8 @@
               <i class="fa fa-group"></i> Groups </div>
         </div>
         <div class="navtab">
-          <div v-if="globals.loggedInStatus == true" v-on:click="showApp( 'requests')"> 
-              <i class="fa fa-wrench"></i> requests </div>
+          <div v-if="globals.loggedInStatus == true" v-on:click="showApp( 'listslist')"> 
+              <i class="fa fa-wrench"></i> Lists </div>
         </div>
         <div class="navtab">
           <div v-on:click="showApp( 'about')"> 
@@ -83,7 +83,7 @@
     </div>
 
     <groups     :global = "globals" v-if="globals.renderApp == 'groups'" />
-    <requests    v-if="globals.renderApp == 'requests'" />
+    <listslist   v-if="globals.renderApp == 'listslist'" />
     <about       v-if="globals.renderApp == 'about'" />
     <addGroup   :global = "globals" v-if="globals.renderApp == 'addGroup'" />
     <listGroups :global = "globals" v-if="globals.renderApp == 'listGroups'  
@@ -101,7 +101,7 @@ import addUser from '../components/addUser.vue'
 import addLink from '../components/addLink.vue'
 import linkList from '../components/linkList.vue'
 import groups from '../components/groups.vue'
-import requests from '../components/requests.vue'
+import listslist from '../components/listslist.vue'
 import about from '../components/about.vue'
 import listGroups from '../components/listGroups.vue'
 import groupLinks from '../components/groupLinks.vue'
@@ -119,7 +119,7 @@ export default {
     addLink,
     linkList,
     groups,
-    requests,
+    listslist,
     about,
     addGroup,
     listGroups,

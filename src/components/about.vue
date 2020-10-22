@@ -40,6 +40,20 @@ information.
 </p>
 </div>
 
+<button class="accordion"  v-on:click="onClick('help')" > Help &amp; Requests </button>
+<div class="panel" id="help">
+    <p><strong>Have a request or need help? </strong></p>
+    <p class="req-message" >
+      Send me an email - I'll look into it. Feel free to attach screen captures. 
+      Be sure to let me know if you want a direct reply.
+    </p>
+    <p>
+    <a href="mailto:jbartas@gmail.com" >
+      <button> Email request </button>
+    </a>
+    </p>
+</div>
+
 <button class="accordion"  v-on:click="onClick('new')" > What's New </button>
 <div class="panel" id="new">
 <p>
@@ -72,8 +86,11 @@ what links you saved).
 <button class="accordion"  v-on:click="onClick('soon')" > Features Coming Soon </button>
 <div class="panel" id="soon">
 <p>
-<strong>Friends</strong> - Friend another LinkShare user and you can easily share any links 
-you want with them.
+<strong>Link Lists</strong> - Make a list of links &amp; and share the 
+list with others. Lists of inks can be viewed by anyone, even if they don;t have 
+a linkshare account. If you do have an account you can marge a list
+of links from another user with your links. This will be a fast anf easy way 
+to share lists of links with teams and freinds.  
 </p><p>
 <strong>Mail tool</strong> - If you want to send a set of links to someone outside of LinkShare 
 just select the links to share and send an email or text with them.
