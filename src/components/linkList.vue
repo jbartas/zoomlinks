@@ -42,10 +42,6 @@ import grid    from "./grid.vue";
 import tiles   from "./tiles.vue";
 import { EventBus } from '../components/eventBus.js';
 
-// Listen for request for filtered list.
-EventBus.$on('FILTERED_LINKS_LIST', linkList => {
-  console.log("FILTERED_LINKS_LIST got ", linkList )
-});
 
 export default {
   name: 'listLink',
@@ -58,6 +54,38 @@ export default {
       linksfor: String,
   },
   methods: {
+    createGroup( linkList )
+    {
+        // Make a linklist with the passed links.
+        let newlist = { 
+            "hash": this.global.sessionHash,
+            // Id: ObjectId, - will be added by Backend
+            ids: [],
+            owner: this.global.loggedInID,        // owner Id
+            name: this.global.loggedInName + "_" + "xyz",
+            Create_time: 0,    // (UTC), now
+            ttl: 3600 + 72, // in seconds, default 72 hours
+        }
+
+        // stick Id list on new object
+        linkList.forEach( link => {
+            newlist.ids.push( link._id ); 
+        });
+
+        let url = "makeLinksList";
+
+        restapi.post( url, newlist )
+        .then( reply => {
+            // eslint-disable-next-line
+            console.log( "newUser; reply: ", reply );
+            this.resultStatus = "New List " + newlist.loggedInName + " created.";
+        }).catch( error =>  {
+            // eslint-disable-next-line
+            console.log( error );
+            this.networkError = error + " creating links list";
+        });
+
+    },
     showMore( gridlink ) {
         // get the link's full record
         let link = this.linkRecs.find( rec => rec._id == gridlink._id );
@@ -346,6 +374,13 @@ export default {
     }
 
     this.getLinkData( user );
+
+    // Start listener for request for filtered list.
+    EventBus.$on('FILTERED_LINKS_LIST', linkList => {
+        console.log("FILTERED_LINKS_LIST got ", linkList );
+        this.createGroup( linkList );
+    });
+
   },
   data() {
       return {
