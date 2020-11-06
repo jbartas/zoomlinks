@@ -63,13 +63,13 @@ export default {
             linkIds: [],
             owner: this.global.loggedInID,        // owner Id
             name: this.global.loggedInName + "_" + "xyz",
-            Create_time: 0,    // (UTC), now
-            ttl: 3600 + 72, // in seconds, default 72 hours
+            CreateTime: 0,      // (UTC), now
+            ttl: 3600 + 72,     // in seconds, default 72 hours
         }
 
         // stick Id list on new object
         linkList.forEach( link => {
-            newlist.ids.push( link._id ); 
+            newlist.linkIds.push( link._id ); 
         });
 
         let url = "makeLinksList";
