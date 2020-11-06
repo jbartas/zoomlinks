@@ -60,7 +60,7 @@ export default {
         let newlist = { 
             "hash": this.global.sessionHash,
             // Id: ObjectId, - will be added by Backend
-            ids: [],
+            linkIds: [],
             owner: this.global.loggedInID,        // owner Id
             name: this.global.loggedInName + "_" + "xyz",
             Create_time: 0,    // (UTC), now
