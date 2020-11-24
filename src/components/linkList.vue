@@ -54,17 +54,18 @@ export default {
       linksfor: String,
   },
   methods: {
-    createGroup( linkList )
+    createList( linkList )
     {
         // Make a linklist with the passed links.
+        let now = new Date();   // for timestamping default name
         let newlist = { 
             "hash": this.global.sessionHash,
             // Id: ObjectId, - will be added by Backend
             linkIds: [],
             owner: this.global.loggedInID,        // owner Id
-            name: this.global.loggedInName + "_" + "xyz",
-            CreateTime: 0,      // (UTC), now
-            ttl: 3600 + 72,     // in seconds, default 72 hours
+            name: this.global.loggedInName + "_" + now.toISOString(),
+            createDate: 0,         // (UTC), now
+            ttl: 3600 * 72,     // in seconds, default 72 hours
         }
 
         // stick Id list on new object
@@ -76,11 +77,9 @@ export default {
 
         restapi.post( url, newlist )
         .then( reply => {
-            // eslint-disable-next-line
-            console.log( "newUser; reply: ", reply );
-            this.resultStatus = "New List " + newlist.loggedInName + " created.";
+            console.log( "createList; reply: ", reply );
+            this.resultMsg = "New List " + newlist.loggedInName + " created.";
         }).catch( error =>  {
-            // eslint-disable-next-line
             console.log( error );
             this.networkError = error + " creating links list";
         });
@@ -90,7 +89,6 @@ export default {
         // get the link's full record
         let link = this.linkRecs.find( rec => rec._id == gridlink._id );
         if( !link ) {
-            // eslint-disable-next-line
             console.log( "showMore, gridlink._id not found: ", gridlink.id );
             return; 
         }
@@ -297,11 +295,10 @@ export default {
         .then ( response => {
             let reply = response.data;
             
-            // eslint-disable-next-line
-            console.log( "got Records: ", reply );
+            console.log( "got Response: ", reply );
             if( reply.status != "success") {
                 this.resultMsg = "";
-                this.networkError = "Network error: Server problem.";
+                this.networkError = "Network error: " + reply.message;
                 return;
             }
 
@@ -378,7 +375,7 @@ export default {
     // Start listener for request for filtered list.
     EventBus.$on('FILTERED_LINKS_LIST', linkList => {
         console.log("FILTERED_LINKS_LIST got ", linkList );
-        this.createGroup( linkList );
+        this.createList( linkList );
     });
 
   },

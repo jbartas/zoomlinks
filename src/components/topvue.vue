@@ -83,13 +83,14 @@
     </div>
 
     <groups     :global = "globals" v-if="globals.renderApp == 'groups'" />
-    <listslist   v-if="globals.renderApp == 'listslist'" />
+    <listslist  :global = "globals" v-if="globals.renderApp == 'listslist'" />
     <about       v-if="globals.renderApp == 'about'" />
     <addGroup   :global = "globals" v-if="globals.renderApp == 'addGroup'" />
     <listGroups :global = "globals" v-if="globals.renderApp == 'listGroups'  
                  || globals.renderApp == 'groups'" />
     <groupLinks :global = "globals" v-if="globals.renderApp == 'groupLinks'" />
     <groupUsers :global = "globals" v-if="globals.renderApp == 'groupUsers'" />
+    <editList   :global = "globals" v-if="globals.renderApp == 'editList'" />
 
 
 </div> <!-- end top_view -->
@@ -102,6 +103,7 @@ import addLink from '../components/addLink.vue'
 import linkList from '../components/linkList.vue'
 import groups from '../components/groups.vue'
 import listslist from '../components/listslist.vue'
+import editList from '../components/editList.vue'
 import about from '../components/about.vue'
 import listGroups from '../components/listGroups.vue'
 import groupLinks from '../components/groupLinks.vue'
@@ -120,6 +122,7 @@ export default {
     linkList,
     groups,
     listslist,
+    editList,
     about,
     addGroup,
     listGroups,
@@ -144,6 +147,7 @@ export default {
           userEmail: "",
           sessionHash: null,
           editLink: null,       // For passing link fields to editor
+          editList: null,       // Passing links list to editor
           urlParams: {},        // params from the invoking URL
           portrait: false,       // true if in portrait mode, false for landscape.
       },
