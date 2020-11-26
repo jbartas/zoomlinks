@@ -2,6 +2,7 @@
   <div class="edit_list">
 
     <div class="place-form" >
+      Editing a List of links
       <form name="add-link" class="sb_form form-width" v-on:submit.prevent >
         <div v-bind:class="global.portrait?'controls-tall':'controls-wide'" >
             <label> List name: </label>
@@ -23,6 +24,27 @@
                     title="hours to exist" autocomplete="off" />
             </div>
         </div>   <!-- end top inputs -->
+
+        <div> <br>
+          Links in this List:
+        </div>
+          <table class="grid-table" >
+            <tr v-for="link in links" :key="link._id" >
+              <td class="td-text">
+             {{link.name}}
+              </td>
+              <td class="td-button">
+                <button class="small-button"
+                v-on:click="btn_clicked('remove', link._id)"
+                > Remove </button>
+              </td>
+              <td class="td-button">
+                <button class="small-button" 
+                > Edit </button>
+              </td>
+            </tr>
+          </table>
+
         <div class="bottom_buttons" >
             <button v-on:click="submitList()" > Save Changes </button>
             <button v-on:click="deleteList()" > Delete this List </button>
@@ -62,7 +84,10 @@ export default {
 
         console.log( "deleteList; id: ", this.editListId );
 
-      }
+      },
+      btn_clicked: function ( operation, id ) {
+          console.log( "list entry btn, op:", operation, ", Id:", id );
+      },
   },
     created: function() {
         if( !this.global.loggedInID ) {    // No one is logged in.
@@ -89,6 +114,9 @@ export default {
         listName: "",
         listCreated: "",
         listExpires: "",
+        links:[ { name: "a link name",       _id: 123 }, 
+                { name: "another link name", _id: 456 } 
+              ],
         ttlHours: 0,
         ttlMinutes: 0
     }
@@ -126,6 +154,24 @@ input {
     max-width:      90%;
 }
 
+.links {
+    position:       relative;
+    top:            0.8em;
+    display:        grid;
+    grid-template-columns:  8em  auto;
+    grid-row-gap:   4px;
+
+}
+
+.grid-table {
+  table-layout:   fixed;
+  position: relative;
+  left:     0%;
+  width:    100%;
+  color:    var( --bt-text-color );
+  border-spacing: 6px;
+}
+
 
 .bottom_buttons {
     position:       relative;
@@ -137,6 +183,24 @@ input {
 
 input {
     width: 75%;
+}
+
+.td-text {
+  overflow:       hidden;
+  white-space:    nowrap;
+  padding-left:   4px;
+  background-color: #fbfbfb;
+  border: 1px solid  grey;
+
+}
+
+.td-button {
+  width:          4em;
+  height:         0.9em;
+}
+
+.small-button {
+  width:          5em;
 }
 
 .place-error {
