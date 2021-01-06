@@ -77,8 +77,10 @@ export default {
 
         restapi.post( url, newlist )
         .then( reply => {
-            console.log( "createList; reply: ", reply );
-            this.resultMsg = "New List " + newlist.loggedInName + " created.";
+            console.log( "createList; reply: ", reply, ", list: ", newlist );
+            this.resultMsg = "New List " + newlist.name + " created.";
+            this.global.editList.name = newlist.name;
+            this.global.renderApp = 'editList';
         }).catch( error =>  {
             console.log( error );
             this.networkError = error + " creating links list";
@@ -199,7 +201,7 @@ export default {
         });
     },
     gridCallback: function ( link, cell ) {
-        console.log( "grid callback, link: ", link, cell );
+        console.log( "list grid callback, link: ", link, ", cell: ", cell );
 
         if( cell == "edit" ) {
             // get the original record, not the grid subset
@@ -210,11 +212,7 @@ export default {
                 return; 
             }
 
-            // If needed, add deprecated password field to options
-            if( reclink.password && reclink.password != "" && !reclink.options ) {
-                reclink.options = [{ name: "Zoom Password", value: reclink.password }];
-            }
-            console.log( "gridCallback, added options: ", reclink );
+            console.log( "gridCallback: edit;, added options: ", reclink );
             this.global.editLink = reclink;       // pass link fields to "add"" form
             this.global.renderApp = "addLink";
         }
@@ -290,7 +288,7 @@ export default {
 
 
         // eslint-disable-next-line
-        console.log( "getLinkData: ", url );
+        console.log( "getLinkData: ", url, ", params: ", params );
         restapi.post( url, params )
         .then ( response => {
             let reply = response.data;

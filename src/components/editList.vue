@@ -8,20 +8,25 @@
             <label> List name: </label>
             <div>
                 <input name="listName" v-model="listName"
-                    title="Give the link any name you like" autocomplete="off" />
+                    title="Give the list any name you like" autocomplete="off" />
             </div>
             <label> Created: </label>
             <div>
                 {{listCreated}}
             </div>
             <label> Expires:</label>
-            <div>
+            <div title="Date / Time when the list will auto-delete" >
                 {{listExpires}}
             </div>
-            <label> Hours: </label>
+            <label   title="Time between creation and expiration"  > Duration: </label>
             <div>
-                <input name="ttlhours" v-model="ttlHours"
-                    title="hours to exist" autocomplete="off" />
+                <input class="short-input" v-model="ttlDisplay"
+                    title="time before the list expires" autocomplete="off" />
+                &nbsp;
+                <select class="units-input"  name="ttlUnits" v-model="ttlUnits" >
+                  <option value="Hours">Hours</option>
+                  <option value="Days">Days</option>
+                </select>
             </div>
         </div>   <!-- end top inputs -->
 
@@ -31,7 +36,7 @@
           <table class="grid-table" >
             <tr v-for="link in links" :key="link._id" >
               <td class="td-text">
-             {{link.name}}
+             {{link.linkName}}
               </td>
               <td class="td-button">
                 <button class="small-button"
@@ -40,6 +45,7 @@
               </td>
               <td class="td-button">
                 <button class="small-button" 
+                v-on:click="btn_clicked('edit', link._id)"
                 > Edit </button>
               </td>
             </tr>
@@ -62,7 +68,7 @@
 
 
 <script>
-//import restapi from "../restapi.js";
+import restapi from "../restapi.js";
 
 export default {
   name: 'editList',
@@ -89,7 +95,7 @@ export default {
           console.log( "list entry btn, op:", operation, ", Id:", id );
       },
   },
-    created: function() {
+  created: function() {
         if( !this.global.loggedInID ) {    // No one is logged in.
             console.log( "editList - not logged in" );
             return;
@@ -102,10 +108,54 @@ export default {
         let endDate = new Date(this.listExpires);
         let ttl = endDate - startDate
         this.ttlHours = ttl / 3600000;
-        this.ttlMinutes = (ttl - this.ttlHours) / 6000;
-        
+        this.ttlDisplay = this.ttlHours;
 
+        // Ask the server for the list links details.
+        console.log("Getting list links bulk data for links", this.global.editList );
+        
+        let url = "getBulkLinks";
+        let params = { 
+            "hash" : this.global.sessionHash,
+            "linkIds" : this.global.editList.linkIdList
+        };
+
+        restapi.post( url, params )
+        .then( response => {
+            let reply = response.data;
+            console.log( "got List getBulkLinks reply: ", reply );
+            if( reply.status != "success") {
+                this.resultMsg = "";
+                this.networkError = "Network error: " + reply.message;
+                return;
+            }
+
+            this.links = reply.listLinks;
+
+        }).catch( error =>  {
+            // eslint-disable-next-line
+            console.log( error );
+            this.networkError = error;
+        });
+  },
+  watch: {
+    'ttlUnits': function( ) {
+        if( this.ttlUnits == "Days" ) {
+          this.ttlDisplay = this.ttlHours / 24;
+        }
+        else {
+          this.ttlDisplay = this.ttlHours;
+        }
     },
+    'ttlDisplay': function() {
+        if( this.ttlUnits == "Days" ) {
+          this.ttlHours = this.ttlDisplay * 24; 
+        }
+        else {
+          this.ttlHours = this.ttlDisplay; 
+        }
+    }
+  },
+
   data() {
     return {
         networkError: "",
@@ -114,11 +164,10 @@ export default {
         listName: "",
         listCreated: "",
         listExpires: "",
-        links:[ { name: "a link name",       _id: 123 }, 
-                { name: "another link name", _id: 456 } 
-              ],
-        ttlHours: 0,
-        ttlMinutes: 0
+        links:[],
+        ttlHours: 3,
+        ttlDisplay: 3,    // TTL time to display, depends on units (hours or days)
+        ttlUnits: "Hours"
     }
   }
 }
@@ -175,10 +224,11 @@ input {
 
 .bottom_buttons {
     position:       relative;
-    top:            0.8em;
+    top:            0.2em;
+    left:           0em;
+    text-align:     center;
     max-width:      94vw;
     margin:         0.5em;
-    margin-left:    0em;
 }
 
 input {
@@ -207,6 +257,21 @@ input {
     position:   relative;
     left:       1px;
     top:        2em;
+}
+
+.short-input {
+    position:   relative;
+    left:       0%;
+    width:      3em;
+}
+
+.units-input {
+    position:   relative;
+    width:      5em;
+}
+
+.sb_form {
+    text-align: left;
 }
 
 </style>

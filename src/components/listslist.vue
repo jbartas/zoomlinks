@@ -69,9 +69,14 @@ export default {
     },
     methods: {
         gridCallback: function ( list, cell ) {
-            console.log( "grid callback, link: ", list, cell );
-            this.global.editList = list;
-            this.global.renderApp = "editList";
+            console.log( "grid callback, link: ", list, ", cell: ", cell );
+            if( cell == "edit") {
+                this.global.editList = list;
+                this.global.renderApp = "editList";
+            }
+            else {  /* cell == remove */
+                console.log( "list removal code here later" );
+            }
         },
         setGridData: function () {
             /* Format gridData[] from lists[] */
@@ -84,6 +89,7 @@ export default {
               let gridrec = {
                   name: list.name,
                   links: list.linkIds.length.toString(),
+                  linkIdList: list.linkIds,
                   created: created.toString(),
                   ends: ending.toString(),
                   edit: "Edit",
@@ -107,7 +113,7 @@ export default {
 
         restapi.post( url, restcmd )
         .then( reply => {
-            console.log( "getLists; reply: ", reply );
+            console.log( "listLists.js, created; reply: ", reply );
             this.lists = reply.data.recordList;
             this.setGridData();
             this.resultMsg = "You own " + this.lists.length + " Lists ";
