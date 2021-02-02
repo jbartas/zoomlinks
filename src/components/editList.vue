@@ -40,13 +40,9 @@
               </td>
               <td class="td-button">
                 <button class="small-button"
-                v-on:click="btn_clicked('remove', link._id)"
+                  v-on:click="btn_clicked('remove', link._id)"
+                  title="Remove link from list. This will not erase the master copy."
                 > Remove </button>
-              </td>
-              <td class="td-button">
-                <button class="small-button" 
-                v-on:click="btn_clicked('edit', link._id)"
-                > Edit </button>
               </td>
             </tr>
           </table>
@@ -81,7 +77,60 @@ export default {
         this.networkError = "";     // first clear any old error
         this.resultMsg = "Working...";
 
-        console.log( "submitList; id: ", this.editListId );
+        console.log( "submitList; id: ", this.editListId, this.global.editList.linkIdList );
+
+        // update global.editList object with local vars 
+        if( this.global.editList.name != this.listName ) {
+          this.global.editList.name = this.listName;
+          this.updateNeeded = true;
+        }
+
+        let startDate = new Date(this.listCreated);
+        let endDate = new Date(this.listExpires);
+        let ttl = endDate - startDate
+        if( ttl != this.ttlHours * 3600000 ) {
+          console.log( "changing end date, new ttl ", ttl );
+          endDate = new Date(this.global.editList.created) + ttl;
+          this.global.editList.ends = endDate.toString();
+          this.updateNeeded = true;
+        }
+
+        // If we don't need to send update, skip it.
+        if( this.updateNeeded != true ) {
+          console.log( "submitList; No update needed." );
+          return;
+        }
+
+        // extract the possibly changed link IDs into a list for server.
+        let linkIdList = [];
+        this.links.forEach( link => {
+          linkIdList.push( link._id );
+        })
+
+
+        let updateList = { 
+          hash: this.global.sessionHash,
+          _id: this.editListId,
+          linkIds: linkIdList,
+          name: this.global.editList.name,
+          ttl: this.ttlHours * 3600     // in seconds
+        }
+
+        console.log( "updateList: ", updateList );
+
+        // More here later
+        let url = "makeLinksList";
+
+        restapi.post( url, updateList )
+        .then( reply => {
+            console.log( "submitList; reply: ", reply, ", list: ", updateList );
+            this.resultMsg = "Updated List " + updateList.name + " created.";
+            this.global.renderApp = 'editList';
+        }).catch( error =>  {
+            console.log( error );
+            this.networkError = error + " updating links list";
+        });
+
 
       },
       deleteList: function() {
@@ -91,8 +140,22 @@ export default {
         console.log( "deleteList; id: ", this.editListId );
 
       },
-      btn_clicked: function ( operation, id ) {
-          console.log( "list entry btn, op:", operation, ", Id:", id );
+      idxCallback: function( link ) {
+        // console.log( "idxCallback, link:  ", link, ", Id:", this.delLinkId );
+        if( link._id == this.delLinkId ) return true;
+        // else
+        return false;
+      },
+      btn_clicked: function ( operation, linkId ) {
+          console.log( "list entry btn, op:", operation, ", Id:", linkId );
+          this.delLinkId = linkId;
+          let idx = this.links.findIndex( this.idxCallback );
+          if (idx > -1) {
+            this.links.splice(idx, 1);
+            this.updateNeeded = true;   // flag to send update to server
+          } else {
+            console.log("bug: idx ", idx, "not in links[]");
+          }
       },
   },
   created: function() {
@@ -167,7 +230,8 @@ export default {
         links:[],
         ttlHours: 3,
         ttlDisplay: 3,    // TTL time to display, depends on units (hours or days)
-        ttlUnits: "Hours"
+        ttlUnits: "Hours",
+        updateNeeded: false
     }
   }
 }
