@@ -12,7 +12,7 @@
             :colstyle = "gridColStyles"
             :global = "global"
             v-bind:cellcss  = 
-                "{ edit: 'button_cell', last: 'clock_cell fa-calendar-check-o', info: 'clock_cell fa-list', link: 'url_cell', group: 'clock_cell fa-group' }"
+                "{ edit: 'button_cell', view: 'button_cell', last: 'clock_cell fa-calendar-check-o', info: 'clock_cell fa-list', link: 'url_cell', group: 'clock_cell fa-group' }"
             buttoncol = "edit" 
             >
         </grid>
@@ -57,13 +57,14 @@ export default {
           resultMsg: "",
 
           gridData: [], // list info for table
-          gridColumns: [ 'name', 'links', 'created', 'ends', "edit" ], // titles
+          gridColumns: [ 'name', 'links', 'created', 'ends', "view", "edit" ], // titles
           gridColStyles: {    // control the grid column widths 
             "name": "width: 36%", 
             "links": "width: 2em",
             "created": "width: 20%",
             "ends": "width: 20%",
-            "edit": "width: 6em" 
+            "view": "width: 4em",
+            "edit": "width: 4em" 
           },
       }
     },
@@ -74,9 +75,12 @@ export default {
                 this.global.editList = list;
                 this.global.renderApp = "editList";
             }
-            else {  /* cell == remove */
-                console.log( "list removal code here later" );
-            }
+            else {  /* Simple click means view the list, no edit */
+                console.log( "list view called for list: ", list );
+                this.global.editList = list;
+                this.global.linksfor = "list";
+                this.global.renderApp = "showlistlinks";
+            } 
         },
         setGridData: function () {
             /* Format gridData[] from lists[] */
@@ -85,7 +89,7 @@ export default {
               let created = new Date(list.createDate);
               let ending = new Date(list.createDate);
               ending.setSeconds(ending.getSeconds() + list.ttl);
-              console.log("list times: ", created, list.ttl );
+              // console.log("list times: ", created, list.ttl );
               let gridrec = {
                   name: list.name,
                   links: list.linkIds.length.toString(),
@@ -93,6 +97,7 @@ export default {
                   created: created.toString(),
                   ends: ending.toString(),
                   edit: "Edit",
+                  view: "View",
                   _id: list._id   // will not be displayed
               }
               this.gridData.push(gridrec);

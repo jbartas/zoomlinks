@@ -91,7 +91,7 @@
     <groupLinks :global = "globals" v-if="globals.renderApp == 'groupLinks'" />
     <groupUsers :global = "globals" v-if="globals.renderApp == 'groupUsers'" />
     <editList   :global = "globals" v-if="globals.renderApp == 'editList'" />
-
+    <showlistlinks :global = "globals" v-if="globals.renderApp == 'showlistlinks'" />
 
 </div> <!-- end top_view -->
 </template>
@@ -109,6 +109,7 @@ import listGroups from '../components/listGroups.vue'
 import groupLinks from '../components/groupLinks.vue'
 import addGroup from '../components/addGroup.vue'
 import groupUsers from '../components/groupUsers.vue'
+import showlistlinks from '../components/showlistlinks.vue'
 
 import { EventBus } from '../components/eventBus.js';
 
@@ -127,7 +128,8 @@ export default {
     addGroup,
     listGroups,
     groupLinks,
-    groupUsers
+    groupUsers,
+    showlistlinks
   },
   props: {
     msg: String

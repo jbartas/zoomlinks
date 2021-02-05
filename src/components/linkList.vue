@@ -278,6 +278,14 @@ export default {
                 "hash": this.global.sessionHash
             }
         }
+        if(this.linksfor == "list" ) {
+            console.log( "getListLinks: list ", this.global.editList );
+            url = "/getBulkLinks/";
+            params = { 
+                "hash" : this.global.sessionHash,
+                "linkIds" : this.global.editList.linkIdList
+            };
+        }
         else {
             url = "/getLinks/";
             params = {
@@ -300,6 +308,10 @@ export default {
                 return;
             }
 
+            if( url == "/getBulkLinks/"  ) {
+                // map "getBulkLinks" list results to older code
+                reply.recordList  = reply.listLinks;
+            }
             /* Clear the grid of current data before we (re)write it */
             this.gridData = [];
             if( reply.recordList.length == 0 ) {

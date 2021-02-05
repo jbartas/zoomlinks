@@ -138,6 +138,21 @@ export default {
         this.resultMsg = "Working...";
 
         console.log( "deleteList; id: ", this.editListId );
+        let url = "/deleteList/";
+        let params = {
+            "listId": this.editListId,
+            "hash": this.global.sessionHash
+        }
+        restapi.post( url, params )
+        .then( reply => {
+            console.log( "deleteList; reply: ", reply );
+            this.resultMsg = "Deleted List " + this.global.editList.name ;
+            this.global.editList = null;
+            this.global.renderApp = 'listslist';
+        }).catch( error =>  {
+            console.log( error );
+            this.networkError = error + " deleting list";
+        });
 
       },
       idxCallback: function( link ) {
