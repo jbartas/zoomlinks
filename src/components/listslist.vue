@@ -80,7 +80,7 @@ export default {
                 this.global.editList = list;
                 this.global.linksfor = "list";
                 this.global.renderApp = "showlistlinks";
-            } 
+            }
         },
         setGridData: function () {
             /* Format gridData[] from lists[] */
@@ -93,7 +93,7 @@ export default {
               let gridrec = {
                   name: list.name,
                   links: list.linkIds.length.toString(),
-                  linkIdList: list.linkIds,
+                  linkIds: list.linkIds,
                   created: created.toString(),
                   ends: ending.toString(),
                   edit: "Edit",

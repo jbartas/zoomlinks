@@ -5,10 +5,15 @@
         <!-- If invoked from group then group adds table header, else: -->
         <div class="table-header" v-if="linksfor == 'user' && !global.portrait" >
             <strong> My Links: </strong> 
+            <button v-on:click="makeListClick()" 
+                title="Make a sharable list of the links displayed below."> 
+                Make List 
+            </button>
         </div>
 
         <!-- Show grid or tile display, based on screen orientation -->
         <grid class="grid_wrapper" v-if="! global.portrait" 
+            ref       = "gridref"
             :data     = "gridData" 
             :columns  = "gridColumns" 
             :callback = "gridCallback"
@@ -54,6 +59,12 @@ export default {
       linksfor: String,
   },
   methods: {
+    makeListClick( ) {
+        this.requestingList = true;
+        let griddata = this.$refs.gridref.getFilteredLinks();
+        console.log( "makeListClick; griddata: ", griddata );
+        this.createList( griddata );
+    },
     createList( linkList )
     {
         // Make a linklist with the passed links.
@@ -64,7 +75,7 @@ export default {
             linkIds: [],
             owner: this.global.loggedInID,        // owner Id
             name: this.global.loggedInName + "_" + now.toISOString(),
-            createDate: 0,         // (UTC), now
+            createDate: new Date(),         // (UTC), now
             ttl: 3600 * 72,     // in seconds, default 72 hours
         }
 
@@ -77,10 +88,10 @@ export default {
 
         restapi.post( url, newlist )
         .then( reply => {
-            console.log( "createList; reply: ", reply, ", list: ", newlist );
+            console.log( "createList; reply: ", reply, ", newlist: ", newlist );
             this.resultMsg = "New List " + newlist.name + " created.";
-            this.global.editList.name = newlist.name;
-            this.global.renderApp = 'editList';
+            //this.global.editList = newlist;
+            this.global.renderApp = 'listslist';
         }).catch( error =>  {
             console.log( error );
             this.networkError = error + " creating links list";
@@ -278,15 +289,15 @@ export default {
                 "hash": this.global.sessionHash
             }
         }
-        if(this.linksfor == "list" ) {
+        else if(this.linksfor == "list" ) {
             console.log( "getListLinks: list ", this.global.editList );
             url = "/getBulkLinks/";
             params = { 
                 "hash" : this.global.sessionHash,
-                "linkIds" : this.global.editList.linkIdList
+                "linkIds" : this.global.editList.linkIds
             };
         }
-        else {
+        else {      // default - links for the user
             url = "/getLinks/";
             params = {
                 "name": user,
@@ -384,8 +395,14 @@ export default {
 
     // Start listener for request for filtered list.
     EventBus.$on('FILTERED_LINKS_LIST', linkList => {
-        console.log("FILTERED_LINKS_LIST got ", linkList );
-        this.createList( linkList );
+        console.log("FILTERED_LINKS_LIST got ", linkList,
+            "requestingList: ", this.requestingList );
+
+        if( this.requestingList == true ) {
+            this.createList( linkList );
+            this.requestingList = false;
+        }
+
     });
 
   },
@@ -396,6 +413,7 @@ export default {
         networkError: "",
         linkRecs: [],       // list of full records of links
         deleting: false,    // true on button to remove from group
+        requestingList: false, // waiting for a link list
 
         /* grid stuff */
         gridColumns: [ 'name', 'link', 'tags', "last", "info", "group", "edit" ], // titles
@@ -429,7 +447,11 @@ export default {
 }
 
 .table-header {
-    padding:        0.5em;
+    padding:        0.3em;
+    display:        grid;
+    grid-template-columns:  82%  auto;
+    grid-row-gap:   4px;
+    margin:         auto;
 }
 
 .place-error {

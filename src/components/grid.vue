@@ -5,10 +5,6 @@
     <form id="search">
       Search <input name="query" v-model="searchQuery" class="search-input" >
     </form>
-    <button v-on:click="listButtonClick('make')" 
-      title="Make a portable list of the links displayed below."> 
-      Make List 
-      </button>
   </div>
   <div id="grid-template">
     <div class="table-header-wrapper">
@@ -42,8 +38,6 @@
 
 <script>
 /* This is now hard-coded for the linkshare links display. */
-import { EventBus } from '../components/eventBus.js';
-
 
 export default {
   name: "grid",
@@ -93,10 +87,10 @@ export default {
     }
   },
   methods: {
-    listButtonClick: function () {
-        console.log("listButtonClick - clicked " );
-        EventBus.$emit('FILTERED_LINKS_LIST', 
-            this.filteredData );
+    getFilteredLinks: function () {
+        console.log("grid: getFilteredLinks(); sending FILTERED_LINKS_LIST event " );
+        //EventBus.$emit('FILTERED_LINKS_LIST', this.filteredData );
+        return this.filteredData;
     },
     getColStyle: function( key ) {
         // console.log("getColStyle: key: ", key );
@@ -137,6 +131,7 @@ export default {
       this.searchQuery = this.global.urlParams.search;
       this.global.urlParams.search = undefined;
     }
+
   }
 }
 
@@ -173,8 +168,8 @@ tr:hover {
 }
 
 .search-input {
-  width:        60vw;
-  max-width:    80vw;
+  width:        90vw;
+  max-width:    47%;
   min-width:    10em;
   margin:       auto;
 }

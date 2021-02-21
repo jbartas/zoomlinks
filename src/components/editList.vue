@@ -77,7 +77,7 @@ export default {
         this.networkError = "";     // first clear any old error
         this.resultMsg = "Working...";
 
-        console.log( "submitList; id: ", this.editListId, this.global.editList.linkIdList );
+        console.log( "submitList; id: ", this.editListId, this.global.editList.linkIds );
 
         // update global.editList object with local vars 
         if( this.global.editList.name != this.listName ) {
@@ -102,36 +102,33 @@ export default {
         }
 
         // extract the possibly changed link IDs into a list for server.
-        let linkIdList = [];
+        let linkIds = [];
         this.links.forEach( link => {
-          linkIdList.push( link._id );
+          linkIds.push( link._id );
         })
-
 
         let updateList = { 
           hash: this.global.sessionHash,
           _id: this.editListId,
-          linkIds: linkIdList,
+          linkIds: linkIds,
           name: this.global.editList.name,
           ttl: this.ttlHours * 3600     // in seconds
         }
 
         console.log( "updateList: ", updateList );
 
-        // More here later
+        // More here later (what ??)
         let url = "makeLinksList";
 
         restapi.post( url, updateList )
         .then( reply => {
             console.log( "submitList; reply: ", reply, ", list: ", updateList );
             this.resultMsg = "Updated List " + updateList.name + " created.";
-            this.global.renderApp = 'editList';
+            this.global.renderApp = 'listslist';
         }).catch( error =>  {
             console.log( error );
             this.networkError = error + " updating links list";
         });
-
-
       },
       deleteList: function() {
         this.networkError = "";     // first clear any old error
@@ -178,23 +175,25 @@ export default {
             console.log( "editList - not logged in" );
             return;
         }
+        console.log( "editList: created; editList: ", 
+           this.global.editList );
         this.editListId = this.global.editList._id;
         this.listName = this.global.editList.name;
         this.listCreated = this.global.editList.created;
         this.listExpires = this.global.editList.ends;
         let startDate = new Date(this.listCreated);
         let endDate = new Date(this.listExpires);
-        let ttl = endDate - startDate
+        let ttl = endDate - startDate;
         this.ttlHours = ttl / 3600000;
         this.ttlDisplay = this.ttlHours;
 
         // Ask the server for the list links details.
-        console.log("Getting list links bulk data for links", this.global.editList );
+        console.log("editList: created: Getting bulk data for links", this.global.editList );
         
         let url = "getBulkLinks";
         let params = { 
             "hash" : this.global.sessionHash,
-            "linkIds" : this.global.editList.linkIdList
+            "linkIds" : this.global.editList.linkIds
         };
 
         restapi.post( url, params )
