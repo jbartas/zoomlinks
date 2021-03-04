@@ -20,7 +20,7 @@
             :colstyle = "gridColStyles"
             :global = "global"
             v-bind:cellcss  = 
-                "{ edit: 'button_cell', last: 'clock_cell fa-calendar-check-o', info: 'clock_cell fa-list', link: 'url_cell', group: 'clock_cell fa-group' }"
+                "{ edit: 'button_cell', last: 'clock_cell fa-clock-o', info: 'clock_cell fa-list', link: 'url_cell', group: 'clock_cell fa-group' }"
             buttoncol = "edit" 
             >
         </grid>
@@ -283,18 +283,18 @@ export default {
                 console.log( "getLinkData: no active group." );
                 return;
             }
-            url = "/getGroupLinks";
+            url = "/getGroupLinks/";
             params = {
                 "group": this.global.activeGroup._id ,
                 "hash": this.global.sessionHash
             }
         }
         else if(this.linksfor == "list" ) {
-            console.log( "getListLinks: list ", this.global.editList );
+            console.log( "getListLinks: editList.linkIds ", this.global.editList.linkIds );
             url = "/getBulkLinks/";
             params = { 
-                "hash" : this.global.sessionHash,
-                "linkIds" : this.global.editList.linkIds
+                "linkIds" : this.global.editList.linkIds,
+                "hash" : this.global.sessionHash
             };
         }
         else {      // default - links for the user
@@ -307,12 +307,12 @@ export default {
 
 
         // eslint-disable-next-line
-        console.log( "getLinkData: ", url, ", params: ", params );
+        console.log( "getLinkData: url: ", url, ", params: ", params );
         restapi.post( url, params )
         .then ( response => {
             let reply = response.data;
             
-            console.log( "got Response: ", reply );
+            console.log( "linkList: got Response: ", reply );
             if( reply.status != "success") {
                 this.resultMsg = "";
                 this.networkError = "Network error: " + reply.message;
@@ -364,10 +364,10 @@ export default {
         return;
     }
 
-    /* Handle arriving here from a URL driven invocation for a group. 
+    /* Handle arriving here from a URL driven invocation for a group or List. 
      * One indicator of this is an activeGroup with a name but no ID yet. 
      */
-    console.log( "linkList; create: ", this.global.activeGroup );
+    console.log( "linkList; create: global: ", this.global );
     if( this.global.activeGroup &&
         this.global.activeGroup.groupName && 
         !this.global.activeGroup._id ) {
@@ -389,6 +389,9 @@ export default {
             this.networkError = error;
         });
         return;
+    }
+    else if( this.global.urlParams.app == "showlistlinks" ) {
+        console.log("Getting link data for list from urlParams ")        
     }
 
     this.getLinkData( user );

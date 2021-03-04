@@ -112,7 +112,7 @@ import groupUsers from '../components/groupUsers.vue'
 import showlistlinks from '../components/showlistlinks.vue'
 
 import { EventBus } from '../components/eventBus.js';
-
+import restapi from "../restapi.js";
 
 export default {
   name: 'ZoomTop',
@@ -181,7 +181,8 @@ export default {
     parseURLParams: function() {
       /* URL params are things like "user" and "group" which let the invoker 
        * go directly to an internet location inside linkshare, for example 
-       * going straight to a group being accessed as "guest".
+       * going straight to a group being accessed as "guest". Example link:
+       * http://linkshare.link:8080/?user=guest&group=WisdomSFPP&app=groupLinks&search=zoom
        */
       let uri = window.location.href.split('?');
       if (uri.length < 2) {
@@ -227,6 +228,34 @@ export default {
       }
       else if( this.globals.urlParams.app == "groupLinks" ) {
           this.showApp("groupLinks");
+      }
+      else if( this.globals.urlParams.app == "showlistlinks" ) {
+        /* example URL: 
+          http://linkshare.link/?user=guest&app=showlistlinks&listid=5ff232388433b83399d36edc
+         * URL params indicated we should display a list. Get the list by ID and 
+         * fill in the this.globals.editList fields. 
+         */
+        console.log( "topvue: getting linkslist. Id: ", this.globals.urlParams.listid );
+
+        let url = "/getList";
+        let restcmd = {
+            "hash": this.globals.sessionHash,
+            "listId":  this.globals.urlParams.listid
+        };
+
+        restapi.post( url, restcmd )
+        .then( reply => {
+            console.log( "topview got param line list reply. data: ", reply.data.listData );
+            this.globals.editList = reply.data.listData[0];
+            //this.showapp("showlistlinks");
+
+            this.globals.renderApp = "showlistlinks";
+            return;
+        }).catch( error =>  {
+            let msg = error + " while fetching links list.";
+            console.log( msg );
+            this.networkError = msg;
+        });
       }
 
       // Send out search Query

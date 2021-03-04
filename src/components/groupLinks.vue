@@ -52,7 +52,7 @@ export default {
     if( this.global.urlParams.group ) {
       console.log( "groupLinks; from URL" );
 
-      /* Set up a temporary activeGroup. This will be used in linkLIst:create() 
+      /* Set up a temporary activeGroup. This will be used in linkList:create() 
        * to load the full activeGroup record.
        */
       this.global.activeGroup = {};
